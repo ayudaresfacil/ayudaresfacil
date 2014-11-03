@@ -20,7 +20,7 @@ angular.module( 'AyudarEsFacilApp.user', [
         controller: 'AuthenticationCtrl',
         templateUrl: 'user/signin.tpl.html',
         data: {
-            pageTitle: 'Casos de éxito',
+            pageTitle: 'Inicia Sesión',
             bodyClass: "login tooltips"
         }
     })
@@ -97,7 +97,7 @@ angular.module( 'AyudarEsFacilApp.user', [
     this.signout = function(){
         console.log("entra");
         console.log($scope.authentication);
-        localStorage.clear();
+        Authentication.user = null;
         $scope.authentication = null;
         console.log($scope.authentication);
         $state.transitionTo('web.home'); 
