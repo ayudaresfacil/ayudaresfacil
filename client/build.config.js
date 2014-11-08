@@ -73,6 +73,7 @@ module.exports = {
         ],
         css: [
             'vendor/bootstrap/dist/css/bootstrap.min.css',
+            'vendor/bootstrap/dist/css/bootstrap.css.map',
             'vendor/fontawesome/css/font-awesome.min.css'
         ],
         assets: []

@@ -579,7 +579,7 @@ module.exports = function(grunt) {
      * The default task is to run server.
      */
     grunt.registerTask('serve', [
-        'default',
+        'build',
         'delta'
     ]);
 

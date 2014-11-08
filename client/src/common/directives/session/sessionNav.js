@@ -7,11 +7,11 @@ angular.module('directives.sessionNav', [])
         templateUrl: 'directives/session/session-nav.tpl.html',
         controller: "AuthenticationCtrl",
         link: function (scope, element, attrs) {
-            $(element).find().click()
-            scope.text = '1';
-            element.click(function() {
-                 scope.text = '2';
-            });
+            // $(element).find().click()
+            // scope.text = '1';
+            // element.click(function() {
+            //      scope.text = '2';
+            // });
         }
     };
 });

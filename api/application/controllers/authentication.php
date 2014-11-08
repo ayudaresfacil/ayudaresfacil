@@ -9,7 +9,7 @@ class Authentication extends REST_Controller{
 		$arrOptions['password'] = $this->get('password');
 
 		$data = CI_Authentication::signin($arrOptions); 
-
+		ma("asd");
 		$status = 403;
 		$return["result"] = "NOOK";
 		if($data){
