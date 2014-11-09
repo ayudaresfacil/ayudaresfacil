@@ -6,8 +6,9 @@ class Offer_model extends CI_Model
 		$this->db->select('*');	
 		$this->db->from('publication');
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
-		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
+		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
+		$this->db->group_by('publication.publication_id');
 		$this->db->where('publication.publication_id', $id);	
 		$query = $this->db->get();
 		return $query->result();
@@ -19,6 +20,7 @@ class Offer_model extends CI_Model
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
+		$this->db->group_by('publication.publication_id');
 		$this->db->where('publication.user_id', $userId);	
 		$query = $this->db->get();
 		return $query->result();
@@ -135,6 +137,7 @@ class Offer_model extends CI_Model
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
+		$this->db->group_by('publication.publication_id');
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.expiration_date >', date('Y/m/d H:i:s'));
 		$query = $this->db->get();

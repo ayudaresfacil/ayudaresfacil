@@ -329,4 +329,28 @@ class Offer extends REST_Controller {
 			$this->response($return, $status);
 		}
 	}
+	
+	public function image_get(){
+
+		$status = 404;
+		$return["data"] = "";
+		$return["result"] = "NOOK";
+
+		$arrOptions['publicationId'] = $this->get('publicationId');
+
+		if($arrOptions['publicationId'] > 0){
+			$images = CI_Offer::getImages($arrOptions['publicationId']);
+			
+			if($images){
+				$status = 200;
+				$return["result"] = "OK";
+				$return["data"] = "";
+
+				foreach ($images as $key => $image) {
+					$return["data"][$key] = $image;
+				 } 
+			}
+			$this->response($return, $status);
+		}	
+	}
 }

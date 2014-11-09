@@ -19,7 +19,7 @@
 <div class="the-box no-border" ng-repeat="request in requests">
 	<div class="row">
 		<div class="jumbotron jumbotron-sm text-center">
-			<h2>{{request.title}}</h2>
+			<h3>{{request.title}}</h3> <strong ng-repeat="vote in votes">Votos de fé: {{vote.quan}}</strong>
 		</div>	
 		<div class="col-md-4">		
 			<carousel interval="myInterval" style="height:350px">
@@ -30,7 +30,7 @@
 		</div>
 		<div div class="col-md-8 panel panel-danger panel-square panel-no-border" >
 			<div class="panel-heading">
-				<h4 class="panel-title"><i class="fa fa-pencil icon-circle icon-xs icon-dark"></i>
+				<h4 class="panel-title">
 					Se necesita {{request.object.description}}</h4>
 				</div>
 				<div class="panel-body">
@@ -40,7 +40,7 @@
 				</div>
 				<div class="panel panel-success panel-square panel-no-border">
 					<div class="panel-heading">
-						<h4 class="panel-title"><i class="fa fa-heart icon-circle icon-xs icon-dark"></i>
+						<h4 class="panel-title">
 							Padrinos</h4>
 						</div>
 						<div id="panel-collapse-4" class="collapse in">

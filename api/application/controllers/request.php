@@ -270,8 +270,6 @@ class Request extends REST_Controller{
 
 	public function vote_get(){
 
-		checkIsLoggedIn($this);
-
 		$status = 404;
 		$return["data"] = "";
 		$return["result"] = "NOOK";

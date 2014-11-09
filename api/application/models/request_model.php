@@ -227,7 +227,7 @@ class Request_model extends CI_Model
 	}
 
 	public function getVotes($publicationId){
-		$this->db->select('count(*)');	
+		$this->db->select('count(*) AS quan');	
 		$this->db->from('publication_vote');
 		$this->db->where('publication_vote.publication_id', $publicationId);
 		$query = $this->db->get();

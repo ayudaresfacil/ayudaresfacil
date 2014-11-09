@@ -18,7 +18,7 @@ angular.module( 'AyudarEsFacilApp.request', [
   $stateProvider.state( 'web.favoriteCreate', {     
         //
       });
-  $stateProvider.state( 'panel.requestDetail', {     
+  $stateProvider.state( 'web.requestDetail', {     
     url: '/pedido-detalle/:id',
     controller: 'RequestCtrl',
     templateUrl: 'request/request-detail.tpl.html',
@@ -57,12 +57,23 @@ angular.module( 'AyudarEsFacilApp.request', [
   }
   ])
 
-.controller( 'RequestCtrl', function RequestCtrl( $scope, Requests, Sponsors, Images, $stateParams ) {
+.factory('Votes', ['$resource',
+  function($resource) {
+    return $resource('http://localhost/ayudaresfacil/api/request/vote', {publicationId:'@id'}, {}, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+  ])
+
+.controller( 'RequestCtrl', function RequestCtrl( $scope, Requests, Sponsors, Images, Votes, $stateParams ) {
   $scope.myInterval = 5000;
 
   var requests = new Requests();
   var sponsors = new Sponsors();
   var slides = new Images();
+  var votes = new Votes();
   
   if ($stateParams.id === undefined){
     requests.$get(function(response){
@@ -77,6 +88,9 @@ angular.module( 'AyudarEsFacilApp.request', [
     });
     slides.$get({publicationId:$stateParams.id},function(response){
       $scope.slides = slides.data;
+    });
+    votes.$get({publicationId:$stateParams.id},function(response){
+      $scope.votes = votes.data;
     });
   }
 

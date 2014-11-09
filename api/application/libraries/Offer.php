@@ -190,4 +190,17 @@ class CI_Offer extends CI_Publication {
 		}
 		return $return;
 	}
+	
+	public static function getImages($publicationId){
+		$CI =& get_instance();
+		$CI->load->model('offer_model');
+		$images = $CI->offer_model->getImages($publicationId);
+		$return = array();
+		if($images){
+			foreach($images as $image){
+				$return[] = $image;
+			}
+		}
+		return $return;
+	}
 }
