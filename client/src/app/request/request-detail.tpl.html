@@ -18,58 +18,59 @@
 
 <div class="the-box no-border" ng-repeat="request in requests">
 	<div class="row">
-		<div class="jumbotron jumbotron-sm text-center">
-			<h3>{{request.title}}</h3> <strong ng-repeat="vote in request.votes">Votos de fé: {{vote.quan}}</strong>
-		</div>	
-		<div class="col-md-4">		
-			<carousel interval="myInterval" style="height:350px">
-				<slide ng-repeat="slide in request.image" active="slide.active">
-					<img ng-src="{{slide.path}}" style="margin:auto;">
-				</slide>
-			</carousel>
+		<div class="page-header text-center">
+		  <h2>{{request.title}}</h2>
+		  <small><span class="glyphicon glyphicon-heart-empty"></span> Votos de fé: {{request.votes[0].quan}}</small>
 		</div>
-		<div div class="col-md-8 panel panel-danger panel-square panel-no-border" >
-			<div class="panel-heading">
-				<h4 class="panel-title">
-					Se necesita {{request.object.description}}</h4>
-				</div>
-				<div class="panel-body">
-					<p style="height:150px">				
-						{{request.description}}
-					</p>
-				</div>
-				<div class="panel panel-success panel-square panel-no-border">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							Padrinos</h4>
-						</div>
-						<div id="panel-collapse-4" class="collapse in">
-							<div class="panel-body">
-								<ul class="col-md-4 media-list media-sm media-team" ng-repeat="sponsor in request.sponsors">
-									<li class="media">
-										<a class="pull-left">
-											<img class="media-object img-circle" src="assets/images/avatar/avatar.jpg" alt="Avatar">
-										</a>
-										<div class="media-body">
-											<h4 class="media-heading">Nombre de padrino</h4>
-											<p class="text-danger">{{sponsor.userTw}}</p>
-										</div>
-									</li>
-								</ul>
-								<p ng-if="!sponsors">				
-									Esta publicación aún no tiene padrinos..
-								</p>
-							</div><!-- /.panel-body -->
-						</div><!-- /.collapse in -->
-					</div>	
-				</div>
+	<div class="col-md-4">		
+		<carousel interval="myInterval" style="height:350px">
+			<slide ng-repeat="slide in request.image" active="slide.active">
+				<img ng-src="{{slide.path}}" style="margin:auto;">
+			</slide>
+		</carousel>
+	</div>
+	<div div class="col-md-8 panel panel-danger panel-square panel-no-border" >
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				Se necesita {{request.object.description}}</h4>
 			</div>
-			<div class="row">
-				<hr/>
-				<p class="text-center">
-					<button ng-if="request.processState.id == 'V' " type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-ok"></span> Quiero Ayudar </button>
-					<button ng-if="request.processState.id == 'C' " type="button" class="btn btn-danger btn-lg disabled"><span class="glyphicon glyphicon-ban-circle"></span> Objetivo Cumplido </button>
-					<button type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>		
+			<div class="panel-body">
+				<p style="height:150px">				
+					{{request.description}}
 				</p>
 			</div>
+			<div class="panel panel-success panel-square panel-no-border">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						Padrinos</h4>
+					</div>
+					<div id="panel-collapse-4" class="collapse in">
+						<div class="panel-body">
+							<ul class="col-md-4 media-list media-sm media-team" ng-repeat="sponsor in request.sponsors">
+								<li class="media">
+									<a class="pull-left">
+										<img class="media-object img-circle" src="assets/images/avatar/avatar.jpg" alt="Avatar">
+									</a>
+									<div class="media-body">
+										<h4 class="media-heading">Nombre de padrino</h4>
+										<p class="text-danger">{{sponsor.userTw}}</p>
+									</div>
+								</li>
+							</ul>
+							<p ng-if="request.sponsors == ''">				
+								Esta publicación aún no tiene padrinos..
+							</p>
+						</div><!-- /.panel-body -->
+					</div><!-- /.collapse in -->
+				</div>	
+			</div>
 		</div>
+		<div class="row">
+			<hr/>
+			<p class="text-center">
+				<button ng-if="request.processState.id == 'V' " type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-ok"></span> Quiero Ayudar </button>
+				<button ng-if="request.processState.id == 'C' " type="button" class="btn btn-danger btn-lg disabled"><span class="glyphicon glyphicon-ban-circle"></span> Objetivo Cumplido </button>
+				<button type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>		
+			</p>
+		</div>
+	</div>
