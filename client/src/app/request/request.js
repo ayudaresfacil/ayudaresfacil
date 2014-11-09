@@ -26,6 +26,20 @@ angular.module( 'AyudarEsFacilApp.request', [
   });
 })
 
+// Authentication service for user variables
+.factory('Authentication', [
+
+    function() {
+        var _this = this;
+
+        _this._data = {
+            user: JSON.parse(localStorage.getItem("user"))
+        };
+
+        return _this._data;
+    }
+])
+
 // Users service used for communicating with the users REST endpoint
 .factory('Requests', ['$resource',
   function($resource) {
@@ -47,12 +61,16 @@ angular.module( 'AyudarEsFacilApp.request', [
   }
   ])
 
-.controller( 'RequestCtrl', function RequestCtrl( $scope, Requests, Favorites, $stateParams ) {
+.controller( 'RequestCtrl', function RequestCtrl( $scope, $http, Requests, Favorites, $stateParams, Authentication) {
   $scope.myInterval = 5000;
+  $scope.user = Authentication.user;
 
   var requests = new Requests();
   var favorites = new Favorites();
-
+/*
+  favorites.$get({userId:Authentication.user.id},function(response){
+    $scope.favorites = favorites.data;
+  });*/
 
   if ($stateParams.id === undefined){
     requests.$get(function(response){
@@ -63,5 +81,22 @@ angular.module( 'AyudarEsFacilApp.request', [
       $scope.requests = requests.data;
     });
   }
+
+  $scope.setFavorite = function(id) {
+        var data = {
+          publicationId: id, 
+          userId: $scope.user.id
+        };
+
+        $http.post('/ayudaresfacil/api/request/favorite', data)
+        .success(function(response) {
+            $scope.error = false;
+            alert('parece qe sailo akkk');
+        })
+        .error(function(response) { 
+            $scope.error = true;
+            $scope.credentials = {};
+        });
+    };
 
 });
