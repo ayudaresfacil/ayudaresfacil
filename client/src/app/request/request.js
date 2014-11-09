@@ -18,7 +18,7 @@ angular.module( 'AyudarEsFacilApp.request', [
   $stateProvider.state( 'web.favoriteCreate', {     
         //
       });
-  $stateProvider.state( 'web.requestDetail', {     
+  $stateProvider.state( 'panel.requestDetail', {     
     url: '/pedido-detalle/:id',
     controller: 'RequestCtrl',
     templateUrl: 'request/request-detail.tpl.html',

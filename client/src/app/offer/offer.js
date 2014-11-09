@@ -34,8 +34,21 @@ angular.module( 'AyudarEsFacilApp.offer', [
   }
   ])
 
-.controller( 'OfferCtrl', function OfferCtrl( $scope, Offers, $stateParams ) {
+.factory('Images', ['$resource',
+  function($resource) {
+    return $resource('http://localhost/ayudaresfacil/api/offer/image', {publicationId:'@id'}, {}, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+  ])
+
+.controller( 'OfferCtrl', function OfferCtrl( $scope, Offers, Images, $stateParams ) {
+  $scope.myInterval = 5000;
+
   var offers = new Offers();
+  var slides = new Images();
   
   if ($stateParams.id === undefined){
       offers.$get(function(response){
@@ -43,10 +56,12 @@ angular.module( 'AyudarEsFacilApp.offer', [
     });
   }else{
       offers.$get({publicationId:$stateParams.id},function(response){
-      $scope.offer = offers.data[0];
+      $scope.offers = offers.data;
+    });
+    slides.$get({publicationId:$stateParams.id},function(response){
+      $scope.slides = slides.data;
     });
   }
-
 })
 
 ;
