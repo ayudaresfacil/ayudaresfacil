@@ -10,86 +10,66 @@
 	<li>
 		<a href="index.html"><i class="fa fa-home"></i></a>
 	</li>
-	<li class="active">Pedidos</li>
+	<li>
+		<a href="index.html#/pedidos">Pedidos</a>
+	</li>
+	<li class="active">Ver Detalle</li>
 </ol>
-<div class="the-box no-border">
+
+<div class="the-box no-border" ng-repeat="request in requests">
 	<div class="row">
-		<div class="col-md-4" ng-controller="OfferCtrl">
-			<carousel interval="myInterval">
+		<div class="jumbotron jumbotron-sm text-center">
+			<h2>{{request.title}}</h2>
+		</div>	
+		<div class="col-md-4">		
+			<carousel interval="myInterval" style="height:350px">
 				<slide ng-repeat="slide in slides" active="slide.active">
-					<img ng-src="{{slide.image}}" style="margin:auto;">
-					<div class="carousel-caption">
-						<h4>Slide {{$index}}</h4>
-						<p>{{slide.text}}</p>
-					</div>
+					<img ng-src="{{slide.path}}" style="margin:auto;">
 				</slide>
 			</carousel>
 		</div>
-		<div class="col-md-8 col-sm-6">
-			<h2 class="medium-heading more-margin-bottom">Titulo de la publicación
-				<span class="text-danger pull-right">Objetivo: Dinero/Objeto</span>
-			</h2>
-			<p>
-				Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. 
-				Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. 
-				Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. 
-			</p>
-
-			<div class="the-box">
-				<h4 class="small-title">PADRINOS</h4><div class="row">
-				<div class="col-md-4">
-					<div class="the-box bg-success no-border">
-						<div class="media user-card-sm">
-							<a class="pull-left" href="#fakelink">
-								<img class="media-object img-circle" src="assets/images/avatar/avatar.jpg" alt="Avatar">
-							</a>
-							<div class="media-body">
-								<h4 class="media-heading">Doina Slaivici</h4>
-								<p class="text-success">@doinaslaivici</p>
-							</div>
-						</div>
-					</div><!-- /.the-box .no-border -->
-				</div><!-- /.the-box .no-border -->
-				<div class="col-md-4">
-					<div class="the-box bg-success no-border">
-						<div class="media user-card-sm">
-							<a class="pull-left" href="#fakelink">
-								<img class="media-object img-circle" src="assets/images/avatar/avatar.jpg" alt="Avatar">
-							</a>
-							<div class="media-body">
-								<h4 class="media-heading">Doina Slaivici</h4>
-								<p class="text-success">@doinaslaivici</p>
-							</div>
-						</div>
-					</div><!-- /.the-box .no-border -->
+		<div div class="col-md-8 panel panel-danger panel-square panel-no-border" >
+			<div class="panel-heading">
+				<h4 class="panel-title"><i class="fa fa-pencil icon-circle icon-xs icon-dark"></i>
+					Se necesita {{request.object.description}}</h4>
 				</div>
-				<div class="col-md-4">
-					<div class="the-box bg-success no-border">
-						<div class="media user-card-sm">
-							<a class="pull-left" href="#fakelink">
-								<img class="media-object img-circle" src="assets/images/avatar/avatar.jpg" alt="Avatar">
-							</a>
-							<div class="media-body">
-								<h4 class="media-heading">Doina Slaivici</h4>
-								<p class="text-success">@doinaslaivici</p>
-							</div>
-						</div>
-					</div><!-- /.the-box .no-border -->
+				<div class="panel-body">
+					<p style="height:150px">				
+						{{request.description}}
+					</p>
 				</div>
-			</div><!-- /.the-box .no-border -->
-		</div><!-- /.the-box -->
-		<div class="row">
-			<div class="col-md-8">
-				<button class="btn btn-danger btn-perspective btn-md">Ayudar! / Publicación pausada</button>
-			</div><!-- /.col-xs-6 -->   
-			<div class="col-md-4">   
-				<p class="text-danger pull-right">Poner en favoritos
-					<a ui-sref="web.favoriteCreate" class="pull-right active">
-						<i class="fa fa-heart icon-circle icon-xs icon-danger"></i>
-					</a>   
-				</p>   
-			</div><!-- /.col-xs-6 -->
-		</div><!-- /.row -->
-	</div><!-- /.col-md-8 col-sm-6 -->
-</div><!-- /.row -->
-</div><!-- /.the-box no-border -->
+				<div class="panel panel-success panel-square panel-no-border">
+					<div class="panel-heading">
+						<h4 class="panel-title"><i class="fa fa-heart icon-circle icon-xs icon-dark"></i>
+							Padrinos</h4>
+						</div>
+						<div id="panel-collapse-4" class="collapse in">
+							<div class="panel-body">
+								<ul class="col-md-4 media-list media-sm media-team" ng-repeat="sponsor in sponsors">
+									<li class="media">
+										<a class="pull-left">
+											<img class="media-object img-circle" src="assets/images/avatar/avatar.jpg" alt="Avatar">
+										</a>
+										<div class="media-body">
+											<h4 class="media-heading">Nombre de padrino</h4>
+											<p class="text-danger">{{sponsor.user_tw}}</p>
+										</div>
+									</li>
+								</ul>
+								<p ng-if="!sponsors">				
+									Esta publicación aún no tiene padrinos..
+								</p>
+							</div><!-- /.panel-body -->
+						</div><!-- /.collapse in -->
+					</div>	
+				</div>
+			</div>
+			<div class="row">
+				<hr/>
+				<p class="text-center">
+					<button ng-if="request.processState.id == 'V' " type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-ok"></span> Lo necesito </button>
+					<button ng-if="request.processState.id == 'P' " type="button" class="btn btn-danger btn-lg disabled"><span class="glyphicon glyphicon-ban-circle"></span> Ya no esta disponible </button>
+					<button type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>		
+				</p>
+			</div>
+		</div>

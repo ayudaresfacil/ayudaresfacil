@@ -7,6 +7,7 @@ class Request_model extends CI_Model
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
+		$this->db->group_by('publication.publication_id');
 		$this->db->where('publication.publication_id', $id);	
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.process_state_id <>', 'B');
@@ -18,7 +19,6 @@ class Request_model extends CI_Model
 		$this->db->select('*');	
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
 		$this->db->where('publication.user_id', $userId);	
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.process_state_id <>', 'B');
@@ -31,6 +31,7 @@ class Request_model extends CI_Model
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
+		$this->db->group_by('publication.publication_id');
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.expiration_date >', date('Y/m/d H:i:s'));
@@ -128,7 +129,6 @@ class Request_model extends CI_Model
 		$this->db->from('publication');
 		$this->db->join('publication_favorite', "publication.publication_id = publication_favorite.publication_id");
 		$this->db->join('publication_object', "publication_object.publication_id = publication_favorite.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
 		$this->db->where('publication_favorite.user_id', $userId);	
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.expiration_date >', date('Y/m/d H:i:s'));
@@ -181,7 +181,6 @@ class Request_model extends CI_Model
 		$this->db->select('*');	
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
 		$this->db->where('publication.user_id', $userId);	
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication_object.object_id', 0); 
@@ -195,7 +194,6 @@ class Request_model extends CI_Model
 		$this->db->select('*');	
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
 		$this->db->where('publication.user_id', $userId);	
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication_object.object_id <>', 0); 
@@ -209,7 +207,6 @@ class Request_model extends CI_Model
 		$this->db->select('*');	
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication_object.publication_id = publication.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
 		$this->db->where('publication.user_id', $userId);	
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.expiration_date <', date('Y/m/d H:i:s'));
@@ -252,7 +249,27 @@ class Request_model extends CI_Model
 	public function getSponsors($publicationId){
 		$this->db->select('user_tw');	
 		$this->db->from('publication_sponsor');
-		$this->db->where('publication_sponsor.publication_id', $publicationId);
+		$this->db->where('publication_id', $publicationId);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function setImages($data){
+		$this->db->trans_start();
+		$this->db->insert('publication_images', $data);
+		$this->db->trans_complete();
+
+		if ($this->db->trans_status() === FALSE){
+			$publicationId = null;
+      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+		}
+		return TRUE;
+	}
+	
+	public function getImages($publicationId){
+		$this->db->select('path');	
+		$this->db->from('publication_image');
+		$this->db->where('publication_id', $publicationId);
 		$query = $this->db->get();
 		return $query->result();
 	}

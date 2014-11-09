@@ -1,7 +1,7 @@
 <?php
 
-class CI_Request extends CI_Publication {
-		
+class CI_Request extends CI_Publication {		
+	
 	public function getDataFromArray($options){
 		$request = parent::getDataFromArray($options);
 		return $request;
@@ -216,6 +216,19 @@ class CI_Request extends CI_Publication {
 		if($sponsors){
 			foreach($sponsors as $sponsor){
 				$return[] = $sponsor;
+			}
+		}
+		return $return;
+	}
+
+	public static function getImages($publicationId){
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+		$images = $CI->request_model->getImages($publicationId);
+		$return = array();
+		if($images){
+			foreach($images as $image){
+				$return[] = $image;
 			}
 		}
 		return $return;

@@ -312,8 +312,6 @@ class Request extends REST_Controller{
 
 	public function sponsor_get(){
 
-		//checkIsLoggedIn($this);
-
 		$status = 404;
 		$return["data"] = "";
 		$return["result"] = "NOOK";
@@ -330,6 +328,30 @@ class Request extends REST_Controller{
 
 				foreach ($sponsors as $key => $sponsor) {
 					$return["data"][$key] = $sponsor;
+				 } 
+			}
+			$this->response($return, $status);
+		}	
+	}
+
+	public function image_get(){
+
+		$status = 404;
+		$return["data"] = "";
+		$return["result"] = "NOOK";
+
+		$arrOptions['publicationId'] = $this->get('publicationId');
+
+		if($arrOptions['publicationId'] > 0){
+			$images = CI_Request::getImages($arrOptions['publicationId']);
+			
+			if($images){
+				$status = 200;
+				$return["result"] = "OK";
+				$return["data"] = "";
+
+				foreach ($images as $key => $image) {
+					$return["data"][$key] = $image;
 				 } 
 			}
 			$this->response($return, $status);
