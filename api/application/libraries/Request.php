@@ -1,14 +1,36 @@
 <?php
 
 class CI_Request extends CI_Publication {		
-	
+	private $votes;
+	private $sponsors;
+
+	public function getVotes(){return $this->votes;}
+	public function setVotes($votes){$this->votes = $votes;}
+
+	public function setImage($image){$this->image = CI_Image::getById($image);}
+	public function getSponsor(){
+		$sponsors = null;
+		foreach ($this->sponsors as $key => $sponsor){
+			$mySponsor = new stdClass();
+			$mySponsor->id = $sponsor->getId();
+			$mySponsor->userTw = $sponsor->getUserTw();
+			$sponsors[$key] = $mySponsor;
+		}
+		return $sponsors;
+	}
+	public function setSponsor($sponsors){$this->sponsors = CI_Sponsor::getById($sponsors);}
+
 	public function getDataFromArray($options){
 		$request = parent::getDataFromArray($options);
+		$request->votes = CI_Request::getVote($options["publicationId"]);
+		$request->sponsors = CI_Sponsor::getByPublicationId($options["publicationId"]);
 		return $request;
 	}
 
 	public function getData($options){
 		$request = parent::getData($options);
+		$request->votes = CI_Request::getVote($options->id);
+		$request->sponsors = CI_Sponsor::getData($options->sponsors);
 		return $request;
 	}
 
@@ -16,7 +38,9 @@ class CI_Request extends CI_Publication {
 		if(!($row instanceof stdClass)){
 			show_error("El row debe ser una instancia de stdClass.");
 		}	
-		$request = parent::getInstance($row);
+		$request = parent::getInstance($row);		
+		$request->votes = CI_Request::getVote($row->publication_id);
+		$request->sponsors = CI_Sponsor::getByPublicationId($row->publication_id);
 		return $request;
 	}
 
@@ -77,7 +101,7 @@ class CI_Request extends CI_Publication {
 				$return[] = CI_Request::getInstance($result);
 			}
 		}
-		return $return;
+		return $return; 
 	}
 
 	public static function getFavoritesByUser($userId){
@@ -189,13 +213,13 @@ class CI_Request extends CI_Publication {
 		return $CI->request_model->setVote($data);					
 	}
 
-	public static function getVotes($publicationId){
+	public static function getVote($publicationId){
 		$CI =& get_instance();
 		$CI->load->model('request_model');
 		$return = $CI->request_model->getVotes($publicationId);
 		return $return;
 	}
-
+/*
 	public function setSponsor($options){
 		$CI =& get_instance();
 		$CI->load->model('request_model');
@@ -207,7 +231,7 @@ class CI_Request extends CI_Publication {
 		
 		return $CI->request_model->setSponsor($data);					
 	}
-
+*/
 	public static function getSponsors($publicationId){
 		$CI =& get_instance();
 		$CI->load->model('request_model');

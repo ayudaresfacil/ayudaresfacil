@@ -1,13 +1,13 @@
 <?php
 
-class CI_Image {
+class CI_Sponsor {
 	private $id;
-	private $path;
+	private $userTw;
 
 	public function getId() {return $this->id;}
 	
-	public function getPath(){return $this->path;}
-	public function setPath($path){$this->path = $path;}
+	public function getUserTw(){return $this->userTw;}
+	public function setUserTw($userTw){$this->userTw = $userTw;}
 		
 	/**
 	 * Devuelve la informacion cargada del objeto 
@@ -18,10 +18,10 @@ class CI_Image {
 	public function getData($options){
 		$return = array();
 		foreach ($options as $key => $value) {
-			$image = new stdClass();
-			$image->id = $value->id;
-			$image->path = $value->path;
-			$return[] = $image;
+			$sponsor = new stdClass();
+			$sponsor->id = $value->id;
+			$sponsor->userTw = $value->userTw;
+			$return[] = $sponsor;
 		}
 		return $return;
 	}
@@ -30,21 +30,21 @@ class CI_Image {
 		if(!($row instanceof stdClass)){
 			show_error("El row debe ser una instancia de stdClass.");
 		}	
-		$image = new CI_Image();
-		$image->id = (isset($row->image_id)) ? $row->image_id : 0;
-		$image->path = (isset($row->path)) ? $row->path : '';
-		return $image;
+		$sponsor = new CI_Sponsor();
+		$sponsor->id = (isset($row->sponsor_id)) ? $row->sponsor_id : 0;
+		$sponsor->userTw = (isset($row->user_tw)) ? $row->user_tw : '';
+		return $sponsor;
 	}
 	
-	public static function getImages()
+	public static function getSponsors()
 	{
 		$CI = & get_instance();
-		$CI->load->model('image_model');
-		$results = $CI->image_model->getImages();
+		$CI->load->model('sponsor_model');
+		$results = $CI->sponsor_model->getSponsors();
 		$return = array();
 		if(!empty($results)){
 			foreach($results as $result) {
-				$return[] = CI_Image::getInstance($result);
+				$return[] = CI_Sponsor::getInstance($result);
 			}
 		}
 		return $return;
@@ -53,12 +53,12 @@ class CI_Image {
 	public static function getById($id)
 	{
 		$CI = & get_instance();
-		$CI->load->model('image_model');
-		$results = $CI->image_model->getById($id);
+		$CI->load->model('sponsor_model');
+		$results = $CI->sponsor_model->getById($id);
 		$return = array();
 		if(!empty($results)){
 			foreach($results as $result) {
-				$return = CI_Image::getInstance($result);
+				$return = CI_Sponsor::getInstance($result);
 			}
 		}
 		return $return;
@@ -67,12 +67,12 @@ class CI_Image {
 	public static function getByPublicationId($publicationId)
 	{
 		$CI = & get_instance();
-		$CI->load->model('image_model');
-		$results = $CI->image_model->getByPublicationId($publicationId);
+		$CI->load->model('sponsor_model');
+		$results = $CI->sponsor_model->getByPublicationId($publicationId);
 		$return = array();
 		if(!empty($results)){
 			foreach($results as $result) {
-				$return[] = CI_Image::getInstance($result);
+				$return[] = CI_Sponsor::getInstance($result);
 			}
 		}
 		return $return;

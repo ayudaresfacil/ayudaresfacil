@@ -126,7 +126,7 @@ class Offer extends REST_Controller {
 
 	public function favorite_get(){
 
-		checkIsLoggedIn($this);
+		//checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["result"] = "NOOK";
@@ -149,7 +149,7 @@ class Offer extends REST_Controller {
 	
 	public function favorite_post(){
 
-		checkIsLoggedIn($this);
+		//checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["data"] = "";

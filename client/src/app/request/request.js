@@ -37,9 +37,9 @@ angular.module( 'AyudarEsFacilApp.request', [
   }
   ])
 
-.factory('Sponsors', ['$resource',
+.factory('Favorites', ['$resource',
   function($resource) {
-    return $resource('http://localhost/ayudaresfacil/api/request/sponsor', {publicationId:'@id'}, {}, {
+    return $resource('http://localhost/ayudaresfacil/api/request/favorite', {userId:'@id'}, {}, {
       update: {
         method: 'PUT'
       }
@@ -47,34 +47,13 @@ angular.module( 'AyudarEsFacilApp.request', [
   }
   ])
 
-.factory('Images', ['$resource',
-  function($resource) {
-    return $resource('http://localhost/ayudaresfacil/api/request/image', {publicationId:'@id'}, {}, {
-      update: {
-        method: 'PUT'
-      }
-    });
-  }
-  ])
-
-.factory('Votes', ['$resource',
-  function($resource) {
-    return $resource('http://localhost/ayudaresfacil/api/request/vote', {publicationId:'@id'}, {}, {
-      update: {
-        method: 'PUT'
-      }
-    });
-  }
-  ])
-
-.controller( 'RequestCtrl', function RequestCtrl( $scope, Requests, Sponsors, Images, Votes, $stateParams ) {
+.controller( 'RequestCtrl', function RequestCtrl( $scope, Requests, Favorites, $stateParams ) {
   $scope.myInterval = 5000;
 
   var requests = new Requests();
-  var sponsors = new Sponsors();
-  var slides = new Images();
-  var votes = new Votes();
-  
+  var favorites = new Favorites();
+
+
   if ($stateParams.id === undefined){
     requests.$get(function(response){
       $scope.requests = requests.data;
@@ -82,15 +61,6 @@ angular.module( 'AyudarEsFacilApp.request', [
   }else{
     requests.$get({publicationId:$stateParams.id},function(response){
       $scope.requests = requests.data;
-    });
-    sponsors.$get({publicationId:$stateParams.id},function(response){
-      $scope.sponsors = sponsors.data;
-    });
-    slides.$get({publicationId:$stateParams.id},function(response){
-      $scope.slides = slides.data;
-    });
-    votes.$get({publicationId:$stateParams.id},function(response){
-      $scope.votes = votes.data;
     });
   }
 

@@ -19,11 +19,11 @@
 <div class="the-box no-border" ng-repeat="request in requests">
 	<div class="row">
 		<div class="jumbotron jumbotron-sm text-center">
-			<h3>{{request.title}}</h3> <strong ng-repeat="vote in votes">Votos de fé: {{vote.quan}}</strong>
+			<h3>{{request.title}}</h3> <strong ng-repeat="vote in request.votes">Votos de fé: {{vote.quan}}</strong>
 		</div>	
 		<div class="col-md-4">		
 			<carousel interval="myInterval" style="height:350px">
-				<slide ng-repeat="slide in slides" active="slide.active">
+				<slide ng-repeat="slide in request.image" active="slide.active">
 					<img ng-src="{{slide.path}}" style="margin:auto;">
 				</slide>
 			</carousel>
@@ -45,14 +45,14 @@
 						</div>
 						<div id="panel-collapse-4" class="collapse in">
 							<div class="panel-body">
-								<ul class="col-md-4 media-list media-sm media-team" ng-repeat="sponsor in sponsors">
+								<ul class="col-md-4 media-list media-sm media-team" ng-repeat="sponsor in request.sponsors">
 									<li class="media">
 										<a class="pull-left">
 											<img class="media-object img-circle" src="assets/images/avatar/avatar.jpg" alt="Avatar">
 										</a>
 										<div class="media-body">
 											<h4 class="media-heading">Nombre de padrino</h4>
-											<p class="text-danger">{{sponsor.user_tw}}</p>
+											<p class="text-danger">{{sponsor.userTw}}</p>
 										</div>
 									</li>
 								</ul>

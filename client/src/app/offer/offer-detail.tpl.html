@@ -19,7 +19,7 @@
 		</div>	
 		<div class="col-md-4">		
 			<carousel interval="myInterval" style="height:350px">
-				<slide ng-repeat="slide in slides" active="slide.active">
+				<slide ng-repeat="slide in offer.image" active="slide.active">
 					<img ng-src="{{slide.path}}" style="margin:auto;">
 				</slide>
 			</carousel>
@@ -41,7 +41,7 @@
 			<p class="text-center">
 				<button ng-if="offer.processStateOffer.id == 'V' " type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-ok"></span> Lo necesito </button>
 				<button ng-if="offer.processStateOffer.id == 'P' " type="button" class="btn btn-danger btn-lg disabled"><span class="glyphicon glyphicon-ban-circle"></span> Publicación Pausada </button>
-				<button type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>		
+				<button ui-sref="web.offerFavorite({id: offer.id})" type="button" class="btn btn-warning btn-lg" ><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>		
 			</p>
 		</div>
 	</div>

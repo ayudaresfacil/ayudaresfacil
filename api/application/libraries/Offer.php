@@ -1,14 +1,33 @@
 <?php
 
 class CI_Offer extends CI_Publication {
-	protected $processStateOffer;
-	protected $type;
-	protected $quantityUsersToPaused;
+	private $processStateOffer;
+	private $type;
+	private $quantityUsersToPaused;
 	
-	public function getProcessStateOffer(){return $this->processStateOffer;}
+	public function getProcessStateOffer(){
+		$processStateOffer = null;
+		foreach ($this->processStateOffer as $key => $state){
+			$myState = new stdClass();
+			$myState->id = $state->getId();
+			$myState->description = $state->getDescription();
+			$processStateOffer[$key] = $myState;
+		}
+		return $processStateOffer;
+	}
 	public function setProcessStateOffer($processStateOffer){$this->processStateOffer = CI_ProcessState::getById($processStateOffer);}
 
-	public function getType(){return $this->type;}
+	public function getType(){
+		$type = null;
+		foreach ($this->type as $key => $typ){
+			$myType = new stdClass();
+			$myType->id = $typ->getId();
+			$myType->description = $typ->getDescription();
+			$myType->comment = $typ->getComment();
+			$type[$key] = $myType;
+		}
+		return $type;
+	}
 	public function setType($type){$this->type = CI_OfferType::getById($type);}
 
 	public function getQuantityUsersToPaused(){return $this->quantityUsersToPaused;}

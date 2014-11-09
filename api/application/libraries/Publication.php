@@ -119,7 +119,7 @@ class CI_Publication {
 		$publication->processState = CI_ProcessState::getById($options["processState"]);
 		$publication->creationDate = $options["creationDate"];
 		$publication->expirationDate = $options["expirationDate"];
-		$publication->image = CI_Image::getById($options["image"]);
+		$publication->image = CI_Image::getByPublicationId($options["publicationId"]);
 		return $publication;
 	}
 
@@ -158,7 +158,7 @@ class CI_Publication {
 		$publication->processState = (isset($row->process_state_id)) ? CI_ProcessState::getById($row->process_state_id) : '';
 		$publication->creationDate = (isset($row->creation_date)) ? $row->creation_date : '';
 		$publication->expirationDate = (isset($row->expiration_date)) ? $row->expiration_date : '';
-		$publication->image = (isset($row->image_id)) ? CI_Image::getById($row->image_id) : '';
+		$publication->image = (isset($row->publication_id)) ? CI_Image::getByPublicationId($row->publication_id) : '';
 		return $publication;
 	}
 }
