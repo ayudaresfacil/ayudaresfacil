@@ -93,13 +93,9 @@ angular.module( 'AyudarEsFacilApp.user', [
 ])
 
 .controller('AuthenticationCtrl', function AuthenticationCtrl($scope, $http, $location, $state, Authentication) {
-    
     this.signout = function(){
-        console.log("entra");
-        console.log($scope.authentication);
         Authentication.user = null;
-        $scope.authentication = null;
-        console.log($scope.authentication);
+        localStorage.clear();
         $state.transitionTo('web.home'); 
     };
 

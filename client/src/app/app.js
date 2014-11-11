@@ -9,13 +9,13 @@ angular.module( 'AyudarEsFacilApp', [
     'AyudarEsFacilApp.user',
     'AyudarEsFacilApp.request',
     'ui.router',
-    'services.breadcrumbs',
-    'services.i18nNotifications',
-    'services.httpRequestTracker',
-    'directives.crud', 
-    'directives.sessionNav',
+    'directives.session',
     'ngResource'     
 ])
+    // 'services.breadcrumbs',
+    // 'services.i18nNotifications',
+    // 'services.httpRequestTracker',
+    // 'directives.crud', 
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
     $stateProvider
@@ -53,7 +53,6 @@ angular.module( 'AyudarEsFacilApp', [
             $scope.bodyClass = toState.data.bodyClass;
         }
     });
-
 })
 
 ;
