@@ -15,6 +15,14 @@ angular.module( 'AyudarEsFacilApp.user', [
             pageTitle: 'Información del usuario'
         }
     })
+    .state('panel.user.password', {
+        url: '/user/password',
+        controller: 'UserCtrl',
+        templateUrl: 'user/user-password.tpl.html',
+        data: {
+            pageTitle: 'Cambiar mi contraseña'
+        }
+    })
     .state('account.signin', {
         url: '/signin',
         controller: 'AuthenticationCtrl',

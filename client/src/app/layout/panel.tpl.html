@@ -420,20 +420,21 @@
 			            <img src="assets/images/avatar/avatar.jpg" class="avatar img-circle media-object" alt="Avatar">
 			        </p>
 			        <div class="media-body">
-			            <h4>Howdy,
+			            <h4>Hola,
 			                <br />
-			                <strong>Paris Hawker!</strong>
+			                <strong>{{authentication.user.name}} {{authentication.user.lastName}}</strong>
 			            </h4>
-			            <button class="btn btn-success btn-xs"><i class="fa fa-cog"></i>
+			            <button ui-sref="panel.user.data" class="btn btn-success btn-xs">
+                            <i class="fa fa-cog"></i>
 			            </button>
-			            <button class="btn btn-danger btn-xs">Cerrar Sesión</button>
+			            <button ui-sref="account.signout" class="btn btn-danger btn-xs">Cerrar Sesión</button>
 			        </div>
 			    </div>
 			</li>
 
             <li>
                 <a href="index.html">
-                    <i class="fa fa-dashboard icon-sidebar"></i>Dashboard
+                    <i class="fa fa-dashboard icon-sidebar"></i>Home
                 </a>
             </li>
             
@@ -441,7 +442,7 @@
                 <a ui-sref="panel.user.data">
                     <i class="fa fa-user icon-sidebar"></i>
                     <i class="fa fa-angle-right chevron-icon-sidebar"></i>
-                    Howdy, Paris Hawker
+                    {{authentication.user.email}}
                 </a>
                 <ul class="submenu visible">
                     <li class="active selected">

@@ -5,18 +5,28 @@
             <strong>{{authentication.user.name}}</strong>
         </a>
         <ul class="dropdown-menu square primary margin-list-rounded with-triangle">
-            <li><a href="#fakelink">Opciones de cuenta</a>
-            </li>
-            <li><a href="#fakelink">Opciones de pago</a>
-            </li>
-            <li><a href="#fakelink">Cambiar mi password</a>
-            </li>
-            <li><a href="#fakelink">Mi perfil publico</a>
+            <li>
+                <a href="#">{{authentication.user.email}}</a>
             </li>
             <li class="divider"></li>
-            <li><a href="lock-screen.html">Bloquear pantalla</a>
+            <li>
+                <a ui-sref="panel.user.data">Mis datos</a>
             </li>
-            <li><a ui-sref="account.signout">Salir</a>
+            <li>
+                <a href="#fakelink">Opciones de pago</a>
+            </li>
+            <li>
+                <a ui-sref="panel.user.password">Cambiar mi contraseña</a>
+            </li>
+            <li>
+                <a href="#fakelink">Mi perfil publico</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="lock-screen.html">Bloquear pantalla</a>
+            </li>
+            <li>
+                <a ui-sref="account.signout">Salir</a>
             </li>
         </ul>
     </li>

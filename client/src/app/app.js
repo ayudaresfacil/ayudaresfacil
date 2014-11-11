@@ -23,7 +23,8 @@ angular.module( 'AyudarEsFacilApp', [
             templateUrl: 'layout/web.tpl.html'
         })
         .state('panel', {
-            templateUrl: 'layout/panel.tpl.html'
+            templateUrl: 'layout/panel.tpl.html',
+            controller: "AuthenticationCtrl"
         })
         .state('account', {
             template: '<ui-view/>'
