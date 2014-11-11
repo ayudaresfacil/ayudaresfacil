@@ -130,7 +130,6 @@ class CI_Request extends CI_Publication {
 
 		$CI =& get_instance();
 		$CI->load->model('request_model');
-
 		$data = array (
 			"publication_id" => $request->id, 
 			"user_id" => $userId,

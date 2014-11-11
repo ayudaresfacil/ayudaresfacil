@@ -125,7 +125,7 @@ class Request extends REST_Controller{
 
 	public function favorite_post(){
 
-		checkIsLoggedIn($this);
+		//checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["data"] = "";
