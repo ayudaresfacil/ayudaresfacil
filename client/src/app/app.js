@@ -10,7 +10,7 @@ angular.module( 'AyudarEsFacilApp', [
     'AyudarEsFacilApp.request',
     'ui.router',
     'directives.session',
-    'ngResource'     
+    'ngResource'
 ])
     // 'services.breadcrumbs',
     // 'services.i18nNotifications',

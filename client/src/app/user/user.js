@@ -135,6 +135,7 @@ angular.module( 'AyudarEsFacilApp.user', [
                 email: response.data.email,
                 name: response.data.name,
                 lastName: response.data.lastName,
+                profileImage: response.data.profileImage,
                 token: response.token
             };
 
