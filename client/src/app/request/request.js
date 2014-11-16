@@ -73,7 +73,7 @@ angular.module( 'AyudarEsFacilApp.request', [
   });*/
 
   if ($stateParams.id === undefined){
-    requests.$get(function(response){
+    requests.$get({userLog:Authentication.user.id}, function(response){
       $scope.requests = requests.data;
     });
   }else{
@@ -91,7 +91,6 @@ angular.module( 'AyudarEsFacilApp.request', [
         $http.post('/ayudaresfacil/api/request/favorite', data)
         .success(function(response) {
             $scope.error = false;
-            alert('parece qe sailo akkk');
         })
         .error(function(response) { 
             $scope.error = true;
