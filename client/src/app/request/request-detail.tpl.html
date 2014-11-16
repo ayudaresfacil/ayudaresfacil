@@ -70,7 +70,8 @@
 			<p class="text-center">
 				<button ng-if="request.processState.id == 'V' " type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-ok"></span> Quiero Ayudar </button>
 				<button ng-if="request.processState.id == 'C' " type="button" class="btn btn-danger btn-lg disabled"><span class="glyphicon glyphicon-ban-circle"></span> Objetivo Cumplido </button>
-				<button type="button" ng-click="setFavorite(request.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
+				<button ng-if="request.isFavorite == '0'" ng-click="setFavorite(request.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
+				<button ng-if="request.isFavorite == '1'" ng-click="unsetFavorite(request.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>	
 			</p>
 		</div>
 	</div>

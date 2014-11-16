@@ -65,25 +65,54 @@ angular.module( 'AyudarEsFacilApp.request', [
       });
     }
   }else{
-    requests.$get({publicationId:$stateParams.id},function(response){
-      $scope.requests = requests.data;
-    });
+    if (Authentication.user === null){
+      requests.$get({publicationId:$stateParams.id},function(response){
+        $scope.requests = requests.data;
+      });
+    }else{
+      requests.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+        $scope.requests = requests.data;
+      });
+    }    
   }
 
-  $scope.setFavorite = function(id) {
-    var data = {
-      publicationId: id, 
-      userId: $scope.user.id
-    };
-
-    $http.post('/ayudaresfacil/api/request/favorite', data)
-    .success(function(response) {
-      $scope.error = false;
-    })
-    .error(function(response) { 
-      $scope.error = true;
-      $scope.credentials = {};
-    });
+$scope.setFavorite = function(id) {
+  var data = {
+    publicationId: id, 
+    userId: $scope.user.id
   };
+
+  $http.post('/ayudaresfacil/api/request/favorite', data)
+  .success(function(response) {
+    $scope.error = false;
+    requests.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+      $scope.requests = requests.data;
+    });
+  })
+  .error(function(response) { 
+    $scope.error = true;
+    $scope.credentials = {};
+  });
+};
+
+$scope.unsetFavorite = function(id) {
+  var data = {
+    publicationId: id, 
+    userId: $scope.user.id,
+    del:'true'
+  };
+
+  $http.post('/ayudaresfacil/api/request/favorite', data)
+  .success(function(response) {
+    $scope.error = false;
+    requests.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+      $scope.requests = requests.data;
+    });
+  })
+  .error(function(response) { 
+    $scope.error = true;
+    $scope.credentials = {};
+  });
+};
 
 });
