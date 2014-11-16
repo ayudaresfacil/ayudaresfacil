@@ -24,7 +24,7 @@ class Request extends REST_Controller{
 		}elseif($id){
 			$requests = CI_Request::getById($id);	
 		}else{
-			$requests = CI_Request::getCurrentOffers();
+			$requests = CI_Request::getCurrentRequests();
 		}
 
 		if($requests){
