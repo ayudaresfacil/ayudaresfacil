@@ -36,7 +36,7 @@
       <div class="col-xs-2">
         <button ui-sref="web.requestDetail({id: request.id})" class="btn btn-info btn-block">Ver detalle</button>
         <button class="btn btn-success btn-block">Ayudar!</button>
-        <button type="button" ng-if="request.isFavorite == '0'" ng-click="setFavorite(request.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
+        <button ng-if="request.isFavorite == '0'" ng-click="setFavorite(request.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
         <button ng-if="request.isFavorite == '1'" ng-click="unsetFavorite(request.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
     </div>
 </div><!-- /.media -->

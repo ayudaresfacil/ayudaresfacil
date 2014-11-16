@@ -15,21 +15,20 @@
     </ol>
     <!-- End breadcrumb -->
     <div class="row">
-        <div class="col-sm-4" ng-repeat="offer in offers">
+        <div class="col-md-4" ng-repeat="offer in offers">
             <div class="the-box full no-border property-card">
                 <img ng-src="{{offer.image[0].path}}" alt="Image">
                 <div class="the-box no-margin no-border bg-success">
                     <div class="row">
-                        <div class="col-xs-2">
-                            <span class="property-type-circle bg-warning glyphicon glyphicon-gift"></span>
-                        </div>
-                        <div class="col-xs-9">
-                            <h3>{{offer.title}}</h3>
-                            <p>{{offer.object.description}}</p>
+                        <div class="col-md-4">
+                            <h3><span class="glyphicon glyphicon-gift"></span> {{offer.title}}</h3>
+                            <p class="pull-right">{{offer.object.description}}</p>
                         </div>
                     </div>
                     <button ui-sref="web.offerDetail({id: offer.id})" class="btn btn-success btn-block">Ver detalle</button>
                     <button class="btn btn-danger btn-block">Pedir!</button>
+                    <button ng-if="offer.isFavorite == '0'" ng-click="setFavorite(offer.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
+                    <button ng-if="offer.isFavorite == '1'" ng-click="unsetFavorite(offer.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
                 </div>
             </div>
         </div>     

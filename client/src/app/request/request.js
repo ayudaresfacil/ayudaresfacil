@@ -67,13 +67,9 @@ angular.module( 'AyudarEsFacilApp.request', [
 
   var requests = new Requests();
   var favorites = new Favorites();
-/*
-  favorites.$get({userId:Authentication.user.id},function(response){
-    $scope.favorites = favorites.data;
-  });*/
-
-if ($stateParams.id === undefined){
-  if (Authentication.user === null){
+  
+  if ($stateParams.id === undefined){
+    if (Authentication.user === null){
       requests.$get(function(response){
         $scope.requests = requests.data;
       });

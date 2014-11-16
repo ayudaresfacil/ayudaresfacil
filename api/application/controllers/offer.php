@@ -11,11 +11,14 @@ class Offer extends REST_Controller {
 
 		$id = $this->get("publicationId"); 
 		$userId = $this->get("userId");
+		$userLog = $this->get("userLog");
 		
 		if($id){
 			$offers = CI_Offer::getById($id);	
 		}elseif ($userId) {
 			$offers = CI_Offer::getByUser($userId);	
+		}elseif ($userLog) {
+			$offers = CI_Offer::getWithFavorites($userLog);	
 		}else{
 			$offers = CI_Offer::getCurrentOffers();
 		}

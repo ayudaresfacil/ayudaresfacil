@@ -127,6 +127,19 @@ class CI_Offer extends CI_Publication {
 		return $return;
 	}
 
+	public static function getWithFavorites($userId){
+		$CI =& get_instance();
+		$CI->load->model('offer_model');
+		$results = $CI->offer_model->getWithFavorites($userId);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result){
+				$return[] = CI_Offer::getInstance($result);
+			}
+		}
+		return $return; 
+	}
+	
 	public function pause($offer){
 		$CI =& get_instance();
 		$CI->load->model('offer_model');

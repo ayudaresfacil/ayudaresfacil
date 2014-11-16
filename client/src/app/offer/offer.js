@@ -23,6 +23,20 @@ angular.module( 'AyudarEsFacilApp.offer', [
   });
 })
 
+// Authentication service for user variables
+.factory('Authentication', [
+
+  function() {
+    var _this = this;
+
+    _this._data = {
+      user: JSON.parse(localStorage.getItem("user"))
+    };
+
+    return _this._data;
+  }
+])
+
 // Users service used for communicating with the users REST endpoint
 .factory('Offers', ['$resource',
   function($resource) {
@@ -44,17 +58,24 @@ angular.module( 'AyudarEsFacilApp.offer', [
   }
   ])
 
-.controller( 'OfferCtrl', function OfferCtrl( $scope, Offers, $stateParams ) {
+.controller( 'OfferCtrl', function OfferCtrl( $scope, Offers, $stateParams, Authentication) {
   $scope.myInterval = 5000;
+  $scope.user = Authentication.user;
 
   var offers = new Offers();
   
   if ($stateParams.id === undefined){
+    if (Authentication.user === null){
       offers.$get(function(response){
-      $scope.offers = offers.data;
-    });
+        $scope.offers = offers.data;
+      });
+    }else{
+      offers.$get({userLog:Authentication.user.id}, function(response){
+        $scope.offers = offers.data;
+      });
+    }
   }else{
-      offers.$get({publicationId:$stateParams.id},function(response){
+    offers.$get({publicationId:$stateParams.id},function(response){
       $scope.offers = offers.data;
     });
   }
