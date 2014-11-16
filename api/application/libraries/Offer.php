@@ -80,6 +80,19 @@ class CI_Offer extends CI_Publication {
 		return $return;
 	}
 	
+	public static function getByIdAndUserLog($id, $userLog){
+		$CI =& get_instance();
+		$CI->load->model('offer_model');
+		$results = $CI->offer_model->getByIdAndUserLog($id, $userLog);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result){
+				$return[] = CI_Offer::getInstance($result);
+			}
+		}
+		return $return;
+	}
+
 	public static function getByUser($userId){
 		$CI =& get_instance();
 		$CI->load->model('offer_model');

@@ -35,7 +35,7 @@ angular.module( 'AyudarEsFacilApp.offer', [
 
     return _this._data;
   }
-])
+  ])
 
 // Users service used for communicating with the users REST endpoint
 .factory('Offers', ['$resource',
@@ -50,7 +50,7 @@ angular.module( 'AyudarEsFacilApp.offer', [
 
 .factory('Favorites', ['$resource',
   function($resource) {
-    return $resource('http://localhost/ayudaresfacil/api/offer/favorite', {publicationId:'@id'}, {}, {
+    return $resource('http://localhost/ayudaresfacil/api/offer/favorite', {}, {
       update: {
         method: 'PUT'
       }
@@ -58,11 +58,12 @@ angular.module( 'AyudarEsFacilApp.offer', [
   }
   ])
 
-.controller( 'OfferCtrl', function OfferCtrl( $scope, Offers, $stateParams, Authentication) {
+.controller( 'OfferCtrl', function OfferCtrl( $scope, $http, Offers, $stateParams, Favorites, Authentication){
   $scope.myInterval = 5000;
   $scope.user = Authentication.user;
 
   var offers = new Offers();
+  var favorites = new Favorites();
   
   if ($stateParams.id === undefined){
     if (Authentication.user === null){
@@ -75,10 +76,54 @@ angular.module( 'AyudarEsFacilApp.offer', [
       });
     }
   }else{
-    offers.$get({publicationId:$stateParams.id},function(response){
-      $scope.offers = offers.data;
-    });
+    if (Authentication.user === null){
+      offers.$get({publicationId:$stateParams.id},function(response){
+        $scope.offers = offers.data;
+      });
+    }else{
+      offers.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+        $scope.offers = offers.data;
+      });
+    }
   }
-})
 
-;
+  $scope.setFavorite = function(id) {
+    var data = {
+      publicationId: id, 
+      userId: $scope.user.id
+    };
+
+    $http.post('/ayudaresfacil/api/offer/favorite', data)
+    .success(function(response) {
+      $scope.error = false;
+      offers.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+        $scope.offers = offers.data;
+      });
+    })
+    .error(function(response) { 
+      $scope.error = true;
+      $scope.credentials = {};
+    });
+  };
+
+  $scope.unsetFavorite = function(id) {
+    var data = {
+      publicationId: id, 
+      userId: $scope.user.id,
+      del:'true'
+    };
+
+    $http.post('/ayudaresfacil/api/offer/favorite', data)
+    .success(function(response) {
+      $scope.error = false;
+      offers.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+        $scope.offers = offers.data;
+      });
+    })
+    .error(function(response) { 
+      $scope.error = true;
+      $scope.credentials = {};
+    });
+  };
+
+});

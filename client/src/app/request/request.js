@@ -15,9 +15,6 @@ angular.module( 'AyudarEsFacilApp.request', [
     templateUrl: 'request/request-create.tpl.html',
     data:{ pageTitle: 'Crear Pedido' }
   });
-  $stateProvider.state( 'web.favoriteCreate', {     
-        //
-      });
   $stateProvider.state( 'web.requestDetail', {     
     url: '/pedido-detalle/:id',
     controller: 'RequestCtrl',
@@ -51,22 +48,11 @@ angular.module( 'AyudarEsFacilApp.request', [
   }
   ])
 
-.factory('Favorites', ['$resource',
-  function($resource) {
-    return $resource('http://localhost/ayudaresfacil/api/request/favorite', {userId:'@id'}, {}, {
-      update: {
-        method: 'PUT'
-      }
-    });
-  }
-  ])
-
-.controller( 'RequestCtrl', function RequestCtrl( $scope, $http, Requests, Favorites, $stateParams, Authentication) {
+.controller( 'RequestCtrl', function RequestCtrl( $scope, $http, Requests, $stateParams, Authentication) {
   $scope.myInterval = 5000;
   $scope.user = Authentication.user;
 
   var requests = new Requests();
-  var favorites = new Favorites();
   
   if ($stateParams.id === undefined){
     if (Authentication.user === null){
