@@ -29,16 +29,16 @@ angular.module( 'AyudarEsFacilApp.request', [
 // Authentication service for user variables
 .factory('Authentication', [
 
-    function() {
-        var _this = this;
+  function() {
+    var _this = this;
 
-        _this._data = {
-            user: JSON.parse(localStorage.getItem("user"))
-        };
+    _this._data = {
+      user: JSON.parse(localStorage.getItem("user"))
+    };
 
-        return _this._data;
-    }
-])
+    return _this._data;
+  }
+  ])
 
 // Users service used for communicating with the users REST endpoint
 .factory('Requests', ['$resource',
@@ -72,10 +72,16 @@ angular.module( 'AyudarEsFacilApp.request', [
     $scope.favorites = favorites.data;
   });*/
 
-  if ($stateParams.id === undefined){
-    requests.$get({userLog:Authentication.user.id}, function(response){
-      $scope.requests = requests.data;
-    });
+if ($stateParams.id === undefined){
+  if (Authentication.user === null){
+      requests.$get(function(response){
+        $scope.requests = requests.data;
+      });
+    }else{
+      requests.$get({userLog:Authentication.user.id}, function(response){
+        $scope.requests = requests.data;
+      });
+    }
   }else{
     requests.$get({publicationId:$stateParams.id},function(response){
       $scope.requests = requests.data;
@@ -83,19 +89,19 @@ angular.module( 'AyudarEsFacilApp.request', [
   }
 
   $scope.setFavorite = function(id) {
-        var data = {
-          publicationId: id, 
-          userId: $scope.user.id
-        };
-
-        $http.post('/ayudaresfacil/api/request/favorite', data)
-        .success(function(response) {
-            $scope.error = false;
-        })
-        .error(function(response) { 
-            $scope.error = true;
-            $scope.credentials = {};
-        });
+    var data = {
+      publicationId: id, 
+      userId: $scope.user.id
     };
+
+    $http.post('/ayudaresfacil/api/request/favorite', data)
+    .success(function(response) {
+      $scope.error = false;
+    })
+    .error(function(response) { 
+      $scope.error = true;
+      $scope.credentials = {};
+    });
+  };
 
 });

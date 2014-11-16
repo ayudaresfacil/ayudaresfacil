@@ -11,11 +11,14 @@ class Request extends REST_Controller{
 
 		$id = $this->get("publicationId"); 
 		$userId = $this->get("userId");
+		$userLog = $this->get("userLog");
 		
 		if($id){
 			$requests = CI_Request::getById($id);	
 		}elseif ($userId) {
-			$requests = CI_Request::getByUser($userId);	
+			$requests = CI_Request::getByUser($userId);
+		}elseif ($userLog) {
+			$requests = CI_Request::getWithFavorites($userLog);	
 		}else{
 			$requests = CI_Request::getCurrentRequests();
 		}

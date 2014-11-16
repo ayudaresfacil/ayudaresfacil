@@ -30,7 +30,18 @@ class Request_model extends CI_Model
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.publication_type_id', 2);
-		$this->db->where('publication.expiration_date >', date('Y/m/d H:i:s'));
+		$this->db->where('publication.expiration_date > current_timestamp');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function getWithFavorites($userId){	
+		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userId .' AND publication_id = publication.publication_id) then 1 else 0 end as isFavorite');	
+		$this->db->from('publication');
+		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
+		$this->db->where('publication.process_state_id <> "B"');
+		$this->db->where('publication.publication_type_id', 2);
+		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
 		return $query->result();
 	}

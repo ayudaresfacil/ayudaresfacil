@@ -104,6 +104,19 @@ class CI_Request extends CI_Publication {
 		return $return; 
 	}
 
+	public static function getWithFavorites($userId){
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+		$results = $CI->request_model->getWithFavorites($userId);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result){
+				$return[] = CI_Request::getInstance($result);
+			}
+		}
+		return $return; 
+	}
+
 	public static function getFavoritesByUser($userId){
 		$CI =& get_instance();
 		$CI->load->model('request_model');

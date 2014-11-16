@@ -13,6 +13,7 @@ class CI_Publication {
 	private $creationDate;
 	private $expirationDate;
 	private $image;
+	private $isFavorite;
 
 	public function getId() {return $this->id;}
 	
@@ -98,6 +99,9 @@ class CI_Publication {
 	}
 	public function setImage($image){$this->image = CI_Image::getById($image);}
 
+	public function getIsFavorite(){return $this->isFavorite;}
+	public function setIsFavorite($isFavorite){$this->isFavorite = $isFavorite;}
+
 	/**
 	 * Devuelve la informacion cargada del objeto 
 	 * Uso interno
@@ -120,6 +124,9 @@ class CI_Publication {
 		$publication->creationDate = $options["creationDate"];
 		$publication->expirationDate = $options["expirationDate"];
 		$publication->image = CI_Image::getByPublicationId($options["publicationId"]);
+		if (isset($options["isFavorite"])) {
+			$publication->isFavorite = $options["isFavorite"];			
+		}
 		return $publication;
 	}
 
@@ -139,6 +146,9 @@ class CI_Publication {
 		$publication->creationDate = $options->creationDate;
 		$publication->expirationDate = $options->expirationDate;
 		$publication->image = CI_Image::getData($options->image);
+		if (isset($options->isFavorite)) {
+			$publication->isFavorite = $options->isFavorite;			
+		}
 		return $publication;
 	}
 
@@ -159,6 +169,9 @@ class CI_Publication {
 		$publication->creationDate = (isset($row->creation_date)) ? $row->creation_date : '';
 		$publication->expirationDate = (isset($row->expiration_date)) ? $row->expiration_date : '';
 		$publication->image = (isset($row->publication_id)) ? CI_Image::getByPublicationId($row->publication_id) : '';
+		if (isset($row->isFavorite)) {
+			$publication->isFavorite = (isset($row->isFavorite)) ? $row->isFavorite : '';
+		}
 		return $publication;
 	}
 }
