@@ -37,7 +37,7 @@ angular.module( 'AyudarEsFacilApp.user', [
         controller: 'AuthenticationCtrl',
         templateUrl: 'user/signin.tpl.html',
         data: {
-            isSignout: true
+            action: 'signout'
         }
     })
     .state('account.signup', {
@@ -47,6 +47,13 @@ angular.module( 'AyudarEsFacilApp.user', [
         data: {
             pageTitle: 'Registrarme',
             bodyClass: 'login tooltips'
+        }
+    })
+    .state('account.confirm', {
+        url: '/account/confirm/:token',
+        controller: 'AuthenticationCtrl',
+        data: {
+            action: 'confirm'
         }
     });
 
@@ -100,36 +107,81 @@ angular.module( 'AyudarEsFacilApp.user', [
     }
 ])
 
-.controller('AuthenticationCtrl', function AuthenticationCtrl($scope, $http, $location, $state, Authentication) {
+.controller('AuthenticationCtrl', function AuthenticationCtrl($scope, $http, $location, $state, $stateParams, Authentication) {
+    $scope.credentials = {};
+    $scope.error = '';
+    $scope.activationError = false;
+    $scope.newRegistration = false;
+    $scope.activating = false;
+    
+    $scope.sendButton = 'REGISTRARME';
+
+
     this.signout = function(){
         Authentication.user = null;
         localStorage.clear();
         $state.transitionTo('web.home'); 
     };
 
-    if($state.current.data.isSignout){
+    this.confirm = function(){
+        
+        $http.get('/ayudaresfacil/api/account/confirm',{
+            params: {
+                token: $stateParams.token
+            }
+        })
+        .success(function(response) {
+            $scope.activating = true;
+            $location.path('/signin');
+        }).error(function(response) {
+            $scope.activationError = true;
+        });
+    };
+
+    this.saveSession = function(data){
+        var user = {
+            id: data.id,
+            email: data.email,
+            name: data.name,
+            lastName: data.lastName,
+            profileImage: data.profileImage,
+            token: data.token
+        };
+
+        $scope.authentication.user = user;
+
+        localStorage.setItem("user", JSON.stringify(user));
+    };
+
+    if($state.current.data.action == 'signout'){
         this.signout();
+    }else if($state.current.data.action == 'confirm'){
+        this.confirm();
     }else{
         $scope.authentication = Authentication;
     }
 
     $scope.signup = function() {
-        $http.put('/ayudaresfacil/api/account', $scope.credentials).success(function(response) {
-            $scope.authentication.user = response;
-
-            $location.path('/user/data');
+        $scope.sendButton = 'GUARDANDO...';
+        $http.put('/ayudaresfacil/api/account', $scope.credentials)
+        .success(function(response) {
+            $scope.newRegistration = true;
         }).error(function(response) {
             $scope.error = response.message;
+            $scope.sendButton = 'REGISTRARME';
         });
     };
 
     $scope.signin = function() {
+        var that = this;
+
         $http.get('/ayudaresfacil/api/authentication/signin', {
             params: $scope.credentials
         })
         .success(function(response) {
-            $scope.error = false;
-
+            $scope.error = false;   
+            console.log(that);
+            
             var user = {
                 id: response.data.id,
                 email: response.data.email,
@@ -149,6 +201,7 @@ angular.module( 'AyudarEsFacilApp.user', [
             $scope.credentials = {};
         });
     };
+
 })
 
 

@@ -11,6 +11,7 @@ class Account extends REST_Controller{
 		$token = $this->get('token');
 		
 		$data = CI_Account::isAvailableToken($token);
+
 		if($data){
 			if (CI_Account::confirm($data->userId)){
 				$status = 200;
@@ -29,7 +30,7 @@ class Account extends REST_Controller{
 		$arrOptions['email'] = $this->put('email');
 		$arrOptions['password'] = $this->put('password');
 		$arrOptions['name'] = $this->put('name');
-		
+
 		$user = new CI_User();
 		$user->setEmail($arrOptions['email']);
 		$user->setPassword($arrOptions['password']);
@@ -44,6 +45,8 @@ class Account extends REST_Controller{
 			$myUser->id = $user->getId();
 			$myUser->email = $user->getEmail();
 			$myUser->name = $user->getName();
+			$myUser->lastName = $user->getLastName();
+			$myUser->profileImage = !empty($user->getGravatarEmail()) ? 'http://www.gravatar.com/avatar/' . md5($user->getGravatarEmail()) : "http://www.gravatar.com/avatar/?s=100&d=mm";
 
 			CI_Account::create($myUser);
 
