@@ -115,4 +115,42 @@ $scope.unsetFavorite = function(id) {
   });
 };
 
+$scope.setVote = function(id) {
+  var data = {
+    publicationId: id, 
+    userId: $scope.user.id
+  };
+
+  $http.post('/ayudaresfacil/api/request/vote', data)
+  .success(function(response) {
+    $scope.error = false;
+    requests.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+      $scope.requests = requests.data;
+    });
+  })
+  .error(function(response) { 
+    $scope.error = true;
+    $scope.credentials = {};
+  });
+};
+
+$scope.unsetVote = function(id) {
+  var data = {
+    publicationId: id, 
+    userId: $scope.user.id,
+    del:'true'
+  };
+
+  $http.post('/ayudaresfacil/api/request/vote', data)
+  .success(function(response) {
+    $scope.error = false;
+    requests.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+      $scope.requests = requests.data;
+    });
+  })
+  .error(function(response) { 
+    $scope.error = true;
+    $scope.credentials = {};
+  });
+};
 });

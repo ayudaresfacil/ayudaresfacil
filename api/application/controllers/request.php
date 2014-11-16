@@ -26,7 +26,7 @@ class Request extends REST_Controller{
 		}else{
 			$requests = CI_Request::getCurrentOffers();
 		}
-		
+
 		if($requests){
 			$status = 200;
 			$return["result"] = "OK";
@@ -242,7 +242,7 @@ class Request extends REST_Controller{
 
 	public function vote_post(){
 		
-		checkIsLoggedIn($this);
+		//checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["data"] = "";
@@ -252,9 +252,19 @@ class Request extends REST_Controller{
 		$arrOptions['userId'] = $this->post('userId');
 
 		if($arrOptions['publicationId'] > 0){
-			if(CI_Request::setVote($arrOptions)){
-				$status = 200;
-				$return["result"] = "OK";
+			$request = CI_Request::getById($arrOptions['publicationId']);
+			$arrOptions['request'] = $request[0];
+
+			if ($this->post('del') == 'true') {
+				if(CI_Request::deleteVote($arrOptions)){
+					$status = 200;
+					$return["result"] = "OK";
+				}
+			}else{
+				if(CI_Request::setVote($arrOptions)){
+					$status = 200;
+					$return["result"] = "OK";
+				}
 			}
 		}
 		$this->response($return, $status);
