@@ -3,6 +3,7 @@
 class CI_Request extends CI_Publication {		
 	private $votes;
 	private $sponsors;
+	private $isVote;
 
 	public function getVotes(){return $this->votes;}
 	public function setVotes($votes){$this->votes = $votes;}
@@ -20,10 +21,16 @@ class CI_Request extends CI_Publication {
 	}
 	public function setSponsor($sponsors){$this->sponsors = CI_Sponsor::getById($sponsors);}
 
+	public function getIsVote(){return $this->isVote;}
+	public function setIsVote($isVote){$this->isVote = $isVote;}
+
 	public function getDataFromArray($options){
 		$request = parent::getDataFromArray($options);
 		$request->votes = CI_Request::getVote($options["publicationId"]);
 		$request->sponsors = CI_Sponsor::getByPublicationId($options["publicationId"]);
+		if (isset($options["isVote"])) {
+			$request->isVote = $options["isVote"];			
+		}
 		return $request;
 	}
 
@@ -31,6 +38,9 @@ class CI_Request extends CI_Publication {
 		$request = parent::getData($options);
 		$request->votes = CI_Request::getVote($options->id);
 		$request->sponsors = CI_Sponsor::getData($options->sponsors);
+		if (isset($options->isVote)) {
+			$request->isVote = $options->isVote;			
+		}
 		return $request;
 	}
 
@@ -41,6 +51,9 @@ class CI_Request extends CI_Publication {
 		$request = parent::getInstance($row);		
 		$request->votes = CI_Request::getVote($row->publication_id);
 		$request->sponsors = CI_Sponsor::getByPublicationId($row->publication_id);
+		if (isset($row->isVote)) {
+			$request->isVote = $row->isVote;			
+		}
 		return $request;
 	}
 
@@ -57,6 +70,19 @@ class CI_Request extends CI_Publication {
 		return $return;
 	}
 
+	public static function getByIdAndUserLog($id, $userLog){
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+		$results = $CI->request_model->getByIdAndUserLog($id, $userLog);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result){
+				$return[] = CI_Request::getInstance($result);
+			}
+		}
+		return $return;
+	}
+	
 	public static function getByUser($userId){
 		$CI =& get_instance();
 		$CI->load->model('request_model');
@@ -95,6 +121,19 @@ class CI_Request extends CI_Publication {
 		$CI =& get_instance();
 		$CI->load->model('request_model');
 		$results = $CI->request_model->getCurrentRequests();
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result){
+				$return[] = CI_Request::getInstance($result);
+			}
+		}
+		return $return; 
+	}
+
+	public static function getWithFavorites($userId){
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+		$results = $CI->request_model->getWithFavorites($userId);
 		$return = array();
 		if(!empty($results)){
 			foreach($results as $result){
@@ -217,6 +256,20 @@ class CI_Request extends CI_Publication {
 		$CI->load->model('request_model');
 		$return = $CI->request_model->getVotes($publicationId);
 		return $return;
+	}
+
+	public function deleteVote($options){
+		$userId = $options['userId'];
+		$request = $options['request'];
+
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+
+		$data = array (
+			"publication_id" => $request->id, 
+			"user_id" => $userId
+		);
+		return $CI->request_model->deleteVote($data);					
 	}
 /*
 	public function setSponsor($options){

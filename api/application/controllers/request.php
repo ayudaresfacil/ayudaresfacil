@@ -11,14 +11,22 @@ class Request extends REST_Controller{
 
 		$id = $this->get("publicationId"); 
 		$userId = $this->get("userId");
+		$userLog = $this->get("userLog");
 		
-		if($id){
-			$requests = CI_Request::getById($id);	
-		}elseif ($userId) {
+		if ($userId) {
 			$requests = CI_Request::getByUser($userId);	
+		}elseif ($userLog){
+			if ($id) {
+				$requests = CI_Request::getByIdAndUserLog($id, $userLog);
+			}else{			
+				$requests = CI_Request::getWithFavorites($userLog);
+			}
+		}elseif($id){
+			$requests = CI_Request::getById($id);	
 		}else{
 			$requests = CI_Request::getCurrentRequests();
 		}
+
 		if($requests){
 			$status = 200;
 			$return["result"] = "OK";
@@ -27,9 +35,9 @@ class Request extends REST_Controller{
 			foreach ($requests as $key => $request) {
 				$myRequest = CI_Request::getData($request);
 				$return["data"][$key] = $myRequest;
-			 } 
+			} 
 		}
-        $this->response($return, $status);
+		$this->response($return, $status);
 	}
 
 	public function index_post(){
@@ -78,7 +86,7 @@ class Request extends REST_Controller{
 				$return["data"] = $myRequest;
 			}
 		}
-        $this->response($return, $status);
+		$this->response($return, $status);
 	}
 
 	public function index_delete(){
@@ -106,7 +114,7 @@ class Request extends REST_Controller{
 
 		$status = 404;
 		$return["result"] = "NOOK";
- 
+		
 		$userId = $this->get("userId");
 		$requests = CI_Request::getFavoritesByUser($userId);
 
@@ -118,9 +126,9 @@ class Request extends REST_Controller{
 			foreach ($requests as $key => $request) {
 				$myRequest = CI_Request::getData($request);
 				$return["data"][$key] = $myRequest;
-			 } 
+			} 
 		}
-        $this->response($return, $status);
+		$this->response($return, $status);
 	}
 
 	public function favorite_post(){
@@ -138,32 +146,16 @@ class Request extends REST_Controller{
 			$request = CI_Request::getById($arrOptions['publicationId']);
 			$arrOptions['request'] = $request[0];
 
-			if(CI_Request::setAsFavorite($arrOptions)){
-				$status = 200;
-				$return["result"] = "OK";
-			}
-		}
-		$this->response($return, $status);
-	}
-
-	public function favorite_delete(){
-
-		checkIsLoggedIn($this);
-
-		$status = 404;
-		$return["data"] = "";
-		$return["result"] = "NOOK";
-
-		$arrOptions['publicationId'] = $this->delete('publicationId');
-		$arrOptions['userId'] = $this->delete('userId');
-
-		if($arrOptions['publicationId'] > 0){
-			$request = CI_Request::getById($arrOptions['publicationId']);
-			$arrOptions['request'] = $request[0];
-
-			if(CI_Request::deleteFromFavorites($arrOptions)){
-				$status = 200;
-				$return["result"] = "OK";
+			if ($this->post('del') == 'true') {
+				if(CI_Request::deleteFromFavorites($arrOptions)){
+					$status = 200;
+					$return["result"] = "OK";
+				}
+			}else{
+				if(CI_Request::setAsFavorite($arrOptions)){
+					$status = 200;
+					$return["result"] = "OK";
+				}
 			}
 		}
 		$this->response($return, $status);
@@ -190,9 +182,9 @@ class Request extends REST_Controller{
 			foreach ($requests as $key => $request) {
 				$myRequest = CI_Request::getData($request);
 				$return["data"][$key] = $myRequest;
-			 } 
+			} 
 		}
-        $this->response($return, $status);
+		$this->response($return, $status);
 	}
 
 	public function object_get(){
@@ -216,9 +208,9 @@ class Request extends REST_Controller{
 			foreach ($requests as $key => $request) {
 				$myRequest = CI_Request::getData($request);
 				$return["data"][$key] = $myRequest;
-			 } 
+			} 
 		}
-        $this->response($return, $status);
+		$this->response($return, $status);
 	}
 
 	public function expired_get(){
@@ -242,15 +234,15 @@ class Request extends REST_Controller{
 				foreach ($requests as $key => $request) {
 					$myRequest = CI_Request::getData($request);
 					$return["data"][$key] = $myRequest;
-				 } 
+				} 
 			}
 			$this->response($return, $status);
 		}
 	}
 
 	public function vote_post(){
-	
-		checkIsLoggedIn($this);
+		
+		//checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["data"] = "";
@@ -260,9 +252,19 @@ class Request extends REST_Controller{
 		$arrOptions['userId'] = $this->post('userId');
 
 		if($arrOptions['publicationId'] > 0){
-			if(CI_Request::setVote($arrOptions)){
-				$status = 200;
-				$return["result"] = "OK";
+			$request = CI_Request::getById($arrOptions['publicationId']);
+			$arrOptions['request'] = $request[0];
+
+			if ($this->post('del') == 'true') {
+				if(CI_Request::deleteVote($arrOptions)){
+					$status = 200;
+					$return["result"] = "OK";
+				}
+			}else{
+				if(CI_Request::setVote($arrOptions)){
+					$status = 200;
+					$return["result"] = "OK";
+				}
 			}
 		}
 		$this->response($return, $status);
@@ -289,7 +291,7 @@ class Request extends REST_Controller{
 	}
 
 	public function sponsor_post(){
-	
+		
 		checkIsLoggedIn($this);
 
 		$status = 404;
@@ -326,7 +328,7 @@ class Request extends REST_Controller{
 
 				foreach ($sponsors as $key => $sponsor) {
 					$return["data"][$key] = $sponsor;
-				 } 
+				} 
 			}
 			$this->response($return, $status);
 		}	
@@ -350,7 +352,7 @@ class Request extends REST_Controller{
 
 				foreach ($images as $key => $image) {
 					$return["data"][$key] = $image;
-				 } 
+				} 
 			}
 			$this->response($return, $status);
 		}	

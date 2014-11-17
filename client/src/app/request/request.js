@@ -15,9 +15,6 @@ angular.module( 'AyudarEsFacilApp.request', [
     templateUrl: 'request/request-create.tpl.html',
     data:{ pageTitle: 'Crear Pedido' }
   });
-  $stateProvider.state( 'web.favoriteCreate', {     
-        //
-      });
   $stateProvider.state( 'web.requestDetail', {     
     url: '/pedido-detalle/:id',
     controller: 'RequestCtrl',
@@ -29,16 +26,16 @@ angular.module( 'AyudarEsFacilApp.request', [
 // Authentication service for user variables
 .factory('Authentication', [
 
-    function() {
-        var _this = this;
+  function() {
+    var _this = this;
 
-        _this._data = {
-            user: JSON.parse(localStorage.getItem("user"))
-        };
+    _this._data = {
+      user: JSON.parse(localStorage.getItem("user"))
+    };
 
-        return _this._data;
-    }
-])
+    return _this._data;
+  }
+  ])
 
 // Users service used for communicating with the users REST endpoint
 .factory('Requests', ['$resource',
@@ -51,52 +48,109 @@ angular.module( 'AyudarEsFacilApp.request', [
   }
   ])
 
-.factory('Favorites', ['$resource',
-  function($resource) {
-    return $resource('http://localhost/ayudaresfacil/api/request/favorite', {userId:'@id'}, {}, {
-      update: {
-        method: 'PUT'
-      }
-    });
-  }
-  ])
-
-.controller( 'RequestCtrl', function RequestCtrl( $scope, $http, Requests, Favorites, $stateParams, Authentication) {
+.controller( 'RequestCtrl', function RequestCtrl( $scope, $http, Requests, $stateParams, Authentication) {
   $scope.myInterval = 5000;
   $scope.user = Authentication.user;
 
   var requests = new Requests();
-  var favorites = new Favorites();
-/*
-  favorites.$get({userId:Authentication.user.id},function(response){
-    $scope.favorites = favorites.data;
-  });*/
-
+  
   if ($stateParams.id === undefined){
-    requests.$get(function(response){
-      $scope.requests = requests.data;
-    });
+    if (Authentication.user === null){
+      requests.$get(function(response){
+        $scope.requests = requests.data;
+      });
+    }else{
+      requests.$get({userLog:Authentication.user.id}, function(response){
+        $scope.requests = requests.data;
+      });
+    }
   }else{
-    requests.$get({publicationId:$stateParams.id},function(response){
-      $scope.requests = requests.data;
-    });
+    if (Authentication.user === null){
+      requests.$get({publicationId:$stateParams.id},function(response){
+        $scope.requests = requests.data;
+      });
+    }else{
+      requests.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+        $scope.requests = requests.data;
+      });
+    }    
   }
 
-  $scope.setFavorite = function(id) {
-        var data = {
-          publicationId: id, 
-          userId: $scope.user.id
-        };
+$scope.setFavorite = function(id) {
+  var data = {
+    publicationId: id, 
+    userId: $scope.user.id
+  };
 
-        $http.post('/ayudaresfacil/api/request/favorite', data)
-        .success(function(response) {
-            $scope.error = false;
-            alert('parece qe sailo akkk');
-        })
-        .error(function(response) { 
-            $scope.error = true;
-            $scope.credentials = {};
-        });
-    };
+  $http.post('/ayudaresfacil/api/request/favorite', data)
+  .success(function(response) {
+    $scope.error = false;
+    requests.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+      $scope.requests = requests.data;
+    });
+  })
+  .error(function(response) { 
+    $scope.error = true;
+    $scope.credentials = {};
+  });
+};
 
+$scope.unsetFavorite = function(id) {
+  var data = {
+    publicationId: id, 
+    userId: $scope.user.id,
+    del:'true'
+  };
+
+  $http.post('/ayudaresfacil/api/request/favorite', data)
+  .success(function(response) {
+    $scope.error = false;
+    requests.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+      $scope.requests = requests.data;
+    });
+  })
+  .error(function(response) { 
+    $scope.error = true;
+    $scope.credentials = {};
+  });
+};
+
+$scope.setVote = function(id) {
+  var data = {
+    publicationId: id, 
+    userId: $scope.user.id
+  };
+
+  $http.post('/ayudaresfacil/api/request/vote', data)
+  .success(function(response) {
+    $scope.error = false;
+    requests.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+      $scope.requests = requests.data;
+    });
+  })
+  .error(function(response) { 
+    $scope.error = true;
+    $scope.credentials = {};
+  });
+};
+
+$scope.unsetVote = function(id) {
+  var data = {
+    publicationId: id, 
+    userId: $scope.user.id,
+    del:'true'
+  };
+
+  $http.post('/ayudaresfacil/api/request/vote', data)
+  .success(function(response) {
+    $scope.error = false;
+    requests.$get({userLog:Authentication.user.id, publicationId:$stateParams.id},function(response){
+      $scope.requests = requests.data;
+    });
+  })
+  .error(function(response) { 
+    $scope.error = true;
+    $scope.credentials = {};
+  });
+};
 });
