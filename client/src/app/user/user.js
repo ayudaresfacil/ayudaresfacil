@@ -163,7 +163,23 @@ angular.module( 'AyudarEsFacilApp.user', [
         .success(function(response) {
             $scope.newRegistration = true;
         }).error(function(response) {
-            $scope.error = response.message;
+            
+            $scope.error = {};
+
+            var message = {
+                'EMPTY_VALUES': function(){
+                    $scope.error.emptyValues = true;  
+                },
+                'REPEAT_ENTRY': function(){
+                    $scope.error.repeatEntry = true;  
+                },
+                'NOOK': function(){
+                    $scope.error.nook = true;  
+                }
+            };
+
+            message[response.result]();
+
             $scope.sendButton = 'REGISTRARME';
         });
     };
@@ -176,7 +192,6 @@ angular.module( 'AyudarEsFacilApp.user', [
         })
         .success(function(response) {
             $scope.error = false;   
-            console.log(that);
             
             var user = {
                 id: response.data.id,
@@ -199,7 +214,6 @@ angular.module( 'AyudarEsFacilApp.user', [
     };
 
 })
-
 
 .controller('UserCtrl', function UserCtrl($scope, $http, $location, Users, Authentication) {
 //Set Change User Password - Begin

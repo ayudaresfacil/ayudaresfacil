@@ -2,8 +2,17 @@
     <img src="assets/images/logo.png" class="logo" alt="Logo">
 </div>
 <div class="login-wrapper">
-    <div class="alert alert-warning alert-bold-border fade in" ng-show="error">
-        <strong>Oye!</strong> {{$scope.error}} <strong class="text-warning">Corrige e intenta nuevamente.</strong>
+
+    <div class="alert alert-warning alert-bold-border fade in" ng-show="error.emptyValues">
+        <strong>Oye!</strong> Olvidates completar algunos datos. <strong class="text-warning">Corrige e intenta nuevamente.</strong>
+    </div>
+
+    <div class="alert alert-warning alert-bold-border fade in" ng-show="error.repeatEntry">
+        <strong>Oye!</strong> El email que haz ingresado ya esta siendo utilizado. <strong class="text-warning">Corrige e intenta nuevamente.</strong>
+    </div>
+
+    <div class="alert alert-warning alert-bold-border fade in" ng-show="error.nook">
+        <strong>Ups!</strong> Al parecer hubo un error al intentar realizar la acción.<strong class="text-warning">Aguarda unos segundos intenta nuevamente.</strong>
     </div>
     
     <div class="alert alert-info alert-bold-border fade in alert-dismissable text-center" ng-show="newRegistration">
@@ -17,25 +26,25 @@
 
     <form role="form" action="" ng-submit="signup()" ng-show="!newRegistration">
         <div class="form-group has-feedback lg left-feedback no-label">
-            <input data-ng-model="credentials.name" type="text" class="form-control no-border input-lg rounded" placeholder="dime tu nombre..." autofocus required>
+            <input data-ng-model="credentials.name" type="text" class="form-control no-border input-lg rounded" placeholder="dime tu nombre..." autofocus >
             <span class="fa fa-male form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback lg left-feedback no-label">
-            <input data-ng-model="credentials.email" type="email" class="form-control no-border input-lg rounded" placeholder="ahora tu email..." required>
+            <input data-ng-model="credentials.email" type="email" class="form-control no-border input-lg rounded" placeholder="ahora tu email..." >
             <span class="fa fa-envelope form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback lg left-feedback no-label">
-            <input data-ng-model="credentials.password" type="password" class="form-control no-border input-lg rounded" placeholder="elije una contraseña..." required>
+            <input data-ng-model="credentials.password" type="password" class="form-control no-border input-lg rounded" placeholder="elije una contraseña..." >
             <span class="fa fa-lock form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback lg left-feedback no-label">
-            <input data-ng-model="credentials.confirmPassword" type="password" class="form-control no-border input-lg rounded" placeholder="reingresala..." required>
+            <input data-ng-model="credentials.confirmPassword" type="password" class="form-control no-border input-lg rounded" placeholder="reingresala..." >
             <span class="fa fa-unlock form-control-feedback"></span>
         </div>
         <div class="form-group">
             <div class="checkbox">
                 <label class="inline-popups">
-                    <input data-ng-model="credentials.terms" type="checkbox" class="i-yellow-flat">Acepto los <a href="" data-effect="mfp-zoom-in" required>Terminos y condiciones</a>
+                    <input data-ng-model="credentials.terms" type="checkbox" class="i-yellow-flat">Acepto los <a href="" data-effect="mfp-zoom-in" >Terminos y condiciones</a>
                 </label>
             </div>
         </div>
