@@ -6,7 +6,7 @@ class CI_City {
 
 	public function getId() {return $this->id;}
 	
-	public function getDescription(){return $this->description;}
+	public function getDescription(){return ucwords(strtolower($this->description));}
 	public function setDescription($description){$this->description = $description;}
 
 	/**
@@ -31,11 +31,11 @@ class CI_City {
 		return $city;
 	}
 	
-	public static function getCitiesByDepartmentId($id)
+	public static function getCitiesByDepartmentId($departmentId)
 	{
 		$CI = & get_instance();
 		$CI->load->model('city_model');
-		$results = $CI->city_model->getCitiesByDepartmentId($id);
+		$results = $CI->city_model->getCitiesByDepartmentId($departmentId);
 		$return = array();
 		if(!empty($results)){
 			foreach($results as $result) {

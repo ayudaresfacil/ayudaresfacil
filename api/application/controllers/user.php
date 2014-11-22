@@ -6,7 +6,7 @@ class User extends REST_Controller{
 
 	public function index_get(){
 		
-		checkIsLoggedIn($this);
+		//checkIsLoggedIn($this);
 		
 		$id = $this->get("id"); 
 		$users =  $id ? CI_User::getById($id) : CI_User::getUsers();
@@ -22,8 +22,14 @@ class User extends REST_Controller{
 			 	$myUser = new stdClass();
 				$myUser->id = $user->getId();
 				$myUser->email = $user->getEmail();
+				$myUser->name = $user->getName();
+				$myUser->lastName = $user->getLastName();
+				$myUser->birthdayDate = $user->getBirthdayDate();
+				$myUser->description = $user->getDescription();
+				$myUser->phones= $user->getPhones();
+				$myUser->addresses= $user->getAddresses();
 				$return["data"][$key] = $myUser;
-			 } 
+			}
 		}
 
         $this->response($return, $status);
@@ -31,22 +37,39 @@ class User extends REST_Controller{
 	
 	public function index_post(){
 		
-		checkIsLoggedIn($this);
+		//checkIsLoggedIn($this);
 
-		$arrOptions['id'] = $this->post('id');;
+
+		$arrOptions['id'] = $this->post('id');
 		$arrOptions['email'] = $this->post('email');
-		$arrOptions['password'] = $this->post('password');
 		$arrOptions['name'] = $this->post('name');
-		
-		$user = CI_User::getById($id);
+		$arrOptions['lastName'] = $this->post('lastName');
+		$arrOptions['birthdayDate'] = $this->post('birthdayDate');
+		$arrOptions['description'] = $this->post('description');
+		$arrOptions['phones'] = $this->post('phones');
+		$arrOptions['addresses'] = $this->post('addresses');
+		$arrOptions['enabled'] = $this->post('enabled');
+		$arrOptions['deleted'] = $this->post('deleted');
+
+		$users = CI_User::getById($arrOptions['id']);
+
+		$user = $users[0];
 		$user->setEmail($arrOptions['email']);
-		$user->setPassword($arrOptions['password']);
 		$user->setName($arrOptions['name']);
+		$user->setLastName($arrOptions['lastName']);
+		$user->setBirthdayDate($arrOptions['birthdayDate']);
+		$user->setDescription($arrOptions['description']);
+		$user->setPhones($arrOptions['phones']);
+		if(isset($arrOptions['addresses'])){
+			$user->setAddresses($arrOptions['addresses']);
+		}
+		$user->setEnabled($arrOptions['enabled']);
+		$user->setDeleted($arrOptions['deleted']);
 		
 		$status = 404;
 		$return["data"] = "";
 		$return["result"] = "NOOK";
-
+		
 		if($user->save()){
 			$myUser = new stdClass();
 			$myUser->id = $user->getId();

@@ -76,15 +76,11 @@ angular.module( 'AyudarEsFacilApp.user', [
 })
 
 // Users service used for communicating with the users REST endpoint
-.factory('Users', ['$resource',
-    function($resource) {
-        return $resource('/ayudaresfacil/api/user', {}, {
-            update: {
-                method: 'PUT'
-            }
+.factory('Users', ['$resource', function($resource) {
+        return $resource('/ayudaresfacil/api/user',{id:'@id'} , {}, {
+            update: {method: 'PUT'}
         });
-    }
-])
+    }])
 
 // Authentication service for user variables
 .factory('Authentication', [
@@ -152,12 +148,8 @@ angular.module( 'AyudarEsFacilApp.user', [
 
 
 .controller('UserCtrl', function UserCtrl($scope, $http, $location, Users, Authentication) {
-    $scope.user = Authentication.user;
-
-    // If user is not signed in then redirect back home
-    if (!$scope.user) {
-		$location.path('/');
-    }
+//Set Change User Password - Begin
+    $scope.btnText='Guardar Mis Datos';
 
     $scope.updateUserProfile = function() {
         $scope.success = $scope.error = null;
@@ -182,20 +174,121 @@ angular.module( 'AyudarEsFacilApp.user', [
             $scope.error = response.message;
         });
     };
+//Set Change User Password - End
 
+//Datepicker Config and Functions - Begin
     $scope.today = function() {
         $scope.datepicker = new Date();
     };
-
     $scope.today();
     $scope.clear = function() {
         $scope.datepicker = null;
     };
-
     $scope.dateOptions = {
         formatYear: 'yyyy',
-        startingDay: 1
+        startingDay: 0
     };
+//Datepicker Config and Functions - End
+
+    $scope.getProvinces = function(){ 
+        $http.get('/ayudaresfacil/api/province').success(function(response) {
+            $scope.provinces = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.getDepartments = function(provinceId){ 
+        $http({
+            method:'GET',
+            url:'/ayudaresfacil/api/department',
+            params:{provinceId:provinceId}
+        }).success(function(response) {
+            $scope.departments = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.getCities = function(departmentId){ 
+        $http({
+            method:'GET',
+            url:'/ayudaresfacil/api/city',
+            params:{departmentId:departmentId}
+        }).success(function(response) {
+            $scope.cities = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    this.getUser = function(){
+            $scope.user = Users.get({id:Authentication.user.id}, function() {
+            var user = $scope.user;
+            var userData;
+            var userAddress;
+
+            if(user === undefined || !($.isEmptyObject(user.data))){
+               userData = user.data[0];
+            }else{
+                $scope.status='ERROR';
+                $scope.error='No se encontraron datos para el usuario que estás buscando...';
+                return false;
+            }
+
+            if(!($.isEmptyObject(userData.addresses))){
+                userAddress = userData.addresses[0];
+                $scope.getDepartments(userAddress.provinceId);
+                $scope.getCities(userAddress.departmentId);
+            }else{
+                userData.addresses=[{}];
+            }
+            $scope.getProvinces();
+            $scope.user = userData;
+        });
+    };
+
+    $scope.addPhone = function() {
+    if ($scope.user.phones == null){
+        $scope.user.phones = [];
+    }
+    var phone = {"areaCode":$scope.areaCode,"number":$scope.number,"typeId":$scope.typeId};
+    $scope.user.phones.push(phone);
+    $scope.areaCode = null;
+    $scope.number = null;
+    $scope.typeId = null;
+    };
+
+    $scope.deletePhone = function ( idx ) {
+      var phone_to_delete = $scope.user.phones[idx];
+      $scope.user.phones.splice(idx, 1);
+    };
+
+    $scope.saveUser = function() {
+        var user = new Users($scope.user);
+        $scope.btnText=' Guardando....';
+        user.$save(user,
+                function(responseData){
+                    $scope.status = 'SUCCESS';
+                    $scope.btnText='Guardar Mis Datos';
+                }, 
+                function(error){
+                    $scope.status = 'ERROR';
+                    $scope.error = error;
+                    $scope.btnText='Guardar Mis Datos';
+                });
+    };
+
+    $scope.user = Authentication.user;
+    if (!$scope.user) {
+        $location.path('/');
+    }
+
+    this.getUser();
+
 })
 
 ;

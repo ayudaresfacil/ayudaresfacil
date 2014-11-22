@@ -3,15 +3,19 @@
 class CI_Phone {
 	private $id;
 	private $number;
-	private $type;
+	private $areaCode;
+	private $typeId;
 
 	public function getId() {return $this->id;}
 	
 	public function getNumber(){return $this->number;}
 	public function setNumber($number){$this->number = $number;}
 	
-	public function getType(){return $this->type;}
-	public function setType($type){$this->type = CI_PhoneType::getById($type);}
+	public function getAreaCode(){return $this->areaCode;}
+	public function setAreaCode($areaCode){$this->areaCode = $areaCode;}
+
+	public function getTypeId(){return $this->typeId;}
+	public function setTypeId($typeId){$this->typeId = $typeId;}
 	
 	/**
 	 * Devuelve la informacion cargada del objeto 
@@ -22,7 +26,8 @@ class CI_Phone {
 		$object = new stdClass();
 		$object->id = $this->id;
 		$object->number = $this->number;
-		$object->type = $this->type->getId();
+		$object->areaCode = $this->areaCode;
+		$object->typeId = $this->typeId;
 		return $object;
 	}
 	
@@ -30,11 +35,12 @@ class CI_Phone {
 		if(!($row instanceof stdClass)){
 			show_error("El row debe ser una instancia de stdClass.");
 		}	
-		$user = new self;
-		$user->id = (isset($row->user_id)) ? $row->user_id : 0;
-		$user->number = (isset($row->number)) ? $row->number : '';
-		$user->type = (isset($row->type_phone_id)) ? CI_PhoneType::getById($row->type_phone_id) : '';
-		return $user;
+		$phone = new self;
+		$phone->id = (isset($row->user_id)) ? $row->user_id : 0;
+		$phone->number = (isset($row->number)) ? $row->number : '';
+		$phone->areaCode = (isset($row->area_code)) ? $row->area_code : '';
+		$phone->typeId = (isset($row->type_phone_id)) ? $row->type_phone_id : '';
+		return $phone;
 	}
 	
 	public static function getPhonesByUserId($userId)
@@ -71,13 +77,11 @@ class CI_Phone {
 		$CI->load->model('phone_model');
 		$data = $this->getData();
 		$data->userId = $userId;
-		if(isset($this->id) && $this->id > 0)
-			$CI->phone_model->update($data);
-		else{
-			$this->id = $CI->phone_model->create($data);
-			if($this->id === null)
-				$return = FALSE;
-		}
+		$this->id = $CI->phone_model->create($data);
+		
+		if($this->id === null)
+			$return = FALSE;
+		
 		return $return;
 	}
 	
@@ -86,5 +90,12 @@ class CI_Phone {
 		$CI =& get_instance();
 		$CI->load->model('phone_model');
 		return $CI->phone_model->delete($this->id);
+	}
+
+	static public function deleteByUserId($userId)
+	{
+		$CI =& get_instance();
+		$CI->load->model('phone_model');
+		return $CI->phone_model->deleteByUserId($userId);
 	}
 }

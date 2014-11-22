@@ -33,9 +33,80 @@ class CI_User {
 	public function getDescription(){return $this->description;}
 	public function setDescription($description){$this->description = $description;}
 
-	public function getPhones(){return $this->phones;}
+	public function getPhones(){
+				$phones = null;
+				foreach ($this->phones as $key => $phone){
+				 		$myUserPhone = new stdClass();
+						$myUserPhone->number = $phone->getNumber();
+						$myUserPhone->areaCode = $phone->getAreaCode();
+						$myUserPhone->typeId = $phone->getTypeId();
+						$phones[$key] = $myUserPhone;
+					}
+			 	return $phones;
+			 	}
 
-	public function getAddresses(){return $this->addresses;}
+	public function setPhones($phones){
+				CI_Phone::deleteByUserId($this->id);
+				if (!empty($this->phones)){
+					$this->phones=null;
+				}
+				if (!empty($phones)){
+					foreach ($phones as $key => $phone){
+							$myUserPhone = new CI_Phone();
+							$myUserPhone->setNumber($phone['number']);
+							$myUserPhone->setAreaCode($phone['areaCode']);
+							$myUserPhone->setTypeId($phone['typeId']);
+							$this->phones[$key] = $myUserPhone;
+						}
+				}
+		 	}
+
+	public function getAddresses(){
+				$addresses = null;
+				foreach ($this->addresses as $key => $address){
+				 		$myUserAddress = new stdClass();
+						$myUserAddress->id = $address->getId();
+						$myUserAddress->street = $address->getStreet();
+						$myUserAddress->number = $address->getNumber();
+						$myUserAddress->floor = $address->getFloor();
+						$myUserAddress->apartment = $address->getApartment();
+						$myUserAddress->postalCode = $address->getPostalCode();
+						$myUserAddress->provinceId = $address->getProvinceId();
+						$myUserAddress->departmentId = $address->getDepartmentId();
+						$myUserAddress->cityId = $address->getCityId();
+						$myUserAddress->principal = $address->getPrincipal();
+						$addresses[$key] = $myUserAddress;
+					}
+			 	return $addresses;
+		 	}
+
+	public function setAddresses($addresses){
+				CI_Address::deleteByUserId($this->id);
+				if (!empty($this->addresses)){
+					$this->addresses=null;
+				}
+				if (!empty($addresses)){
+					foreach ($addresses as $key => $address){
+							$myUserAddress = new CI_Address();		
+							$myUserAddress->setStreet($address['street']);
+							$myUserAddress->setNumber($address['number']);
+							$myUserAddress->setFloor($address['floor']);
+							$myUserAddress->setApartment($address['apartment']);
+							$myUserAddress->setPostalCode($address['postalCode']);
+							$myUserAddress->setProvinceId($address['provinceId']);
+							$myUserAddress->setDepartmentId($address['departmentId']);
+							$myUserAddress->setCityId($address['cityId']);
+							$myUserAddress->setPrincipal($address['principal']);
+							$this->addresses[$key] = $myUserAddress;
+						}
+				}
+			}
+
+	public function getEnabled(){return $this->enabled;}
+	public function setEnabled($enabled){$this->enabled = $enabled;}
+
+	public function getDeleted(){return $this->deleted;}
+	public function setDeleted($deleted){$this->deleted = $deleted;}
 
 	/**
 	 * Devuelve la informacion cargada del objeto 
@@ -61,7 +132,7 @@ class CI_User {
 	public static function getInstance($row){
 		if(!($row instanceof stdClass)){
 			show_error("El row debe ser una instancia de stdClass.");
-		}	
+		}
 		$user = new self;
 		$user->id = (isset($row->user_id)) ? $row->user_id : 0;
 		$user->email = (isset($row->email)) ? $row->email : '';
@@ -109,16 +180,26 @@ class CI_User {
 		$return = TRUE;
 		$CI = & get_instance();
 		$CI->load->model('user_model');
-		if(isset($this->id) && $this->id > 0)
+		if(isset($this->id) && $this->id > 0){
 			$CI->user_model->update($this->getData());
-		else{
+			if(!empty($this->phones)){
+				foreach($this->phones as $phone) {
+					$phone->save($this->id);
+				}
+			}
+			if(!empty($this->addresses)){
+				foreach($this->addresses as $address) {
+					$address->save($this->id);
+				}
+			}
+		}else{
 			$this->id = $CI->user_model->create($this->getData());
 			if($this->id === null)
 				$return = FALSE;
 		}
 		return $return;
 	}
-	
+
 	public function delete()
 	{
 		$CI =& get_instance();

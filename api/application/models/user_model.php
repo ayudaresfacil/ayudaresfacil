@@ -3,17 +3,18 @@
 class User_model extends CI_Model
 {
 	public function getUsers(){
-		$this->db->select('*');	
+		$this->db->select('user.user_id user_id,email,enabled,deleted,name,last_name,birthday_date,description');	
 		$this->db->from('user');
-		$this->db->join('user_data', 'user.user_id = user_data.user_id');	
+		$this->db->join('user_data', 'user.user_id = user_data.user_id', 'left outer');	
 		$query = $this->db->get();
 		return $query->result();
 	}
 	
 	public function getById($id){
-		$this->db->select('*');	
+		$this->db->select('user.user_id user_id,email,enabled,deleted,name,last_name,birthday_date,description');	
 		$this->db->from('user');
-		$this->db->where('user_id',$id);
+		$this->db->join('user_data', 'user.user_id = user_data.user_id', 'left outer');
+		$this->db->where('user.user_id',$id);
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -28,7 +29,9 @@ class User_model extends CI_Model
 		$id = $this->db->insert_id();
 		$data = array 	(
 							'user_id' => $id,
-							'name' => $options->name
+							'name' => $options->name,
+							'last_name' => $options->lastName,
+							'description' => $options->description
 						);
 		$this->db->insert('user_data', $data);
 		$this->db->trans_complete();
@@ -40,15 +43,27 @@ class User_model extends CI_Model
 	}
 	
 	public function update($post){
+		$this->db->trans_start();
 		$data = array 	(
-							'roleId' => $post->roleId,
-							'email' => $post->email,
-							'name' => $post->name,
-							'surname' => $post->surname,
 							'email' => $post->email
 						); 
-		$this->db->where('id', $post->id);
-		return $this->db->update('user', $data);
+		$this->db->where('user_id', $post->id);
+		$this->db->update('user', $data);
+
+		$data = array 	(
+							'name' => $post->name,
+							'last_name' => $post->lastName,
+							'birthday_date' => $post->birthdayDate,
+							'description' => $post->description
+						);
+		$this->db->where('user_id', $post->id);
+		$this->db->update('user_data', $data);
+		$this->db->trans_complete();
+		if ($this->db->trans_status() === FALSE){
+			$id = null;
+      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+		}
+
 	}
 	
 	public function delete($id){
@@ -68,9 +83,9 @@ class User_model extends CI_Model
 	}
 
 	public function getByUsernameAndPassword($options){
-		$this->db->select('*');	
+		$this->db->select('user.user_id user_id,email,name,last_name');	
 		$this->db->from('user');
-		$this->db->join('user_data', 'user.user_id = user_data.user_id');
+		$this->db->join('user_data', 'user.user_id = user_data.user_id', 'left outer');
 		$this->db->where('email',$options['email']);
 		$this->db->where('password',sha1($options['password']));
 		$this->db->where('enabled',1);

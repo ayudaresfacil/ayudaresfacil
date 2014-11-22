@@ -7,10 +7,10 @@ class CI_Address {
 	private $floor;
 	private $apartment;
 	private $postalCode;
-	private $province;
-	private $department;
-	private $city;
-	private $isPrincipal;
+	private $provinceId;
+	private $departmentId;
+	private $cityId;
+	private $principal;
 
 	public function getId() {return $this->id;}
 	
@@ -29,14 +29,14 @@ class CI_Address {
 	public function getPostalCode(){return $this->postalCode;}
 	public function setPostalCode($postalCode){$this->postalCode = $postalCode;}
 
-	public function getProvince(){return $this->province;}
-	public function setProvince($province){$this->province = CI_Province::getById($province);}
+	public function getProvinceId(){return $this->provinceId;}
+	public function setProvinceId($provinceId){$this->provinceId = $provinceId;}
 	
-	public function getDepartment(){return $this->department;}
-	public function setDepartment($department){$this->department = CI_Department::getById($department);}
+	public function getDepartmentId(){return $this->departmentId;}
+	public function setDepartmentId($departmentId){$this->departmentId = $departmentId;}
 
-	public function getCity(){return $this->city;}
-	public function setCity($city){$this->city = CI_City::getById($city);}
+	public function getCityId(){return $this->cityId;}
+	public function setCityId($cityId){$this->cityId = $cityId;}
 
 	public function getPrincipal(){return $this->principal;}
 	public function setPrincipal($principal){$this->principal = $principal;}
@@ -54,9 +54,9 @@ class CI_Address {
 		$object->apartment = $this->apartment;
 		$object->postalCode = $this->postalCode;
 		$object->principal = $this->principal;
-		$object->province = $this->province->getId();
-		$object->department = $this->department->getId();
-		$object->city = $this->city->getId();
+		$object->provinceId = $this->provinceId;
+		$object->departmentId = $this->departmentId;
+		$object->cityId = $this->cityId;
 		return $object;
 	}
 	
@@ -71,9 +71,10 @@ class CI_Address {
 		$address->floor = (isset($row->floor)) ? $row->floor : '';
 		$address->apartment = (isset($row->apartment)) ? $row->apartment : '';
 		$address->postalCode = (isset($row->postal_code)) ? $row->postal_code : '';
-		$address->city = (isset($row->city_id)) ? CI_City::getById($row->city_id) : '';
-		$address->department = ($address->city != '') ? CI_Department::getDepartmentByCityId($address->city->getId()) : '';
-		$address->province = ($address->department != '') ? CI_Province::getProvinceByDepartmentId($address->department->getId()) : '';
+		$address->cityId = (isset($row->city_id)) ? $row->city_id : '';
+		$address->departmentId = (isset($row->department_id)) ? $row->department_id : '';
+		$address->provinceId = (isset($row->province_id)) ? $row->province_id : '';
+		$address->principal = (isset($row->principal)) ? $row->principal : '';
 		return $address;
 	}
 	
@@ -124,5 +125,12 @@ class CI_Address {
 		$CI =& get_instance();
 		$CI->load->model('address_model');
 		return $CI->address_model->delete($this->id);
+	}
+
+	public static function deleteByUserId($userId)
+	{
+		$CI =& get_instance();
+		$CI->load->model('address_model');
+		return $CI->address_model->deleteByUserId($userId);
 	}
 }

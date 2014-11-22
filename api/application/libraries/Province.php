@@ -3,14 +3,11 @@
 class CI_Province {
 	private $id;
 	private $description;
-	private $departments;
 
 	public function getId() {return $this->id;}
 	
-	public function getDescription(){return $this->description;}
+	public function getDescription(){return ucwords(strtolower($this->description));}
 	public function setDescription($description){$this->description = $description;}
-
-	public function getDepartments(){return $this->departments;}
 
 	/**
 	 * Devuelve la informacion cargada del objeto 
@@ -21,7 +18,6 @@ class CI_Province {
 		$object = new stdClass();
 		$object->id = $this->id;
 		$object->description = $this->description;
-		$object->departments = $this->departments;
 		return $object;
 	}
 	
@@ -32,7 +28,6 @@ class CI_Province {
 		$province = new self;
 		$province->id = (isset($row->province_id)) ? $row->province_id : 0;
 		$province->description = (isset($row->description)) ? $row->description : '';
-		$province->departments = CI_Department::getDepartmentsByProvinceId($province->id);
 		return $province;
 	}
 	

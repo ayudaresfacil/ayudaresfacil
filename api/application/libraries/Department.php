@@ -3,14 +3,11 @@
 class CI_Department {
 	private $id;
 	private $description;
-	private $cities;
 
 	public function getId() {return $this->id;}
 	
-	public function getDescription(){return $this->description;}
+	public function getDescription(){return  ucwords(strtolower($this->description));}
 	public function setDescription($description){$this->description = $description;}
-
-	public function getCities(){return $this->cities;}
 
 	/**
 	 * Devuelve la informacion cargada del objeto 
@@ -21,7 +18,6 @@ class CI_Department {
 		$object = new stdClass();
 		$object->id = $this->id;
 		$object->description = $this->description;
-		$object->cities = $this->cities;
 		return $object;
 	}
 	
@@ -32,7 +28,6 @@ class CI_Department {
 		$department = new self;
 		$department->id = (isset($row->department_id)) ? $row->department_id : 0;
 		$department->description = (isset($row->description)) ? $row->description : '';
-		$department->cities = CI_City::getCitiesByDepartmentId ($department->id);
 		return $department;
 	}
 	
@@ -70,6 +65,20 @@ class CI_Department {
 		$return = array();
 		if(!empty($results)){
 			$return = self::getInstance($result[0]);
+		}
+		return $return;
+	}
+
+	public static function getDepartments()
+	{
+		$CI = & get_instance();
+		$CI->load->model('department_model');
+		$results = $CI->department_model->getDepartments();
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result) {
+				$return[] = self::getInstance($result);
+			}
 		}
 		return $return;
 	}
