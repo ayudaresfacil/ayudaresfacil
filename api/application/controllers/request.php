@@ -42,14 +42,14 @@ class Request extends REST_Controller{
 
 	public function index_post(){
 		
-		checkIsLoggedIn($this);
+		//checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["result"] = "NOOK";
 
 		$arrOptions['publicationId'] = ($this->post('publicationId') > 0) ? $this->post('publicationId') : 0;
 		$arrOptions['user'] = $this->post('userId');
-		$arrOptions['type'] = $this->post('publicationTypeId');
+		$arrOptions['type'] = '2';
 		$arrOptions['creationDate'] = $this->post('creationDate');
 		$arrOptions['title'] = $this->post('title');
 		$arrOptions['description'] = $this->post('description');

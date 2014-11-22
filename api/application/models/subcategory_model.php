@@ -16,4 +16,12 @@ class Subcategory_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+	public function getByCategory($categoryId){
+		$this->db->select('*');	
+		$this->db->from('publication_subcategory');
+		$this->db->where('category_id',$categoryId);
+		$query = $this->db->get();
+		return $query->result();
+	}
 }
