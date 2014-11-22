@@ -245,7 +245,7 @@ class Request_model extends CI_Model
 		$this->db->join('publication_object', "publication_object.publication_id = publication.publication_id");
 		$this->db->where('publication.user_id', $userId);	
 		$this->db->where('publication.publication_type_id', 2);
-		$this->db->where('publication.expiration_date < current_timestamp';
+		$this->db->where('publication.expiration_date < current_timestamp');
 		$query = $this->db->get();
 		return $query->result();
 	}
