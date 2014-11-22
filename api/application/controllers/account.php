@@ -27,34 +27,48 @@ class Account extends REST_Controller{
 	public function index_put(){
 
 		$arrOptions['id'] = 0;
-		$arrOptions['email'] = $this->put('email');
-		$arrOptions['password'] = $this->put('password');
-		$arrOptions['name'] = $this->put('name');
+		$arrOptions['name'] = trim($this->put('name'));
+		$arrOptions['email'] = trim($this->put('email'));
+		$arrOptions['password'] = trim($this->put('password'));
 
-		$user = new CI_User();
-		$user->setEmail($arrOptions['email']);
-		$user->setPassword($arrOptions['password']);
-		$user->setName($arrOptions['name']);
-		
 		$status = 404;
 		$return["data"] = "";
-		$return["result"] = "NOOK";
 
-		if($user->save()){
-			$myUser = new stdClass();
-			$myUser->id = $user->getId();
-			$myUser->email = $user->getEmail();
-			$myUser->name = $user->getName();
-			$myUser->lastName = $user->getLastName();
-			$myUser->profileImage = !empty($user->getGravatarEmail()) ? 'http://www.gravatar.com/avatar/' . md5($user->getGravatarEmail()) : "http://www.gravatar.com/avatar/?s=100&d=mm";
+		$return["result"] = "EMPTY_VALUES";
 
-			CI_Account::create($myUser);
+		if(!empty($arrOptions['email']) && !empty($arrOptions['name']) && !empty($arrOptions['password'])){
+			$users =  CI_User::getByUsername($arrOptions['email']);
 
-			$status = 200;
-			$return["result"] = "OK";
-			$return["data"] = $myUser;
-		} 
+			$return["result"] = "REPEAT_ENTRY";
 
+			if(!$users){
+
+				$user = new CI_User();
+				$user->setEmail($arrOptions['email']);
+				$user->setPassword($arrOptions['password']);
+				$user->setName($arrOptions['name']);
+				
+				$return["result"] = "NOOK";
+				
+				if($user->save()){
+					$myUser = new stdClass();
+					$myUser->id = $user->getId();
+					$myUser->email = $user->getEmail();
+					$myUser->name = $user->getName();
+					$myUser->lastName = $user->getLastName();
+					$myUser->profileImage = !empty($user->getGravatarEmail()) ? 'http://www.gravatar.com/avatar/' . md5($user->getGravatarEmail()) : "http://www.gravatar.com/avatar/?s=100&d=mm";
+
+					CI_Account::create($myUser);
+
+					$status = 200;
+					$return["result"] = "OK";
+					$return["data"] = $myUser;
+				} 
+			}
+
+		}
+
+		
 		$this->response($return, $status);
 	}
 

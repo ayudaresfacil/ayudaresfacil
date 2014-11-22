@@ -80,6 +80,17 @@ class User_model extends CI_Model
 
 		return $query->result();
 	}
+
+	public function getByUsername($username){
+		$this->db->select('*');	
+		$this->db->from('user');
+		$this->db->where('email',$username);
+		$this->db->where('deleted',0);
+
+		$query = $this->db->get();
+		
+		return $query->result();
+	}
 	
 	public function confirmAccount($id){
 		$this->db->trans_start();

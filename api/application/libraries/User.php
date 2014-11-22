@@ -110,6 +110,20 @@ class CI_User {
 		}
 		return $return;
 	}
+
+	public static function getByUsername($username)
+	{
+		$CI = & get_instance();
+		$CI->load->model('user_model');
+		$results = $CI->user_model->getByUsername($username);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result) {
+				$return[] = self::getInstance($result);
+			}
+		}
+		return $return;
+	}
 	
 	public function save(){
 		$return = TRUE;
