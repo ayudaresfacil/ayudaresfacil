@@ -23,10 +23,12 @@ class Address_model extends CI_Model
 							'user_id' => $options->userId,
 							'street' => $options->street,
 							'number' => $options->number,
-							'postal_code' => $options->postalCcode,
+							'postal_code' => $options->postalCode,
 							'floor' => $options->floor,
 							'apartment' => $options->apartment,
-							'city_id' => $options->city,
+							'city_id' => $options->cityId,
+							'province_id' => $options->provinceId,
+							'department_id' => $options->departmentId,
 							'principal' => $options->principal
 						);
 		$this->db->insert('user_address', $data);
@@ -37,10 +39,12 @@ class Address_model extends CI_Model
 		$data = array 	(
 							'street' => $options->street,
 							'number' => $options->number,
-							'postal_code' => $options->postalCcode,
+							'postal_code' => $options->postalCode,
 							'floor' => $options->floor,
 							'apartment' => $options->apartment,
-							'city_id' => $options->city,
+							'city_id' => $options->cityId,
+							'province_id' => $options->provinceId,
+							'department_id' => $options->departmentId,
 							'principal' => $options->principal
 						); 
 		$this->db->where('address_id', $post->id);
@@ -51,6 +55,21 @@ class Address_model extends CI_Model
 		$this->db->trans_start();		
 
 		$this->db->where('address_id', $id);
+		return $this->db->delete('user_address');
+
+		$this->db->trans_complete();
+		if ($this->db->trans_status() === FALSE){
+			$id = null;
+      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+		}
+		
+		return $id;
+	}
+
+	public function deleteByUserId($userId){
+		$this->db->trans_start();		
+
+		$this->db->where('user_id', $userId);
 		return $this->db->delete('user_address');
 
 		$this->db->trans_complete();

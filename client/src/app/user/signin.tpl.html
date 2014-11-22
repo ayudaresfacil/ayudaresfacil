@@ -2,10 +2,19 @@
     <img src="assets/images/logo.png" class="logo" alt="Logo">
 </div>
 <div class="login-wrapper">
+
     <div class="alert alert-warning alert-bold-border fade in alert-dismissable" ng-show="error">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <strong>Oye!</strong> Al parecer tus datos no son correctos. <strong class="text-warning">Corrigelos e intenta nuevamente.</strong>
     </div>
+
+    <div class="alert alert-danger alert-block fade in" ng-show="activationError">
+        <strong>Ups!</strong> Lo sentimos, al parecer no pudimos activar tu cuenta. Por favor intenta nuevamente mas tarde.
+    </div>
+
+    <div class="alert alert-info alert-block fade in" ng-show="activating">
+        <strong>Hey!</strong> Aguarda unos segundos mientras activamos tu cuenta...
+    </div>
+
     <form role="form" action="" ng-submit="signin()">
         
         <div class="form-group has-feedback lg left-feedback no-label">
