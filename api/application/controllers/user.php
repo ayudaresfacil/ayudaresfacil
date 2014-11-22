@@ -28,6 +28,7 @@ class User extends REST_Controller{
 				$myUser->description = $user->getDescription();
 				$myUser->phones= $user->getPhones();
 				$myUser->addresses= $user->getAddresses();
+				$myUser->profileImage = 'http://www.gravatar.com/avatar/' . md5($user->getGravatarEmail());
 				$return["data"][$key] = $myUser;
 			}
 		}

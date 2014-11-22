@@ -9,6 +9,21 @@ class Request_model extends CI_Model
 		$this->db->where('publication.publication_id', $id);	
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.process_state_id <>', 'B');
+		$this->db->where('publication.expiration_date > current_timestamp');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function getByIdAndUserLog($id, $userLog){	
+		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userLog .' AND publication_id = '. $id .') then 1 else 0 end as isFavorite, case when exists (SELECT * FROM publication_vote WHERE user_id = '. $userLog .' AND publication_id = '. $id .') then 1 else 0 end as isVote');	
+		$this->db->from('publication');
+		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
+		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
+		$this->db->group_by('publication.publication_id');
+		$this->db->where('publication.publication_type_id', 2);
+		$this->db->where('publication.process_state_id <>', 'B');
+		$this->db->where('publication.expiration_date > current_timestamp');
+		$this->db->where('publication.publication_id =', $id);
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -30,7 +45,18 @@ class Request_model extends CI_Model
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.publication_type_id', 2);
-		$this->db->where('publication.expiration_date >', date('Y/m/d H:i:s'));
+		$this->db->where('publication.expiration_date > current_timestamp');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function getWithFavorites($userId){	
+		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userId .' AND publication_id = publication.publication_id) then 1 else 0 end as isFavorite');	
+		$this->db->from('publication');
+		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
+		$this->db->where('publication.process_state_id <> "B"');
+		$this->db->where('publication.publication_type_id', 2);
+		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -127,7 +153,7 @@ class Request_model extends CI_Model
 		$this->db->join('publication_object', "publication_object.publication_id = publication_favorite.publication_id");
 		$this->db->where('publication_favorite.user_id', $userId);	
 		$this->db->where('publication.publication_type_id', 2);
-		$this->db->where('publication.expiration_date >', date('Y/m/d H:i:s'));
+		$this->db->where('publication.expiration_date > current_timestamp');
 		$this->db->where('publication.process_state_id <>', 'B');
 		$query = $this->db->get();
 		return $query->result();
@@ -172,7 +198,21 @@ class Request_model extends CI_Model
 		}
 		return TRUE;
 	}
-		
+	
+	public function deleteVote($data){
+		$this->db->trans_start();
+		$this->db->where('publication_id', $data["publication_id"]);
+		$this->db->where('user_id', $data["user_id"]);
+		$this->db->delete('publication_vote');
+		$this->db->trans_complete();
+
+		if ($this->db->trans_status() === FALSE){
+			$publicationId = null;
+      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+		}
+		return TRUE;
+	}
+
 	public function getMonetaryRequestsByUser($userId){	
 		$this->db->select('*');	
 		$this->db->from('publication');
@@ -181,7 +221,7 @@ class Request_model extends CI_Model
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication_object.object_id', 0); 
 		$this->db->where('publication.process_state_id <>', 'B');
-		$this->db->where('publication.expiration_date >', date('Y/m/d H:i:s'));
+		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -194,7 +234,7 @@ class Request_model extends CI_Model
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication_object.object_id <>', 0); 
 		$this->db->where('publication.process_state_id <>', 'B');
-		$this->db->where('publication.expiration_date >', date('Y/m/d H:i:s'));
+		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -205,7 +245,7 @@ class Request_model extends CI_Model
 		$this->db->join('publication_object', "publication_object.publication_id = publication.publication_id");
 		$this->db->where('publication.user_id', $userId);	
 		$this->db->where('publication.publication_type_id', 2);
-		$this->db->where('publication.expiration_date <', date('Y/m/d H:i:s'));
+		$this->db->where('publication.expiration_date < current_timestamp';
 		$query = $this->db->get();
 		return $query->result();
 	}

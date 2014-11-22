@@ -5,7 +5,7 @@ angular.module('directives.gravatar', [])
 
     return {
         restrict: 'E',
-        template: '<img ng-src="http://www.gravatar.com/avatar/{{hash}}{{getParams}}"/>',
+        template: '<img ng-src="http://www.gravatar.com/avatar/{{hash}}{{getParams}}" class="avatar img-circle media-object" alt="Avatar"/>',
         replace: true,
         scope: {
             email: '=',

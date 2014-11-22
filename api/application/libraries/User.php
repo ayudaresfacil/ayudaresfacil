@@ -10,6 +10,7 @@ class CI_User {
 	private $description;
 	private $phones;
 	private $addresses;
+	private $gravatarEmail;
 	private $enabled;
 	private $deleted;
 
@@ -108,6 +109,9 @@ class CI_User {
 	public function getDeleted(){return $this->deleted;}
 	public function setDeleted($deleted){$this->deleted = $deleted;}
 
+	public function getGravatarEmail(){return $this->gravatarEmail;}
+	public function setGravatarEmail($gravatarEmail){$this->gravatarEmail = $gravatarEmail;}
+
 	/**
 	 * Devuelve la informacion cargada del objeto 
 	 * Uso interno
@@ -124,6 +128,7 @@ class CI_User {
 		$object->description = $this->description;
 		$object->phones = $this->phones;
 		$object->addresses = $this->addresses;
+		$object->gravatarEmail = $this->gravatarEmail;
 		$object->enabled = $this->enabled;
 		$object->deleted = $this->deleted;
 		return $object;
@@ -145,6 +150,7 @@ class CI_User {
 		$user->deleted = (isset($row->deleted)) ? $row->deleted : '';
 		$user->phones = CI_Phone::getPhonesByUserId ($user->id);
 		$user->addresses = CI_Address::getAddressesByUserId($user->id);
+		$user->gravatarEmail = (isset($row->gravatar_email)) ? $row->gravatar_email : '';
 		return $user;
 	}
 	

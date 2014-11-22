@@ -11,11 +11,18 @@ class Offer extends REST_Controller {
 
 		$id = $this->get("publicationId"); 
 		$userId = $this->get("userId");
+		$userLog = $this->get("userLog");
 		
-		if($id){
-			$offers = CI_Offer::getById($id);	
-		}elseif ($userId) {
+		if ($userId) {
 			$offers = CI_Offer::getByUser($userId);	
+		}elseif ($userLog){
+			if ($id) {
+				$offers = CI_Offer::getByIdAndUserLog($id, $userLog);
+			}else{			
+				$offers = CI_Offer::getWithFavorites($userLog);
+			}
+		}elseif($id){
+			$offers = CI_Offer::getById($id);	
 		}else{
 			$offers = CI_Offer::getCurrentOffers();
 		}
@@ -162,32 +169,16 @@ class Offer extends REST_Controller {
 			$offer = CI_Offer::getById($arrOptions['publicationId']);
 			$arrOptions['offer'] = $offer[0];
 
-			if(CI_Offer::setAsFavorite($arrOptions)){
-				$status = 200;
-				$return["result"] = "OK";
-			}
-		}
-		$this->response($return, $status);
-	}
-
-	public function favorite_delete(){
-
-		checkIsLoggedIn($this);
-
-		$status = 404;
-		$return["data"] = "";
-		$return["result"] = "NOOK";
-
-		$arrOptions['publicationId'] = $this->delete('publicationId');
-		$arrOptions['userId'] = $this->delete('userId');
-
-		if($arrOptions['publicationId'] > 0){
-			$offer = CI_Offer::getById($arrOptions['publicationId']);
-			$arrOptions['offer'] = $offer[0];
-
-			if(CI_Offer::deleteFromFavorites($arrOptions)){
-				$status = 200;
-				$return["result"] = "OK";
+			if ($this->post('del') == 'true') {
+				if(CI_Offer::deleteFromFavorites($arrOptions)){
+					$status = 200;
+					$return["result"] = "OK";
+				}
+			}else{
+				if(CI_Offer::setAsFavorite($arrOptions)){
+					$status = 200;
+					$return["result"] = "OK";
+				}
 			}
 		}
 		$this->response($return, $status);

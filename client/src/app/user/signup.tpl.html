@@ -2,32 +2,45 @@
     <img src="assets/images/logo.png" class="logo" alt="Logo">
 </div>
 <div class="login-wrapper">
-    <form role="form">
+    <div class="alert alert-warning alert-bold-border fade in" ng-show="error">
+        <strong>Oye!</strong> {{$scope.error}} <strong class="text-warning">Corrige e intenta nuevamente.</strong>
+    </div>
+    
+    <div class="alert alert-info alert-bold-border fade in alert-dismissable text-center" ng-show="newRegistration">
+        <p>
+            <strong>Hey!</strong> ya casi puedes empezar a formar parte de esta hermosa comunidad. 
+        </p>
+        <p>
+            <strong class="text-info">Chequea tu correo electrónico para activar tu cuenta.</strong>
+        </p>
+    </div>
+
+    <form role="form" action="" ng-submit="signup()" ng-show="!newRegistration">
         <div class="form-group has-feedback lg left-feedback no-label">
-            <input type="text" class="form-control no-border input-lg rounded" placeholder="dime tu nombre..." autofocus>
+            <input data-ng-model="credentials.name" type="text" class="form-control no-border input-lg rounded" placeholder="dime tu nombre..." autofocus required>
             <span class="fa fa-male form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback lg left-feedback no-label">
-            <input type="email" class="form-control no-border input-lg rounded" placeholder="ahora tu email...">
+            <input data-ng-model="credentials.email" type="email" class="form-control no-border input-lg rounded" placeholder="ahora tu email..." required>
             <span class="fa fa-envelope form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback lg left-feedback no-label">
-            <input type="password" class="form-control no-border input-lg rounded" placeholder="elije una contraseña...">
+            <input data-ng-model="credentials.password" type="password" class="form-control no-border input-lg rounded" placeholder="elije una contraseña..." required>
             <span class="fa fa-lock form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback lg left-feedback no-label">
-            <input type="password" class="form-control no-border input-lg rounded" placeholder="reingresala...">
+            <input data-ng-model="credentials.confirmPassword" type="password" class="form-control no-border input-lg rounded" placeholder="reingresala..." required>
             <span class="fa fa-unlock form-control-feedback"></span>
         </div>
         <div class="form-group">
             <div class="checkbox">
                 <label class="inline-popups">
-                    <input type="checkbox" class="i-yellow-flat">Acepto los <a href="" data-effect="mfp-zoom-in">Terminos y condiciones</a>
+                    <input data-ng-model="credentials.terms" type="checkbox" class="i-yellow-flat">Acepto los <a href="" data-effect="mfp-zoom-in" required>Terminos y condiciones</a>
                 </label>
             </div>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-warning btn-lg btn-perspective btn-block">REGISTRARME</button>
+            <button type="submit" class="btn btn-warning btn-lg btn-perspective btn-block">{{sendButton}}</button>
         </div>
     </form>
 </div>

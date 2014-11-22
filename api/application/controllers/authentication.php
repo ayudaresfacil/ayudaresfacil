@@ -18,6 +18,7 @@ class Authentication extends REST_Controller{
 			$myUser->email = $data['user']->getEmail();
 			$myUser->name = $data['user']->getName();
 			$myUser->lastName = $data['user']->getLastName();
+			$myUser->profileImage = !empty($data['user']->getGravatarEmail()) ? 'http://www.gravatar.com/avatar/' . md5($data['user']->getGravatarEmail()) : "http://www.gravatar.com/avatar/?s=100&d=mm";
 
 			$return["result"] = "OK";
 			$return["data"] = $myUser;

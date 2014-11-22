@@ -13,7 +13,9 @@ class CI_Account {
 	      'issuedAt' => time(),
 	      'ttl' => time() + (60 * 60 * 24 * 7)
 	    ), SECRET);
-		$activationUrl = base_url()."account/confirm?token=".$token;
+		
+		//$activationUrl = base_url()."account/confirm?token=".$token;
+		$activationUrl = FRONT_URL . "account/confirm/".$token;
 
 		$message = "";
 		$message .= "<h3>Hola " . $user->name . "</h3>";
