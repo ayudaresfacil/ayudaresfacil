@@ -72,4 +72,18 @@ class CI_Subcategory{
 		}
 		return $return;
 	}
+
+	public static function getByCategory($categoryId)
+	{
+		$CI = & get_instance();
+		$CI->load->model('subcategory_model');
+		$results = $CI->subcategory_model->getByCategory($categoryId);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result) {
+				$return[] = CI_Subcategory::getInstance($result);
+			}
+		}
+		return $return;
+	}
 }
