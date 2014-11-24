@@ -47,7 +47,7 @@ class Request_model extends CI_Model
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
-		return $query->result();
+		return $query->result(); 
 	}
 
 	public function getWithFavorites($userId){	
@@ -61,39 +61,64 @@ class Request_model extends CI_Model
 		return $query->result();
 	}
 
+	public function getWithFavoritesAndUserLog($userLog, $userId){	
+		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userLog .' AND publication_id = publication.publication_id AND user_id = '. $userLog .') then 1 else 0 end as isFavorite');	
+		$this->db->from('publication');
+		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
+		$this->db->where('publication.user_id', $userId);	
+		$this->db->where('publication.process_state_id <> "B"');
+		$this->db->where('publication.publication_type_id', 2);
+		$this->db->where('publication.expiration_date > current_timestamp');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function create($arrInfo){
 		$request = $arrInfo['request'];
 		$category = $request->category;
 		$subcategory = $request->subcategory;
 		$processState = $request->processState;
 		$object = $request->object;
+		$sponsors = $arrInfo['sponsors'];
 
 		$this->db->trans_start();
 		$data = array 	(
-							'user_id' => $arrInfo['user'],
-							'publication_type_id' => $arrInfo['type'],
-							'creation_date' => $request->creationDate,
-							'title' => $request->title,
-							'description' => $request->description,
-							'expiration_date' => $request->expirationDate,
-							'category_id' => $category->id,
-							'subcategory_id' => $subcategory->id,
-							'views' => $request->views,
-							'process_state_id' => $processState->id,
-						);
+			'user_id' => $arrInfo['user'],
+			'publication_type_id' => $arrInfo['type'],
+			'creation_date' => $request->creationDate,
+			'title' => $request->title,
+			'description' => $request->description,
+			'expiration_date' => $request->expirationDate,
+			'category_id' => $category->id,
+			'subcategory_id' => $subcategory->id,
+			'views' => $request->views,
+			'process_state_id' => 'V',
+			);
 		$this->db->insert('publication', $data);
 		$id = $this->db->insert_id();
 		$data = array 	(
-							'publication_id' => $id,
-							'object_id' => $object->id,
-							'quantity' => $request->quantity,
-						);
-		$this->db->insert('publication_object', $data);		
+			'publication_id' => $id,
+			'object_id' => $object->id,
+			'quantity' => $request->quantity,
+			);
+		$this->db->insert('publication_object', $data);	
+		$data = array 	(
+			'publication_id' => $id,
+			'path' => $arrInfo['path'],
+			);
+		$this->db->insert('publication_image', $data);	
+		foreach ($sponsors as $sponsor){
+			$data = array 	(
+				'publication_id' => $id,
+				'user_tw' => $sponsor['label'],
+				);
+			$this->db->insert('publication_sponsor', $data);
+		};	
 		$this->db->trans_complete();
 
 		if ($this->db->trans_status() === FALSE){
 			$id = null;
-      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+			log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
 		}
 		return $id;
 	}
@@ -106,28 +131,28 @@ class Request_model extends CI_Model
 
 		$this->db->trans_start();
 		$data = array 	(
-							'creation_date' => $options->creationDate,
-							'title' => $options->title,
-							'description' => $options->description,
-							'expiration_date' => $options->expirationDate,
-							'category_id' => $category->id,
-							'subcategory_id' => $subcategory->id,
-							'views' => $options->views,
-							'process_state_id' => $processState->id,
-						);
+			'creation_date' => $options->creationDate,
+			'title' => $options->title,
+			'description' => $options->description,
+			'expiration_date' => $options->expirationDate,
+			'category_id' => $category->id,
+			'subcategory_id' => $subcategory->id,
+			'views' => $options->views,
+			'process_state_id' => $processState->id,
+			);
 		$this->db->where('publication_id', $options->id);
 		$this->db->update('publication', $data);
 		$data = array 	(
-							'object_id' => $object->id,
-							'quantity' => $options->quantity,
-						);
+			'object_id' => $object->id,
+			'quantity' => $options->quantity,
+			);
 		$this->db->where('publication_id', $options->id);
 		$this->db->update('publication_object', $data);		
 		$this->db->trans_complete();
 
 		if ($this->db->trans_status() === FALSE){
 			$id = null;
-      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+			log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
 		}
 	}
 
@@ -141,7 +166,7 @@ class Request_model extends CI_Model
 
 		if ($this->db->trans_status() === FALSE){
 			$publicationId = null;
-      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+			log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
 		}
 		return TRUE;
 	}
@@ -180,7 +205,7 @@ class Request_model extends CI_Model
 
 		if ($this->db->trans_status() === FALSE){
 			$publicationId = null;
-      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+			log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
 		}
 		return TRUE;
 	}
@@ -194,7 +219,7 @@ class Request_model extends CI_Model
 
 		if ($this->db->trans_status() === FALSE){
 			$publicationId = null;
-      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+			log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
 		}
 		return TRUE;
 	}
@@ -208,7 +233,7 @@ class Request_model extends CI_Model
 
 		if ($this->db->trans_status() === FALSE){
 			$publicationId = null;
-      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+			log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
 		}
 		return TRUE;
 	}
@@ -257,7 +282,7 @@ class Request_model extends CI_Model
 
 		if ($this->db->trans_status() === FALSE){
 			$publicationId = null;
-      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+			log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
 		}
 		return TRUE;
 	}
@@ -277,7 +302,7 @@ class Request_model extends CI_Model
 
 		if ($this->db->trans_status() === FALSE){
 			$publicationId = null;
-      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+			log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
 		}
 		return TRUE;
 	}
@@ -297,7 +322,7 @@ class Request_model extends CI_Model
 
 		if ($this->db->trans_status() === FALSE){
 			$publicationId = null;
-      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+			log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
 		}
 		return TRUE;
 	}

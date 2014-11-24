@@ -36,7 +36,11 @@ class CI_Request extends CI_Publication {
 
 	public function getData($options){
 		$request = parent::getData($options);
-		$request->votes = CI_Request::getVote($options->id);
+		if(isset($options->id)){
+			$request->votes = CI_Request::getVote($options->id);			
+		}else{
+			$request->votes = 0;			
+		}
 		$request->sponsors = CI_Sponsor::getData($options->sponsors);
 		if (isset($options->isVote)) {
 			$request->isVote = $options->isVote;			
@@ -134,6 +138,19 @@ class CI_Request extends CI_Publication {
 		$CI =& get_instance();
 		$CI->load->model('request_model');
 		$results = $CI->request_model->getWithFavorites($userId);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result){
+				$return[] = CI_Request::getInstance($result);
+			}
+		}
+		return $return; 
+	}
+
+	public static function getWithFavoritesAndUserLog($userLog, $userId){
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+		$results = $CI->request_model->getWithFavoritesAndUserLog($userLog, $userId);
 		$return = array();
 		if(!empty($results)){
 			foreach($results as $result){

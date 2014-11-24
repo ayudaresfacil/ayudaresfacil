@@ -1,44 +1,48 @@
 
 <!-- Begin page heading -->
 <h1 class="page-heading">Pedidos
-    <small>Elegí una publicación y empezá a colaborar!</small>
+	<small>Elegí una publicación y empezá a colaborar!</small>
 </h1>
 <!-- End page heading -->
 
 <!-- Begin breadcrumb -->
 <ol class="breadcrumb default square rsaquo sm">
-    <li>
-        <a href="index.html"><i class="fa fa-home"></i></a>
-    </li>
-    <li class="active">Pedidos</li>
+	<li>
+		<a href="index.html"><i class="fa fa-home"></i></a>
+	</li>
+	<li class="active">Pedidos</li>
 </ol>
 <!-- End breadcrumb -->
 
 <div class="row">
-    <div class="the-box no-border property-list" ng-repeat="request in requests">
-       <div class="media">
-        <a class="pull-left" href="#fakelink">
-            <img alt="image" class="property-image img-responsive" ng-src="{{request.image[0].path}}">
-        </a>
-        <div div class="col-md-8 panel panel-danger panel-square panel-no-border" >
-            <div class="panel-heading">
-                <h5 class="panel-title">{{request.title}}</h5>
-            </div>
-            <ul class="list-inline">
-                <li>{{request.category.description}}</li>
-                <li style="list-style: none">|</li>
-                <li>{{request.subcategory.description}}</li>
-            </ul>
-            <p class="hidden-xs">
-              {{request.description}}
-          </p>
-      </div><!-- /.media-body -->
-      <div class="col-xs-2">
-        <button ui-sref="web.requestDetail({id: request.id})" class="btn btn-info btn-block">Ver detalle</button>
-        <button class="btn btn-success btn-block">Ayudar!</button>
-        <button ng-if="request.isFavorite == '0'" ng-click="setFavorite(request.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
-        <button ng-if="request.isFavorite == '1'" ng-click="unsetFavorite(request.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
-    </div>
-</div><!-- /.media -->
-</div><!-- /.the-box no-border -->
+	<div ng-if="msgSuccess == '1'" class="alert alert-success" role="alert">
+		<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+		Su publicación se ha realizado con exito!
+	</div>
+	<div class="the-box no-border property-list" ng-repeat="request in requests">
+		<div class="media">
+			<a class="pull-left" href="#fakelink">
+				<img alt="image" class="property-image img-responsive" ng-src="{{request.image[0].path}}">
+			</a>
+			<div div class="col-md-7 panel panel-danger panel-square panel-no-border" >
+				<div class="panel-heading">
+					<h5 class="panel-title">{{request.title}}</h5>
+				</div>
+				<ul class="list-inline">
+					<li>{{request.category.description}}</li>
+					<li style="list-style: none">|</li>
+					<li>{{request.subcategory.description}}</li>
+				</ul>
+				<p class="hidden-xs">
+					{{request.description}}
+				</p>
+			</div><!-- /.media-body -->
+			<div class="col-sm-2 pull-right">
+				<button ui-sref="web.requestDetail({id: request.id})" class="btn btn-info btn-block">Ver detalle</button>
+				<button class="btn btn-success btn-block">Ayudar!</button>
+				<button ng-if="request.isFavorite == '0'" ng-click="setFavorite(request.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
+				<button ng-if="request.isFavorite == '1'" ng-click="unsetFavorite(request.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
+			</div>
+		</div><!-- /.media -->
+	</div><!-- /.the-box no-border -->
 </div>

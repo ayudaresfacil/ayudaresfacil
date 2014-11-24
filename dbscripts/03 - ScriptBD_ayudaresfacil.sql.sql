@@ -148,11 +148,13 @@ insert  into `message`(`message_id`,`user_id_from`,`user_id_to`,`publication_id`
 DROP TABLE IF EXISTS `object`;
 
 CREATE TABLE `object` (
-  `object_id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(200) DEFAULT NULL,
-  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`object_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `object_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `description` VARCHAR(200) DEFAULT NULL,
+  `created_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `subcategory_id` TINYINT(4) DEFAULT NULL,
+  PRIMARY KEY (`object_id`),
+  KEY `subcategory_id` (`subcategory_id`)
+) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `object` */
 
@@ -224,8 +226,7 @@ CREATE TABLE `publication` (
   KEY `category_id_2` (`category_id`,`subcategory_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `FK_Publication_Process_state` FOREIGN KEY (`process_state_id`) REFERENCES `process_state` (`process_state_id`),
-  CONSTRAINT `FK_Publication_Publication_Category` FOREIGN KEY (`category_id`) REFERENCES `publication_category` (`category_id`),
-  CONSTRAINT `FK_Publication_User` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+ zzCONSTRAINT `FK_Publication_User` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `publication` */
@@ -276,7 +277,7 @@ DROP TABLE IF EXISTS `publication_image`;
 
 CREATE TABLE `publication_image` (
   `publication_id` int(11) NOT NULL,
-  `image_id` bigint(20) NOT NULL,
+  `image_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `path` varchar(500) NOT NULL,
   PRIMARY KEY (`publication_id`,`image_id`),
   KEY `publication_id` (`publication_id`),

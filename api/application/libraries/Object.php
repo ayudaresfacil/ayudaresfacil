@@ -52,6 +52,20 @@ class CI_Object {
 		return $return;
 	}
 
+	public static function getBySubcategory($subcategoryId)
+	{
+		$CI = & get_instance();
+		$CI->load->model('object_model');
+		$results = $CI->object_model->getBySubcategory($subcategoryId);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result) {
+				$return[] = CI_Object::getInstance($result);
+			}
+		}
+		return $return;
+	}
+
 	public static function getById($id)
 	{
 		$CI = & get_instance();

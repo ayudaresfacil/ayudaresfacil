@@ -112,6 +112,7 @@ class CI_Publication {
 		$publication = new stdClass();
 		if ($options["publicationId"] > 0) {
 			$publication->id = $options["publicationId"];
+			$publication->image = CI_Image::getByPublicationId($options["publicationId"]);	
 		}
 		$publication->title = $options["title"];
 		$publication->description = $options["description"];
@@ -123,7 +124,7 @@ class CI_Publication {
 		$publication->processState = CI_ProcessState::getById($options["processState"]);
 		$publication->creationDate = $options["creationDate"];
 		$publication->expirationDate = $options["expirationDate"];
-		$publication->image = CI_Image::getByPublicationId($options["publicationId"]);
+
 		if (isset($options["isFavorite"])) {
 			$publication->isFavorite = $options["isFavorite"];			
 		}
@@ -134,6 +135,7 @@ class CI_Publication {
 		$publication = new stdClass();
 		if(isset($options->id)){
 			$publication->id = $options->id;
+			$publication->image = CI_Image::getData($options->image);
 		}
 		$publication->title = $options->title;
 		$publication->description = $options->description;
@@ -145,7 +147,6 @@ class CI_Publication {
 		$publication->processState = CI_ProcessState::getData($options->processState);
 		$publication->creationDate = $options->creationDate;
 		$publication->expirationDate = $options->expirationDate;
-		$publication->image = CI_Image::getData($options->image);
 		if (isset($options->isFavorite)) {
 			$publication->isFavorite = $options->isFavorite;			
 		}
