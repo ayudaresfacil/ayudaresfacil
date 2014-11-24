@@ -17,11 +17,13 @@ class CI_Image {
 
 	public function getData($options){
 		$return = array();
-		foreach ($options as $key => $value) {
-			$image = new stdClass();
-			$image->id = $value->id;
-			$image->path = $value->path;
-			$return[] = $image;
+		if(is_array($options)){
+			foreach ($options as $key => $value) {
+				$image = new stdClass();
+				$image->id = $value->id;
+				$image->path = $value->path;
+				$return[] = $image;
+			}
 		}
 		return $return;
 	}
