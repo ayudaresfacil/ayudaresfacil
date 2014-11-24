@@ -8,6 +8,7 @@ angular.module( 'AyudarEsFacilApp', [
     'AyudarEsFacilApp.sponsor',
     'AyudarEsFacilApp.user',
     'AyudarEsFacilApp.request',
+    'AyudarEsFacilApp.checkout',
     'ui.router',
     'directives.session',
     'ngResource',
