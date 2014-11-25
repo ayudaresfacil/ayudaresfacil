@@ -27,6 +27,14 @@ angular.module('AyudarEsFacilApp.request', [
             pageTitle: 'Detalle del Pedido'
         }
     });
+    $stateProvider.state('panel.requestListUser', {
+        url: '/mis-pedidos',
+        controller: 'CreateRequestCtrl',
+        templateUrl: 'request/request-list.tpl.html',
+        data: {
+            pageTitle: 'Pedidos'
+        }
+    });
 
     //Set the httpProvider "not authorized" interceptor
     $httpProvider.interceptors.push(['$q', '$location', 'Authentication',
@@ -68,7 +76,7 @@ angular.module('AyudarEsFacilApp.request', [
 ])
 
 // Users service used for communicating with the users REST endpoint
-.factory('Requests', ['$resource',
+.factory('Request', ['$resource',
     function($resource) {
         return $resource('http://localhost/ayudaresfacil/api/request', {
             publicationId: '@id'
@@ -104,11 +112,11 @@ angular.module('AyudarEsFacilApp.request', [
     }
 ])
 
-.controller('RequestCtrl', function RequestCtrl($scope, $http, Requests, $location, $stateParams, Authentication) {
+.controller('RequestCtrl', function RequestCtrl($scope, $http, Request, $location, $stateParams, Authentication) {
     $scope.myInterval = 5000;
     $scope.user = Authentication.user;
 
-    var requests = new Requests();
+    var requests = new Request();
 
     if ($stateParams.id === undefined) {
         if (Authentication.user === null) {
@@ -228,40 +236,124 @@ angular.module('AyudarEsFacilApp.request', [
                 $scope.credentials = {};
             });
     };
-
 })
 
-.controller('CreateRequestCtrl', function CreateRequestCtrl($scope, $http, $location, Requests, Subcategory, Authentication) {
-    $scope.user = Authentication.user;
-
-    var subcategories = new Subcategory();
-    $scope.subcategories = null;
+.controller('CreateRequestCtrl', function CreateRequestCtrl($scope, $http, $location, $stateParams, $state, Request, Category, Subcategory, Authentication) {
 
     // If user is not signed in then redirect back home
-    if (!$scope.user) {
-        $location.path('/signin');
-    }
+    /* if (!$scope.user) {
+       $location.path('/signin');
+     }*/
 
-    subcategories.$get(function(response) {
-        $scope.subcategories = subcategories.data;
+    $scope.user = Authentication.user;
+    $scope.btnText = 'Publicar';
+    $scope.msgSuccess = '0';
+    $scope.msgSponsor = '';
+    $scope.likedLabels = [];
+
+    var categories = new Category();
+    var subcategories = new Subcategory();
+    var date = new Date();
+    var requests = new Request();
+
+    categories.$get(function(response) {
+        $scope.categories = categories.data;
     });
 
-    $scope.createRequest = function(id) {
-        var data = {
-            request: $scope.request,
-            userId: Authentication.user.id,
-            creationDate: 'current_timesamp'
-        };
+    $scope.saveRequest = function() {
+        var request = new Request($scope.request);
+        request.userId = Authentication.user.id;
+        request.creationDate = date;
+        request.votes = 0;
+        request.sponsors = $scope.likedLabels;
 
-        $http.post('/ayudaresfacil/api/request/', data)
-            .success(function(response) {
-                $scope.error = false;
-            })
-            .error(function(response) {
-                $scope.error = true;
-                $scope.credentials = {};
+        $scope.btnText = ' Guardando....';
+        request.$save(request,
+            function(response) {
+                $scope.status = 'SUCCESS';
+                $scope.btnText = 'Publicar';
+                $scope.request = null;
+                $state.go('panel.requestListUser');
+            },
+            function(error) {
+                $scope.status = 'ERROR';
+                $scope.error = error;
+                $scope.btnText = 'Publicar';
             });
-
     };
+
+    $scope.requestsUser = function(message) {
+        requests.$get({
+            userLog: Authentication.user.id,
+            userId: Authentication.user.id
+        }, function(response) {
+            $scope.requests = requests.data;
+            $scope.msgSuccess = '1';
+        });
+    };
+
+    $scope.getSubcategories = function(categoryId) {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/subcategory',
+            params: {
+                categoryId: categoryId
+            }
+        }).success(function(response) {
+            $scope.subcategories = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.getObjects = function(subcategoryId) {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/object',
+            params: {
+                subcategoryId: subcategoryId
+            }
+        }).success(function(response) {
+            $scope.objects = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.onFileSelect = function($files) {
+        var file = $files[0];
+        $scope.request.path = $scope.file;
+
+        if (file.type.indexOf('image') == -1) {
+            $scope.error = 'image extension not allowed, please choose a JPEG or PNG file.';
+        }
+        if (file.size > 2097152) {
+            $scope.error = 'File size cannot exceed 2 MB';
+        }
+        $scope.upload = $upload.upload({
+            url: upload.php,
+            data: {
+                fname: filename
+            },
+            file: file
+        }).success(function(data, status, headers, config) {
+            // file is uploaded successfully
+            console.log(data);
+        });
+    };
+
+    $scope.addInput = function() {
+        if ($scope.likedLabels.length < 4) {
+            $scope.likedLabels.push({
+                label: ''
+            });
+        } else {
+            $scope.msgSponsor = 'Has llegado al límite de padrinos';
+        }
+    };
+
+    $scope.requestsUser();
 
 });

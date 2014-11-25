@@ -15,27 +15,64 @@
 <!-- End breadcrumb -->
 
 <div class="the-box no-border">
-	<form ng-submit="createRequest()">
+	<form role = "form">
 		<div class="row">
 			<div class="col-sm-8">
 				<div class="form-group">
-					<input type="text" class="form-control input-lg" ng-model="request.title" placeholder="Un titulo para la publicación">
+					<input type="text" class="form-control input-md" ng-model="request.title" placeholder="Un titulo para la publicación">
 				</div>
 				<div class="form-group">
-					<textarea class="form-control input-lg" ng-model="request.description" rows="20">Un lugar para que te expreses..</textarea>
+					<textarea class="form-control input-md" ng-model="request.description" rows="20">Un lugar para que te expreses..</textarea>
 				</div>
 			</div><!-- /.col-sm-8 -->
-			<div class="col-sm-4">
-				<select ng-model="mySubcategory" ng-options="subcategory.description group by subcategory.category.description for subcategory in subcategories">
-				  </select><br/>
 
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label>Contá todos los detalles</label><p class="help-block"><small>Mientras más claro seas para contar tu situación mejores resultados vas a obtener.</small></p>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-xs-1">
+							<label class="hidden-xs">Categoria</label>
+						</div>
+						<div class="col-xs-11" class="hidden-xs">
+							<select ng-model="request.categoryId" class="form-control input-md" ng-change="getSubcategories(request.categoryId);" >
+								<option ng-repeat="category in categories" value="{{category.id}}" ng-selected="request.categoryId == category.id">{{category.description}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-xs-1">
+							<label class="hidden-xs">Subcategoría</label>
+						</div>
+						<div class="col-xs-11" class="hidden-xs">
+							<select ng-model="request.subcategoryId" class="form-control input-md" ng-change="getObjects(request.subcategoryId);">
+								<option ng-repeat="subcategory in subcategories" value="{{subcategory.id}}" ng-selected="request.subcategoryId == subcategory.id">{{subcategory.description}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-xs-1">
+							<label class="hidden-xs">Objeto a pedir</label>
+						</div>
+						<div class="col-xs-11" class="hidden-xs">
+							<select ng-model="request.objectId" class="form-control input-md">
+								<option ng-repeat="object in objects" value="{{object.id}}" ng-selected="request.objectId == object.id">{{object.description}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
 				<div class="form-group">
 					<label>Fecha de expiración</label>
 					<div class="row">
 						<div class="col-xs-6">
 							<div style="display:inline-block;">
 								<p class="input-group">
-									<input type="text" datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="request.expirationDate" show-weeks="false" is-open="opened" date-disabled="disabled(date, mode)" ng-required="true" show-button-bar="false"/>
+									<input type="text" datepicker-popup="dd/MM/yyyy" class="form-control input-md" ng-model="request.expirationDate" ng-required="true" show-weeks="false" is-open="opened" date-disabled="disabled(date, mode)" show-button-bar="false"/>
 									<span class="input-group-btn">
 										<button type="button" class="btn btn-default" ng-click="open($event)">
 											<i class="glyphicon glyphicon-calendar"></i>
@@ -46,23 +83,21 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label>Un padrino para la publicación</label>
-						<input type="text" class="form-control" placeholder="@ejemplo">
+						<label>Imagenes</label>
+						<input type="text" class="form-control input-md" ng-model="request.path">
+					</div>
+					<!--<input type="file" ng-model="request.fname" ng-file-select="onFileSelect($files)" >-->
+					<div class="form-group">
+						<label>Un padrino para la publicación
+						<button ng-click="addInput()" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></button></label>
+						<p class="bg-danger">{{msgSponsor}}</p>
+						<div ng-repeat="item in likedLabels">
+							<input class="form-control input-md" ng-model="item.label">
+						</div>
 					</div>
 					<div class="form-group">
-						<label>Imagen</label>
-						<div class="input-group">
-							<input type="text" class="form-control" readonly>
-							<span class="input-group-btn">
-								<span class="btn btn-default btn-file">
-									Browse&hellip; <input type="file" name="">
-								</span>
-							</span>
-						</div><!-- /.input-group -->
-					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-success">Publicar</button>
-						<button class="btn btn-danger">Cancelar</button>
+						<button ng-click="saveRequest()" class="btn btn-success" type="submit"><i class="glyphicon glyphicon-ok"></i>{{btnText}}</button>
+						<button ui-sref="web.requestList()" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>Cancelar</button>
 					</div>
 				</div><!-- /.col-sm-4 -->
 			</div><!-- /.row -->

@@ -14,15 +14,28 @@ class Request extends REST_Controller{
 		$userLog = $this->get("userLog");
 		
 		if ($userId) {
-			$requests = CI_Request::getByUser($userId);	
+			if ($userLog) {
+				$requests = CI_Request::getWithFavoritesAndUserLog($userLog, $userId);
+			}else{
+				$requests = CI_Request::getByUser($userId);					
+			}
+			$userId = NULL;
+			$userLog = NULL;			   
+			$id = NULL;			   
 		}elseif ($userLog){
 			if ($id) {
 				$requests = CI_Request::getByIdAndUserLog($id, $userLog);
-			}else{			
+			}else{
 				$requests = CI_Request::getWithFavorites($userLog);
 			}
+			$userId = NULL;
+			$userLog = NULL;			   
+			$id = NULL;			   
 		}elseif($id){
 			$requests = CI_Request::getById($id);	
+			$userId = NULL;
+			$userLog = NULL;			   
+			$id = NULL;			   
 		}else{
 			$requests = CI_Request::getCurrentRequests();
 		}
@@ -60,6 +73,9 @@ class Request extends REST_Controller{
 		$arrOptions['processState'] = $this->post('processStateId');
 		$arrOptions['object'] = $this->post('objectId');
 		$arrOptions['quantity'] = $this->post('quantity');
+		$arrOptions['path'] = $this->post('path');
+		$arrOptions['votes'] = $this->post('votes');
+		$arrOptions['sponsors'] = $this->post('sponsors');
 
 		if($arrOptions['publicationId'] > 0){
 			$request = CI_Request::getById($arrOptions['publicationId']);
@@ -73,6 +89,8 @@ class Request extends REST_Controller{
 		if ($request <> NULL) {
 			$arrInfo['user'] = $arrOptions['user'];
 			$arrInfo['type'] = $arrOptions['type'];
+			$arrInfo['path'] = $arrOptions['path'];
+			$arrInfo['sponsors'] = $arrOptions['sponsors'];
 			$arrInfo['request'] = $request;
 
 			$id = CI_Request::save($arrInfo);

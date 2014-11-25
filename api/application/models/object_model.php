@@ -16,4 +16,12 @@ class Object_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+	public function getBySubcategory($subcategoryId){
+		$this->db->select('*');	
+		$this->db->from('object');
+		$this->db->where('subcategory_id',$subcategoryId);
+		$query = $this->db->get();
+		return $query->result();
+	}
 }
