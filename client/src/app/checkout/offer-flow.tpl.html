@@ -1,92 +1,69 @@
-<!-- BEGIN FORM WIZARD -->
-<div class="panel with-nav-tabs panel-success panel-no-border">
+<div class="panel wizard with-nav-tabs panel-success panel-no-border" style="margin:20px 0;">
     <div class="panel-heading">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#wizard-1-step1" data-toggle="tab"><i class="fa fa-users"></i> Account information</a>
+            <li ng-class="{ active: flow.step == 0, completed: flow.step > 0}" ><a href="javascript:return false;" data-toggle="tab"><i class="fa fa-users"></i> Informacion de la publicación</a>
             </li>
-            <li><a href="#wizard-1-step2" data-toggle="tab"><i class="fa fa-truck"></i> Shipping</a>
+            <li ng-class="{ active: flow.step == 1, completed: flow.step > 1 }"><a href="javascript:return false;" data-toggle="tab"><i class="fa fa-users"></i> Confirma tus datos</a>
             </li>
-            <li><a href="#wizard-1-step3" data-toggle="tab"><i class="fa fa-truck"></i> Payment</a>
-            </li>
-            <li><a href="#wizard-1-step4" data-toggle="tab"><i class="fa fa-check"></i> Finish</a>
+            <li ng-class="{ active: flow.step == 2, completed: flow.step > 2 }"><a href="javascript:return false;" data-toggle="tab"><i class="fa fa-check"></i> Fin</a>
             </li>
         </ul>
     </div>
+
     <div id="panel-collapse-1" class="collapse in">
         <div class="tab-content">
-            <div class="tab-pane fade in active" id="wizard-1-step1">
+
+            <div class="tab-pane fade" ng-class="{active: flow.step == 0, in: flow.step == 0}" id="wizard-1-step1">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <h4 class="small-heading more-margin-bottom">REGISTER NEW ACCOUNT</h4>
-                            <form role="form">
-                                <div class="form-group">
-                                    <label for="FullNameResgiter1">Full name</label>
-                                    <input type="text" class="form-control" id="FullNameResgiter1">
-                                    <p class="help-block">Middle name not required</p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="EmailRegister1">Email address</label>
-                                    <input type="email" class="form-control" id="EmailRegister1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="PhoneRegister1">Phone</label>
-                                    <input type="text" class="form-control phone_us_masking" placeholder="(000) 000-0000" id="PhoneRegister1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="PassowordRegister1">Password</label>
-                                    <input type="password" class="form-control" id="PassowordRegister1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="RePassowordRegister1">Retype Password</label>
-                                    <input type="password" class="form-control" id="RePassowordRegister1">
-                                </div>
-                                <div class="form-group">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" class="i-grey-flat">I've read and agree with <a href="#fakelink">Term and condition</a>
-                                        </label>
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <h4 class="small-heading">{{user.name}}, haz dicho que necesitas esto?</h4>
+                            
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="alert alert-info alert-bold-border square fade in">
+                                        <strong>Recuerda!</strong> Otras personas con menores posibilidades podrían necesitarlo también.
+                                        <a href="#fakelink" class="alert-link"></a>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-danger"><i class="fa fa-sign-in"></i> Register</button>
-                            </form>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <img class="img-thumbnail" src="{{offer.image[0].path}}" alt="{{offer.object.description}}"/>
+                                </div>
+                            
+                                <div class="col-sm-6">
+                                    <h3>{{offer.title}}</h3>
+                                    <p>
+                                        <small>{{offer.description}}</small>
+                                    </p>
+                                    <p>
+                                        <span class="badge badge-default"> 1 unidad</span>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <!-- /.col-sm-6 -->
-                        <div class="col-sm-6">
-                            <h4 class="small-heading more-margin-bottom">LOGIN EXISTING ACCOUNT</h4>
-                            <form role="form">
-                                <div class="form-group">
-                                    <label for="EmailLogin1">Email address</label>
-                                    <input type="email" class="form-control" id="EmailLogin1" placeholder="Enter email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="PasswordLogin1">Password</label>
-                                    <input type="password" class="form-control" id="PasswordLogin1" placeholder="Password">
-                                </div>
-                                <div class="form-group">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" class="i-grey-flat">Remember me
-                                        </label>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-success"><i class="fa fa-sign-in"></i> Login</button>
-                            </form>
-                        </div>
-                        <!-- /.col-sm-6 -->
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.panel-body -->
                 <div class="panel-footer text-right">
-                    <a class="btn btn-warning NextStep">Next step <i class="fa fa-angle-right"></i></a>
+                    <div class="row">
+                        <div class="col-sm-6 text-right">
+                            <a href="#/ofrecimiento-detalle/{{offer.id}}" class="btn btn-warning PrevStep"><i class="fa fa-angle-left"></i> Volver</a>
+                        </div>
+                        <div class="col-sm-6 text-left">
+                            <a class="btn btn-warning NextStep" data-ng-click="flow.toNextStep()">Si, lo necesito! <i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="wizard-1-step2">
+            
+            <div class="tab-pane fade" ng-class="{active: flow.step == 1, in: flow.step == 1}" id="wizard-1-step2">
                 <div class="panel-body">
                     <div class="row">
+
                         <div class="col-sm-6">
-                            <h4 class="small-heading more-margin-bottom">NEW SHIPPING ACCOUNT</h4>
+                            <h4 class="small-heading more-margin-bottom">Confirma tus datos</h4>
                             <form role="form">
                                 <div class="form-group">
                                     <label>Full name</label>
@@ -124,7 +101,6 @@
                                 </div>
                             </form>
                         </div>
-                        <!-- /.col-sm-6 -->
                         <div class="col-sm-6">
                             <h4 class="small-heading more-margin-bottom">USE MY ACCOUNT INFORMATION</h4>
                             <form role="form">
@@ -134,21 +110,18 @@
                                         <p class="form-control-static">Paris Hawker</p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Email</label>
                                     <div>
                                         <p class="form-control-static">email@example.com</p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Phone</label>
                                     <div>
                                         <p class="form-control-static">+61 1234546 78</p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Address</label>
                                     <div>
@@ -159,7 +132,6 @@
                                         </address>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Post code</label>
                                     <div>
@@ -167,163 +139,26 @@
                                         </p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                             </form>
                             <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Use it</button>
                         </div>
-                        <!-- /.col-sm-6 -->
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.panel-body -->
-                <div class="panel-footer">
+                <div class="panel-footer text-right">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <a class="btn btn-warning PrevStep"><i class="fa fa-angle-left"></i> Prev step</a>
-                        </div>
-                        <!-- /.col-sm-6 -->
                         <div class="col-sm-6 text-right">
-                            <a class="btn btn-warning NextStep">Next step <i class="fa fa-angle-right"></i></a>
+                            <a class="btn btn-warning PrevStep" data-ng-click="flow.toPrevStep()"><i class="fa fa-angle-left"></i> Volver</a>
                         </div>
-                        <!-- /.col-sm-6 -->
+                        <div class="col-sm-6 text-left">
+                            <a class="btn btn-warning NextStep" data-ng-click="flow.toNextStep()">Continuar! <i class="fa fa-angle-right"></i></a>
+                        </div>
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.panel-footer -->
             </div>
-            <div class="tab-pane fade" id="wizard-1-step3">
+           
+            <div class="tab-pane fade" ng-class="{active: flow.step == 2, in: flow.step == 2}" id="wizard-1-step3">
                 <div class="panel-body">
-                    <h4 class="small-heading more-margin-bottom">Payment method</h4>
-
-                    <form role="form">
-                        <div class="radio">
-                            <label>
-                                <input type="radio" value="" name="payment" class="i-grey-flat" checked>Paypal
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label>Email address</label>
-                            <input type="email" class="form-control">
-                        </div>
-                        <hr />
-                        <div class="radio">
-                            <label>
-                                <input type="radio" value="" name="payment" class="i-grey-flat">Credit card
-                            </label>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="CCname">Name on card</label>
-                            <input type="text" class="form-control" id="CCname">
-                        </div>
-                        <div class="form-group">
-                            <label for="CCnumber">Card number</label>
-                            <input type="text" class="form-control cc_masking" id="CCnumber" placeholder="0000-0000-0000-0000">
-                            <p class="help-block">No dashed or space</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Expiration date</label>
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <select class="form-control">
-                                        <option>01</option>
-                                        <option>03</option>
-                                        <option>04</option>
-                                        <option>05</option>
-                                        <option>06</option>
-                                        <option>07</option>
-                                        <option>08</option>
-                                        <option>09</option>
-                                        <option>10</option>
-                                        <option>11</option>
-                                        <option>12</option>
-                                        <option>13</option>
-                                        <option>14</option>
-                                        <option>15</option>
-                                        <option>16</option>
-                                        <option>17</option>
-                                        <option>18</option>
-                                        <option>19</option>
-                                        <option>20</option>
-                                        <option>21</option>
-                                        <option>22</option>
-                                        <option>23</option>
-                                        <option>24</option>
-                                        <option>25</option>
-                                        <option>26</option>
-                                        <option>27</option>
-                                        <option>28</option>
-                                        <option>29</option>
-                                        <option>30</option>
-                                        <option>31</option>
-                                    </select>
-                                </div>
-                                <!-- /.col-xs-3 -->
-                                <div class="col-xs-5">
-                                    <select class="form-control">
-                                        <option>January</option>
-                                        <option>February</option>
-                                        <option>March</option>
-                                        <option>April</option>
-                                        <option>May</option>
-                                        <option>June</option>
-                                        <option>July</option>
-                                        <option>August</option>
-                                        <option>September</option>
-                                        <option>October</option>
-                                        <option>November</option>
-                                        <option>December</option>
-                                    </select>
-                                </div>
-                                <!-- /.col-xs-5 -->
-                                <div class="col-xs-4">
-                                    <select class="form-control">
-                                        <option>2014</option>
-                                        <option>2015</option>
-                                        <option>2016</option>
-                                        <option>2017</option>
-                                        <option>2018</option>
-                                        <option>2019</option>
-                                        <option>2020</option>
-                                    </select>
-                                </div>
-                                <!-- /.col-xs-4 -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.form-group -->
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-4">
-                                <div class="form-group">
-                                    <label for="CCCode">Security code</label>
-                                    <input type="text" class="form-control cc_security_masking" id="CCCode" placeholder="0000">
-                                </div>
-                            </div>
-                            <!-- /.col-xs-6 col-sm-4 -->
-                        </div>
-                        <!-- /.row -->
-                    </form>
-
-                </div>
-                <!-- /.panel-body -->
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a class="btn btn-warning PrevStep"><i class="fa fa-angle-left"></i> Prev step</a>
-                        </div>
-                        <!-- /.col-sm-6 -->
-                        <div class="col-sm-6 text-right">
-                            <a class="btn btn-warning NextStep">Next step <i class="fa fa-angle-right"></i></a>
-                        </div>
-                        <!-- /.col-sm-6 -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.panel-footer -->
-            </div>
-            <div class="tab-pane fade" id="wizard-1-step4">
-                <div class="panel-body">
-                    <h4 class="small-heading more-margin-bottom">Review your order</h4>
+                    <h4 class="small-heading more-margin-bottom">Eso es todo!</h4>
                     <div class="alert alert-warning alert-block fade in alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <strong>NOTE!</strong>Please check your order before submit
@@ -390,7 +225,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- /.table-responsive -->
 
                     <hr />
 
@@ -404,31 +238,26 @@
                                         <p class="form-control-static">Paypal (someone@example.com)</p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Shipping fees</label>
                                     <div>
                                         <p class="form-control-static">&#36; 15.00</p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Total order</label>
                                     <div>
                                         <p class="form-control-static">&#36; 150.00</p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Grand total</label>
                                     <div>
                                         <p class="form-control-static text-danger">&#36; 165.00</p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                             </form>
                         </div>
-                        <!-- /.col-sm-6 -->
                         <div class="col-sm-6">
                             <h4 class="small-heading more-margin-bottom">SHIPPING ADDRESS</h4>
                             <form role="form">
@@ -438,21 +267,18 @@
                                         <p class="form-control-static">Paris Hawker</p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Email</label>
                                     <div>
                                         <p class="form-control-static">email@example.com</p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Phone</label>
                                     <div>
                                         <p class="form-control-static">+61 1234546 78</p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Address</label>
                                     <div>
@@ -463,7 +289,6 @@
                                         </address>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label class="control-label">Post code</label>
                                     <div>
@@ -471,34 +296,33 @@
                                         </p>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
                             </form>
                         </div>
-                        <!-- /.col-sm-6 -->
                     </div>
-                    <!-- /.row -->
 
                 </div>
-                <!-- /.panel-body -->
-                <div class="panel-footer">
+                <div class="panel-footer text-right">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <a class="btn btn-warning PrevStep"><i class="fa fa-angle-left"></i> Prev step</a>
-                        </div>
-                        <!-- /.col-sm-6 -->
                         <div class="col-sm-6 text-right">
-                            <a class="btn btn-warning"><i class="fa fa-check"></i> Finish</a>
+                            <a class="btn btn-warning PrevStep" data-ng-click="flow.toPrevStep()"><i class="fa fa-angle-left"></i> Volver</a>
                         </div>
-                        <!-- /.col-sm-6 -->
+                        <div class="col-sm-6 text-left">
+                            <a class="btn btn-warning NextStep" data-ng-click="flow.toNextStep()">Finalizar <i class="fa fa-angle-right"></i></a>
+                        </div>
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.panel-footer -->
+            </div>
+
+            <div class="tab-pane fade" ng-class="{active: flow.step == 3, in: flow.step == 3}" id="wizard-1-step4">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <h4 class="small-heading more-margin-bottom">Felicitaciones! haz finalizado el pedido.</h4>
+                            <a href="#">Ir al home</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- /.tab-content -->
     </div>
-    <!-- /.collapse in -->
 </div>
-<!-- /.panel .panel-success -->
-<!-- END FORM WIZARD -->
