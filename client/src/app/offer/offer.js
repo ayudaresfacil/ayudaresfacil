@@ -191,7 +191,7 @@ angular.module('AyudarEsFacilApp.offer', [
 
 })
 
-.controller('CreateOfferCtrl', function CreateOfferCtrl($scope, $http, $location, $stateParams, Favorites, $state, Offers, Category, Subcategory, Authentication) {
+.controller('CreateOfferCtrl', function CreateOfferCtrl($scope, $http, $location, $stateParams, $state, Offers, Category, Subcategory, Authentication) {
 
     // If user is not signed in then redirect back home
     /* if (!$scope.user) {
@@ -206,7 +206,6 @@ angular.module('AyudarEsFacilApp.offer', [
     var subcategories = new Subcategory();
     var date = new Date();
     var offers = new Offers();
-    var favorites = new Favorites();
 
     categories.$get(function(response) {
         $scope.categories = categories.data;
