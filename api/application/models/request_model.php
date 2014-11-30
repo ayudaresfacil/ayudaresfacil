@@ -18,7 +18,7 @@ class Request_model extends CI_Model
 		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userLog .' AND publication_id = '. $id .') then 1 else 0 end as isFavorite, case when exists (SELECT * FROM publication_vote WHERE user_id = '. $userLog .' AND publication_id = '. $id .') then 1 else 0 end as isVote');	
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id");
+		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');
 		$this->db->group_by('publication.publication_id');
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.process_state_id <>', 'B');

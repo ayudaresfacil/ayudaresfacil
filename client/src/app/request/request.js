@@ -75,7 +75,6 @@ angular.module('AyudarEsFacilApp.request', [
     }
 ])
 
-// Users service used for communicating with the users REST endpoint
 .factory('Request', ['$resource',
     function($resource) {
         return $resource('http://localhost/ayudaresfacil/api/request', {
@@ -88,7 +87,6 @@ angular.module('AyudarEsFacilApp.request', [
     }
 ])
 
-// Users service used for communicating with the users REST endpoint
 .factory('Category', ['$resource',
     function($resource) {
         return $resource('http://localhost/ayudaresfacil/api/category', {}, {
@@ -99,7 +97,6 @@ angular.module('AyudarEsFacilApp.request', [
     }
 ])
 
-// Users service used for communicating with the users REST endpoint
 .factory('Subcategory', ['$resource',
     function($resource) {
         return $resource('http://localhost/ayudaresfacil/api/subcategory', {
@@ -349,6 +346,51 @@ angular.module('AyudarEsFacilApp.request', [
         });
     };
 
+    $scope.setFavorite = function(id) {
+        var data = {
+            publicationId: id,
+            userId: $scope.user.id
+        };
+
+        $http.post('/ayudaresfacil/api/request/favorite', data)
+            .success(function(response) {
+                $scope.error = false;
+                requests.$get({
+                    userLog: Authentication.user.id,
+                    publicationId: $stateParams.id
+                }, function(response) {
+                    $scope.requests = requests.data;
+                });
+            })
+            .error(function(response) {
+                $scope.error = true;
+                $scope.credentials = {};
+            });
+    };
+
+    $scope.unsetFavorite = function(id) {
+        var data = {
+            publicationId: id,
+            userId: $scope.user.id,
+            del: 'true'
+        };
+
+        $http.post('/ayudaresfacil/api/request/favorite', data)
+            .success(function(response) {
+                $scope.error = false;
+                requests.$get({
+                    userLog: Authentication.user.id,
+                    publicationId: $stateParams.id
+                }, function(response) {
+                    $scope.requests = requests.data;
+                });
+            })
+            .error(function(response) {
+                $scope.error = true;
+                $scope.credentials = {};
+            });
+    };
+    
     $scope.addInput = function() {
         if ($scope.likedLabels.length < 4) {
             $scope.likedLabels.push({

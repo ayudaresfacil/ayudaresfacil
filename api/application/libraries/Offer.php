@@ -127,6 +127,19 @@ class CI_Offer extends CI_Publication {
 		return $CI->offer_model->delete($offer->id);
 	}
 
+	public static function getWithFavoritesAndUserLog($userLog, $userId){
+		$CI =& get_instance();
+		$CI->load->model('offer_model');
+		$results = $CI->offer_model->getWithFavoritesAndUserLog($userLog, $userId);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result){
+				$return[] = CI_Offer::getInstance($result);
+			}
+		}
+		return $return; 
+	}
+	
 	public static function getCurrentOffers(){
 		$CI =& get_instance();
 		$CI->load->model('offer_model');

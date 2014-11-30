@@ -77,6 +77,11 @@ class Offer_model extends CI_Model
 							'quantity_users_to_paused' => $offer->quantityUsersToPaused,
 						);
 		$this->db->insert('publication_offer', $data);
+		$data = array 	(
+			'publication_id' => $id,
+			'path' => $arrInfo['path'],
+			);
+		$this->db->insert('publication_image', $data);	
 		
 		$this->db->trans_complete();
 
@@ -143,6 +148,19 @@ class Offer_model extends CI_Model
       		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
 		}
 		return TRUE;
+	}
+
+	public function getWithFavoritesAndUserLog($userLog, $userId){	
+		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userLog .' AND publication_id = publication.publication_id AND user_id = '. $userLog .') then 1 else 0 end as isFavorite');	
+		$this->db->from('publication');
+		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
+		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
+		$this->db->where('publication.user_id', $userId);
+		$this->db->order_by("publication.creation_date","desc");	
+		$this->db->where('publication.process_state_id <> "B"');
+		$this->db->where('publication.expiration_date > current_timestamp');
+		$query = $this->db->get();
+		return $query->result();
 	}
 
 	public function getCurrentOffers(){	

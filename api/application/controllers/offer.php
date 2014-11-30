@@ -14,15 +14,28 @@ class Offer extends REST_Controller {
 		$userLog = $this->get("userLog");
 		
 		if ($userId) {
-			$offers = CI_Offer::getByUser($userId);	
+			if ($userLog) {
+				$offers = CI_Offer::getWithFavoritesAndUserLog($userLog, $userId);
+			}else{
+				$offers = CI_Offer::getByUser($userId);					
+			}
+			$userId = NULL;
+			$userLog = NULL;			   
+			$id = NULL;			   
 		}elseif ($userLog){
 			if ($id) {
 				$offers = CI_Offer::getByIdAndUserLog($id, $userLog);
-			}else{			
+			}else{
 				$offers = CI_Offer::getWithFavorites($userLog);
 			}
+			$userId = NULL;
+			$userLog = NULL;			   
+			$id = NULL;			   
 		}elseif($id){
 			$offers = CI_Offer::getById($id);	
+			$userId = NULL;
+			$userLog = NULL;			   
+			$id = NULL;			   
 		}else{
 			$offers = CI_Offer::getCurrentOffers();
 		}
@@ -35,21 +48,21 @@ class Offer extends REST_Controller {
 			foreach ($offers as $key => $offer) {
 				$myOffer = CI_Offer::getData($offer);
 				$return["data"][$key] = $myOffer;
-			 } 
+			} 
 		}
-        $this->response($return, $status);
+		$this->response($return, $status);
 	}
 
 	public function index_post(){
 		
-		checkIsLoggedIn($this);
+		// checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["result"] = "NOOK";
 
 		$arrOptions['publicationId'] = ($this->post('publicationId') > 0) ? $this->post('publicationId') : 0;
 		$arrOptions['user'] = $this->post('userId');
-		$arrOptions['type'] = $this->post('publicationTypeId');
+		$arrOptions['type'] = '1';
 		$arrOptions['creationDate'] = $this->post('creationDate');
 		$arrOptions['title'] = $this->post('title');
 		$arrOptions['description'] = $this->post('description');
@@ -61,9 +74,9 @@ class Offer extends REST_Controller {
 		$arrOptions['object'] = $this->post('objectId');
 		$arrOptions['quantity'] = $this->post('quantity');
 		$arrOptions['processStateIdOffer'] = $this->post('processStateIdOffer');
-		$arrOptions['offerTypeId'] = $this->post('offerTypeId');
-		$arrOptions['quantityUsersToPaused'] = $this->post('quantityUsersToPaused');
-		$arrOptions['image'] = $this->post('image');
+		$arrOptions['offerTypeId'] = '3';
+		$arrOptions['quantityUsersToPaused'] = '1';
+		$arrOptions['path'] = $this->post('path');
 
 		if($arrOptions['publicationId'] > 0){
 			$offer = CI_Offer::getById($arrOptions['publicationId']);
@@ -77,6 +90,7 @@ class Offer extends REST_Controller {
 		if ($offer <> NULL) {
 			$arrInfo['user'] = $arrOptions['user'];
 			$arrInfo['type'] = $arrOptions['type'];
+			$arrInfo['path'] = $arrOptions['path'];
 			$arrInfo['offer'] = $offer;
 
 			$id = CI_Offer::save($arrInfo);

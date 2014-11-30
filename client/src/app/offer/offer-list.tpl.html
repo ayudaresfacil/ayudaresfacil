@@ -1,4 +1,3 @@
-
 <div class="container-fluid">
     <!-- Begin page heading -->
     <h1 class="page-heading">Ofrecimientos
@@ -9,7 +8,7 @@
     <!-- Begin breadcrumb -->
     <ol class="breadcrumb default square rsaquo sm">
         <li>
-        	<a href="index.html"><i class="fa fa-home"></i></a>
+            <a href="index.html"><i class="fa fa-home"></i></a>
         </li>
         <li class="active">Ofrecimientos</li>
     </ol>
@@ -19,17 +18,13 @@
             <div class="the-box full no-border property-card">
                 <img ng-src="{{offer.image[0].path}}" alt="Image">
                 <div class="the-box no-margin no-border bg-success">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h3><span class="glyphicon glyphicon-gift"></span> {{offer.title}}</h3>
-                            <p class="pull-right">{{offer.object.description}}</p>
-                        </div>
-                    </div>
+                    <h4><span class="glyphicon glyphicon-gift"></span> {{offer.title}}</h4>
+                    <p>{{offer.object.description}}</p>
                     <button ui-sref="web.offerDetail({id: offer.id})" class="btn btn-success btn-block">Ver detalle</button>
                     <button class="btn btn-danger btn-block">Pedir!</button>
                     <button ng-if="offer.isFavorite == '0'" ng-click="setFavorite(offer.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
                     <button ng-if="offer.isFavorite == '1'" ng-click="unsetFavorite(offer.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
                 </div>
             </div>
-        </div>     
+        </div>
     </div>
