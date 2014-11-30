@@ -258,28 +258,33 @@ angular.module('AyudarEsFacilApp.request', [
 
     categories.$get(function(response) {
         $scope.categories = categories.data;
+        $scope.subcategories = null;
+        $scope.objects = null;
     });
 
-    $scope.saveRequest = function() {
-        var request = new Request($scope.request);
-        request.userId = Authentication.user.id;
-        request.creationDate = date;
-        request.votes = 0;
-        request.sponsors = $scope.likedLabels;
+    $scope.submitForm = function(isValid) {
+        if (isValid) {
+            var request = new Request($scope.request);
+            request.userId = Authentication.user.id;
+            request.creationDate = date;
+            request.votes = 0;
+            request.sponsors = $scope.likedLabels;
 
-        $scope.btnText = ' Guardando....';
-        request.$save(request,
-            function(response) {
-                $scope.status = 'SUCCESS';
-                $scope.btnText = 'Publicar';
-                $scope.request = null;
-                $state.go('panel.requestListUser');
-            },
-            function(error) {
-                $scope.status = 'ERROR';
-                $scope.error = error;
-                $scope.btnText = 'Publicar';
-            });
+            $scope.btnText = ' Guardando....';
+            request.$save(request,
+                function(response) {
+                    $scope.status = 'SUCCESS';
+                    $scope.btnText = 'Publicar';
+                    $scope.request = null;
+                    $state.go('panel.requestListUser');
+                },
+                function(error) {
+                    $scope.status = 'ERROR';
+                    $scope.error = error;
+                    $scope.btnText = 'Publicar';
+                });
+        }
+
     };
 
     $scope.requestsUser = function(message) {
@@ -352,6 +357,11 @@ angular.module('AyudarEsFacilApp.request', [
         } else {
             $scope.msgSponsor = 'Has llegado al límite de padrinos';
         }
+    };
+
+    $scope.deleteInput = function(idx) {
+        var request_to_delete = $scope.likedLabels[idx];
+        $scope.likedLabels.splice(idx, 1);
     };
 
     $scope.requestsUser();
