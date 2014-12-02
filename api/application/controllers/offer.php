@@ -61,55 +61,66 @@ class Offer extends REST_Controller {
 		$return["result"] = "NOOK";
 
 		$arrOptions['publicationId'] = ($this->post('publicationId') > 0) ? $this->post('publicationId') : 0;
-		$arrOptions['user'] = $this->post('userId');
-		$arrOptions['type'] = '1';
-		$arrOptions['creationDate'] = $this->post('creationDate');
-		$arrOptions['title'] = $this->post('title');
-		$arrOptions['description'] = $this->post('description');
-		$arrOptions['expirationDate'] = $this->post('expirationDate');
-		$arrOptions['category'] = $this->post('categoryId');
-		$arrOptions['subcategory'] = $this->post('subcategoryId');
-		$arrOptions['views'] = $this->post('views');
-		$arrOptions['processState'] = $this->post('processStateId');
-		$arrOptions['object'] = $this->post('objectId');
-		$arrOptions['quantity'] = $this->post('quantity');
-		$arrOptions['processStateIdOffer'] = $this->post('processStateIdOffer');
-		$arrOptions['offerTypeId'] = '3';
-		$arrOptions['quantityUsersToPaused'] = '1';
-		$arrOptions['path'] = $this->post('path');
 
-		if($arrOptions['publicationId'] > 0){
-			$offer = CI_Offer::getById($arrOptions['publicationId']);
-			if ($offer <> NULL) {
-				$offer = CI_Offer::getDataFromArray($arrOptions);
-			}						
+		if ($this->post('del') == 'true') {
+			if($arrOptions['publicationId'] > 0){
+				$offer = CI_Offer::getById($arrOptions['publicationId']);
+				if(CI_Offer::delete($offer[0])){
+					$status = 200;
+					$return["result"] = "OK";
+				}
+			}
 		}else{
-			$offer = CI_Offer::getDataFromArray($arrOptions);
-		}
+			$arrOptions['user'] = $this->post('userId');
+			$arrOptions['type'] = '1';
+			$arrOptions['creationDate'] = $this->post('creationDate');
+			$arrOptions['title'] = $this->post('title');
+			$arrOptions['description'] = $this->post('description');
+			$arrOptions['expirationDate'] = $this->post('expirationDate');
+			$arrOptions['category'] = $this->post('categoryId');
+			$arrOptions['subcategory'] = $this->post('subcategoryId');
+			$arrOptions['views'] = $this->post('views');
+			$arrOptions['processState'] = $this->post('processStateId');
+			$arrOptions['object'] = $this->post('objectId');
+			$arrOptions['quantity'] = $this->post('quantity');
+			$arrOptions['processStateIdOffer'] = $this->post('processStateIdOffer');
+			$arrOptions['offerTypeId'] = '3';
+			$arrOptions['quantityUsersToPaused'] = '1';
+			$arrOptions['path'] = $this->post('path');
 
-		if ($offer <> NULL) {
-			$arrInfo['user'] = $arrOptions['user'];
-			$arrInfo['type'] = $arrOptions['type'];
-			$arrInfo['path'] = $arrOptions['path'];
-			$arrInfo['offer'] = $offer;
+			if($arrOptions['publicationId'] > 0){
+				$offer = CI_Offer::getById($arrOptions['publicationId']);
+				if ($offer <> NULL) {
+					$offer = CI_Offer::getDataFromArray($arrOptions);
+				}						
+			}else{
+				$offer = CI_Offer::getDataFromArray($arrOptions);
+			}
 
-			$id = CI_Offer::save($arrInfo);
+			if ($offer <> NULL) {
+				$arrInfo['user'] = $arrOptions['user'];
+				$arrInfo['type'] = $arrOptions['type'];
+				$arrInfo['path'] = $arrOptions['path'];
+				$arrInfo['offer'] = $offer;
 
-			if($id <> NULL){
-				$status = 200;
-				$return["result"] = "OK";
-				$return["data"] = "";			
-				$return["publicationId"] = $id;
-				$myOffer = CI_Offer::getData($offer);	
-				$return["data"] = $myOffer;
+				$id = CI_Offer::save($arrInfo);
+
+				if($id <> NULL){
+					$status = 200;
+					$return["result"] = "OK";
+					$return["data"] = "";			
+					$return["publicationId"] = $id;
+					$myOffer = CI_Offer::getData($offer);	
+					$return["data"] = $myOffer;
+				}
 			}
 		}
-        $this->response($return, $status);
+		$this->response($return, $status);
 	}
 
 	public function index_delete(){
 
-		checkIsLoggedIn($this);
+		// checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["data"] = "";
@@ -151,7 +162,7 @@ class Offer extends REST_Controller {
 
 		$status = 404;
 		$return["result"] = "NOOK";
- 
+
 		$userId = $this->get("userId");
 		$offers = CI_Offer::getFavoritesByUser($userId);
 
@@ -163,9 +174,9 @@ class Offer extends REST_Controller {
 			foreach ($offers as $key => $offer) {
 				$myOffer = CI_Offer::getData($offer);
 				$return["data"][$key] = $myOffer;
-			 } 
+			} 
 		}
-        $this->response($return, $status);
+		$this->response($return, $status);
 	}
 	
 	public function favorite_post(){
@@ -204,7 +215,7 @@ class Offer extends REST_Controller {
 
 		$status = 404;
 		$return["result"] = "NOOK";
- 
+
 		$publicationId = $this->get("publicationId");
 		$offers = CI_Offer::getById($publicationId);
 		$state = " ";
@@ -218,9 +229,9 @@ class Offer extends REST_Controller {
 				$myOffer = CI_Offer::getData($offer);
 				$state = $myOffer->processStateOffer;
 				$return["data"][$key] = $state->id;
-			 } 
+			} 
 		}
-        $this->response($return, $status);
+		$this->response($return, $status);
 	}
 
 	public function changestate_post(){
@@ -242,7 +253,7 @@ class Offer extends REST_Controller {
 				$myOffer = CI_Offer::getData($offer);
 				$arrOptions["offer"] = $myOffer;
 				$arrOptions["state"] = $state;
-			 } 
+			} 
 
 			if(CI_Offer::changeState($arrOptions)){
 				$status = 200;
@@ -274,7 +285,7 @@ class Offer extends REST_Controller {
 					$myOffer = CI_Offer::getData($offer);
 					$type = $myOffer->type;
 					$return["data"][$key] = $type->id;
-				 } 
+				} 
 			}
 			$this->response($return, $status);
 		}
@@ -302,7 +313,7 @@ class Offer extends REST_Controller {
 					$myOffer = CI_Offer::getData($offer);
 					$type = $myOffer->quantityUsersToPaused;
 					$return["data"][$key] = $type;
-				 } 
+				} 
 			}
 			$this->response($return, $status);
 		}
@@ -329,7 +340,7 @@ class Offer extends REST_Controller {
 				foreach ($offers as $key => $offer) {
 					$myOffer = CI_Offer::getData($offer);
 					$return["data"][$key] = $myOffer;
-				 } 
+				} 
 			}
 			$this->response($return, $status);
 		}
@@ -353,7 +364,7 @@ class Offer extends REST_Controller {
 
 				foreach ($images as $key => $image) {
 					$return["data"][$key] = $image;
-				 } 
+				} 
 			}
 			$this->response($return, $status);
 		}	

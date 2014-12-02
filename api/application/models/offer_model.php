@@ -15,7 +15,8 @@ class Offer_model extends CI_Model
 	}
 
 	public function getByIdAndUserLog($id, $userLog){	
-		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userLog .' AND publication_id = '. $id .') then 1 else 0 end as isFavorite');	
+		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userLog .' AND publication_id = '. $id .') then 1 else 0 end as isFavorite ,
+						case when publication.user_id = '. $userLog .' then 1 else 0 end as isOwner');	
 		$this->db->from('publication');
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");

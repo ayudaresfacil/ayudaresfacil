@@ -109,13 +109,13 @@ angular.module('AyudarEsFacilApp.request', [
     }
 ])
 
-.controller('RequestCtrl', function RequestCtrl($scope, $http, Request, $location, $stateParams, Authentication) {
+.controller('RequestCtrl', function RequestCtrl($scope, $http, Request, $state, $location, $stateParams, Authentication) {
     $scope.myInterval = 5000;
     $scope.user = Authentication.user;
 
     var requests = new Request();
 
-    if ($stateParams.id === undefined) {
+    if ($stateParams.id === undefined || $stateParams.id === null) {
         if (Authentication.user === null) {
             requests.$get(function(response) {
                 $scope.requests = requests.data;
@@ -232,6 +232,24 @@ angular.module('AyudarEsFacilApp.request', [
                 $scope.error = true;
                 $scope.credentials = {};
             });
+    };
+
+    $scope.requestDelete = function(id) {
+        var data = {
+            publicationId: id,
+            userId: $scope.user.id,
+            del: 'true'
+        };
+
+        $http.post('/ayudaresfacil/api/request', data)
+            .success(function(response) {
+                $scope.error = false;
+            })
+            .error(function(response) {
+                $scope.error = true;
+                $scope.credentials = {};
+            });
+        $state.go('web.requestList');
     };
 })
 

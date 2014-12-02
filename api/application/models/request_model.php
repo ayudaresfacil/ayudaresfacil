@@ -15,7 +15,9 @@ class Request_model extends CI_Model
 	}
 
 	public function getByIdAndUserLog($id, $userLog){	
-		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userLog .' AND publication_id = '. $id .') then 1 else 0 end as isFavorite, case when exists (SELECT * FROM publication_vote WHERE user_id = '. $userLog .' AND publication_id = '. $id .') then 1 else 0 end as isVote');	
+		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userLog .' AND publication_id = '. $id .') then 1 else 0 end as isFavorite, 
+			case when exists (SELECT * FROM publication_vote WHERE user_id = '. $userLog .' AND publication_id = '. $id .') then 1 else 0 end as isVote,
+			case when publication.user_id = '. $userLog .' then 1 else 0 end as isOwner');	
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');

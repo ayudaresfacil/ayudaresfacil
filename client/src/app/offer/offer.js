@@ -109,13 +109,13 @@ angular.module('AyudarEsFacilApp.offer', [
     }
 ])
 
-.controller('OfferCtrl', function OfferCtrl($scope, $http, Offers, $stateParams, Authentication) {
+.controller('OfferCtrl', function OfferCtrl($scope, $http, Offers, $state, $stateParams, Authentication) {
     $scope.myInterval = 5000;
     $scope.user = Authentication.user;
 
     var offers = new Offers();
 
-    if ($stateParams.id === undefined) {
+    if ($stateParams.id === undefined || $stateParams.id === null) {
         if (Authentication.user === null) {
             offers.$get(function(response) {
                 $scope.offers = offers.data;
@@ -189,6 +189,23 @@ angular.module('AyudarEsFacilApp.offer', [
             });
     };
 
+    $scope.offerDelete = function(id) {
+        var data = {
+            publicationId: id,
+            userId: $scope.user.id,
+            del: 'true'
+        };
+
+        $http.post('/ayudaresfacil/api/offer', data)
+            .success(function(response) {
+                $scope.error = false;
+            })
+            .error(function(response) {
+                $scope.error = true;
+                $scope.credentials = {};
+            });
+        $state.go('web.offerList');
+    };
 })
 
 .controller('CreateOfferCtrl', function CreateOfferCtrl($scope, $http, $location, $stateParams, $state, Offers, Category, Subcategory, Authentication) {

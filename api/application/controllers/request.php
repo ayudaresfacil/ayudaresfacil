@@ -61,47 +61,60 @@ class Request extends REST_Controller{
 		$return["result"] = "NOOK";
 
 		$arrOptions['publicationId'] = ($this->post('publicationId') > 0) ? $this->post('publicationId') : 0;
-		$arrOptions['user'] = $this->post('userId');
-		$arrOptions['type'] = '2';
-		$arrOptions['creationDate'] = $this->post('creationDate');
-		$arrOptions['title'] = $this->post('title');
-		$arrOptions['description'] = $this->post('description');
-		$arrOptions['expirationDate'] = $this->post('expirationDate');
-		$arrOptions['category'] = $this->post('categoryId');
-		$arrOptions['subcategory'] = $this->post('subcategoryId');
-		$arrOptions['views'] = $this->post('views');
-		$arrOptions['processState'] = $this->post('processStateId');
-		$arrOptions['object'] = $this->post('objectId');
-		$arrOptions['quantity'] = $this->post('quantity');
-		$arrOptions['path'] = $this->post('path');
-		$arrOptions['votes'] = $this->post('votes');
-		$arrOptions['sponsors'] = $this->post('sponsors');
 
-		if($arrOptions['publicationId'] > 0){
-			$request = CI_Request::getById($arrOptions['publicationId']);
-			if ($request <> NULL) {
-				$request = CI_Request::getDataFromArray($arrOptions);
-			}						
+		if ($this->post('del') == 'true') {
+			if($arrOptions['publicationId'] > 0){
+				$offer = CI_Request::getById($arrOptions['publicationId']);
+				if(CI_Request::delete($offer[0])){
+					$status = 200;
+					$return["result"] = "OK";
+				}
+			}
 		}else{
-			$request = CI_Request::getDataFromArray($arrOptions);
-		}
 
-		if ($request <> NULL) {
-			$arrInfo['user'] = $arrOptions['user'];
-			$arrInfo['type'] = $arrOptions['type'];
-			$arrInfo['path'] = $arrOptions['path'];
-			$arrInfo['sponsors'] = $arrOptions['sponsors'];
-			$arrInfo['request'] = $request;
+			$arrOptions['publicationId'] = ($this->post('publicationId') > 0) ? $this->post('publicationId') : 0;
+			$arrOptions['user'] = $this->post('userId');
+			$arrOptions['type'] = '2';
+			$arrOptions['creationDate'] = $this->post('creationDate');
+			$arrOptions['title'] = $this->post('title');
+			$arrOptions['description'] = $this->post('description');
+			$arrOptions['expirationDate'] = $this->post('expirationDate');
+			$arrOptions['category'] = $this->post('categoryId');
+			$arrOptions['subcategory'] = $this->post('subcategoryId');
+			$arrOptions['views'] = $this->post('views');
+			$arrOptions['processState'] = $this->post('processStateId');
+			$arrOptions['object'] = $this->post('objectId');
+			$arrOptions['quantity'] = $this->post('quantity');
+			$arrOptions['path'] = $this->post('path');
+			$arrOptions['votes'] = $this->post('votes');
+			$arrOptions['sponsors'] = $this->post('sponsors');
 
-			$id = CI_Request::save($arrInfo);
+			if($arrOptions['publicationId'] > 0){
+				$request = CI_Request::getById($arrOptions['publicationId']);
+				if ($request <> NULL) {
+					$request = CI_Request::getDataFromArray($arrOptions);
+				}						
+			}else{
+				$request = CI_Request::getDataFromArray($arrOptions);
+			}
 
-			if($id <> NULL){
-				$status = 200;
-				$return["result"] = "OK";
-				$return["data"] = "";			
-				$return["publicationId"] = $id;
-				$myRequest = CI_Request::getData($request);	
-				$return["data"] = $myRequest;
+			if ($request <> NULL) {
+				$arrInfo['user'] = $arrOptions['user'];
+				$arrInfo['type'] = $arrOptions['type'];
+				$arrInfo['path'] = $arrOptions['path'];
+				$arrInfo['sponsors'] = $arrOptions['sponsors'];
+				$arrInfo['request'] = $request;
+
+				$id = CI_Request::save($arrInfo);
+
+				if($id <> NULL){
+					$status = 200;
+					$return["result"] = "OK";
+					$return["data"] = "";			
+					$return["publicationId"] = $id;
+					$myRequest = CI_Request::getData($request);	
+					$return["data"] = $myRequest;
+				}
 			}
 		}
 		$this->response($return, $status);

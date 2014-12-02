@@ -3,46 +3,49 @@
 </h1>
 
 <ol class="breadcrumb default square rsaquo sm">
-	<li>
-		<a href="index.html"><i class="fa fa-home"></i></a>
-	</li>
-	<li>
-		<a href="index.html#/ofrecimientos">Ofrecimientos</a>
-	</li>
-	<li class="active">Ver Detalle</li>
+    <li>
+        <a href="index.html"><i class="fa fa-home"></i></a>
+    </li>
+    <li>
+        <a href="index.html#/ofrecimientos">Ofrecimientos</a>
+    </li>
+    <li class="active">Ver Detalle</li>
 </ol>
 
 <div class="the-box no-border" ng-repeat="offer in offers">
-	<div class="row">
-		<div class="jumbotron jumbotron-sm text-center">
-			<h2>{{offer.title}}</h2>
-		</div>	
-		<div class="col-md-4">		
-			<carousel interval="myInterval" style="height:350px">
-				<slide ng-repeat="slide in offer.image" active="slide.active">
-					<img ng-src="{{slide.path}}" style="margin:auto;">
-				</slide>
-			</carousel>
-		</div>
-		<div div class="col-md-8 panel panel-danger panel-square panel-no-border" >
-			<div class="panel-heading">
-				<h4 class="panel-title">
+    <div class="row">
+        <div class="jumbotron jumbotron-sm text-center">
+            <h2>{{offer.title}}
+            <button ng-if="offer.isOwner == '1'" ng-click="offerDelete(offer.id)" class="btn btn-danger pull-right">
+                <i class="glyphicon glyphicon-remove"></i>Dar de baja
+            </button></h2>
+        </div>
+        <div class="col-md-4">
+            <carousel interval="myInterval" style="height:350px">
+                <slide ng-repeat="slide in offer.image" active="slide.active">
+                    <img ng-src="{{slide.path}}" style="margin:auto;">
+                </slide>
+            </carousel>
+        </div>
+        <div class="col-md-8 panel panel-danger panel-square panel-no-border">
+            <div class="panel-heading">
+                <h4 class="panel-title">
 					Se necesita {{offer.object.description}}</h4>
-				</div>
-				<div class="panel-body">
-					<p style="height:150px">				
-						{{offer.description}}
-					</p>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<hr/>
-			<p class="text-center">
-				<a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processStateOffer.id == 'V' " class="btn btn-info btn-lg"><span class="glyphicon glyphicon-ok"></span> Lo necesito </a>
-				<button ng-if="offer.processStateOffer.id == 'P' " class="btn btn-danger btn-lg disabled"><span class="glyphicon glyphicon-ban-circle"></span> Publicación Pausada </button>
-				<button ng-if="offer.isFavorite == '0'" ng-click="setFavorite(offer.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
-				<button ng-if="offer.isFavorite == '1'" ng-click="unsetFavorite(offer.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>	
-			</p>
-		</div>
-	</div>
+            </div>
+            <div class="panel-body">
+                <p style="height:150px">
+                    {{offer.description}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <hr/>
+        <p class="text-center">
+            <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processStateOffer.id == 'V' " class="btn btn-info btn-lg"><span class="glyphicon glyphicon-ok"></span> Lo necesito </a>
+            <button ng-if="offer.processStateOffer.id == 'P' " class="btn btn-danger btn-lg disabled"><span class="glyphicon glyphicon-ban-circle"></span> Publicación Pausada </button>
+            <button ng-if="offer.isFavorite == '0'" ng-click="setFavorite(offer.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
+            <button ng-if="offer.isFavorite == '1'" ng-click="unsetFavorite(offer.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
+        </p>
+    </div>
+</div>

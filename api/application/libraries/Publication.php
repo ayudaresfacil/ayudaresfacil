@@ -14,6 +14,7 @@ class CI_Publication {
 	private $expirationDate;
 	private $image;
 	private $isFavorite;
+	private $isOwner;
 
 	public function getId() {return $this->id;}
 	
@@ -102,6 +103,9 @@ class CI_Publication {
 	public function getIsFavorite(){return $this->isFavorite;}
 	public function setIsFavorite($isFavorite){$this->isFavorite = $isFavorite;}
 
+	public function getIsOwner(){return $this->isOwner;}
+	public function setIsOwner($isOwner){$this->isOwner = $isOwner;}
+
 	/**
 	 * Devuelve la informacion cargada del objeto 
 	 * Uso interno
@@ -128,6 +132,11 @@ class CI_Publication {
 		if (isset($options["isFavorite"])) {
 			$publication->isFavorite = $options["isFavorite"];			
 		}
+
+		if (isset($options["isOwner"])) {
+			$publication->isOwner = $options["isOwner"];			
+		}
+		
 		return $publication;
 	}
 
@@ -149,6 +158,9 @@ class CI_Publication {
 		$publication->expirationDate = $options->expirationDate;
 		if (isset($options->isFavorite)) {
 			$publication->isFavorite = $options->isFavorite;			
+		}
+		if (isset($options->isOwner)) {
+			$publication->isOwner = $options->isOwner;			
 		}
 		return $publication;
 	}
@@ -172,6 +184,9 @@ class CI_Publication {
 		$publication->image = (isset($row->publication_id)) ? CI_Image::getByPublicationId($row->publication_id) : '';
 		if (isset($row->isFavorite)) {
 			$publication->isFavorite = (isset($row->isFavorite)) ? $row->isFavorite : '';
+		}
+		if (isset($row->isOwner)) {
+			$publication->isOwner = (isset($row->isOwner)) ? $row->isOwner : '';
 		}
 		return $publication;
 	}
