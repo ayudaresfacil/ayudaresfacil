@@ -190,21 +190,29 @@ angular.module('AyudarEsFacilApp.offer', [
     };
 
     $scope.offerDelete = function(id) {
-        var data = {
-            publicationId: id,
-            userId: $scope.user.id,
-            del: 'true'
-        };
+        var retVal = confirm("Seguro que quieres dar de baja la publicación?");
 
-        $http.post('/ayudaresfacil/api/offer', data)
-            .success(function(response) {
-                $scope.error = false;
-            })
-            .error(function(response) {
-                $scope.error = true;
-                $scope.credentials = {};
-            });
-        $state.go('web.offerList');
+        if (retVal === true) {
+            var data = {
+                publicationId: id,
+                userId: $scope.user.id,
+                del: 'true'
+            };
+
+            $http.post('/ayudaresfacil/api/offer', data)
+                .success(function(response) {
+                    $scope.error = false;
+                })
+                .error(function(response) {
+                    $scope.error = true;
+                    $scope.credentials = {};
+                });
+            $state.go('web.offerList');
+
+            return true;
+        } else {
+            return false;
+        }
     };
 })
 
