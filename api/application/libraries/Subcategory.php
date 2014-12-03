@@ -59,11 +59,11 @@ class CI_Subcategory{
 		return $return;
 	}
 	
-	public static function getById($id)
+	public static function getById($categoryId, $id)
 	{
 		$CI = & get_instance();
 		$CI->load->model('subcategory_model');
-		$results = $CI->subcategory_model->getById($id);
+		$results = $CI->subcategory_model->getById($categoryId, $id);
 		$return = array();
 		if(!empty($results)){
 			foreach($results as $result) {

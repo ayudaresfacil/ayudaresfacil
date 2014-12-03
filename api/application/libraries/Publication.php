@@ -121,7 +121,7 @@ class CI_Publication {
 		$publication->title = $options["title"];
 		$publication->description = $options["description"];
 		$publication->category = CI_Category::getById($options["category"]);
-		$publication->subcategory = CI_Subcategory::getById($options["subcategory"]);
+		$publication->subcategory = CI_Subcategory::getById($options["category"], $options["subcategory"]);
 		$publication->object = CI_Object::getById($options["object"]);
 		$publication->quantity = $options["quantity"];
 		$publication->views = $options["views"];
@@ -174,7 +174,7 @@ class CI_Publication {
 		$publication->title = (isset($row->title)) ? $row->title : '';
 		$publication->description = (isset($row->description)) ? $row->description : '';
 		$publication->category = (isset($row->category_id)) ? CI_Category::getById($row->category_id) : '';
-		$publication->subcategory = (isset($row->subcategory_id)) ? CI_Subcategory::getById($row->subcategory_id) : '';
+		$publication->subcategory = (isset($row->subcategory_id)) ? CI_Subcategory::getById($row->category_id, $row->subcategory_id) : '';
 		$publication->object = (isset($row->object_id)) ? CI_Object::getById($row->object_id) : '';
 		$publication->quantity = (isset($row->quantity)) ? $row->quantity : '';
 		$publication->views = (isset($row->views)) ? $row->views : '';

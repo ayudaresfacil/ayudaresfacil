@@ -35,6 +35,14 @@ angular.module('AyudarEsFacilApp.offer', [
             pageTitle: 'Ofrecimientos'
         }
     });
+    $stateProvider.state('panel.offerEdit', {
+        url: '/editar-ofrecimiento/:id',
+        controller: 'OfferCtrl',
+        templateUrl: 'offer/offer-edit.tpl.html',
+        data: {
+            pageTitle: 'Editar Ofrecimiento'
+        }
+    });
 
     //Set the httpProvider "not authorized" interceptor
     $httpProvider.interceptors.push(['$q', '$location', 'Authentication',
@@ -82,6 +90,9 @@ angular.module('AyudarEsFacilApp.offer', [
         }, {}, {
             update: {
                 method: 'PUT'
+            },
+            remove: {
+                method: 'DELETE'
             }
         });
     }
@@ -112,6 +123,7 @@ angular.module('AyudarEsFacilApp.offer', [
 .controller('OfferCtrl', function OfferCtrl($scope, $http, Offers, $state, $stateParams, Authentication) {
     $scope.myInterval = 5000;
     $scope.user = Authentication.user;
+    $scope.btnText = 'Publicar';
 
     var offers = new Offers();
 
@@ -143,6 +155,78 @@ angular.module('AyudarEsFacilApp.offer', [
             });
         }
     }
+
+    $scope.getCategories = function() {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/category'
+        }).success(function(response) {
+            $scope.categories = response.data;
+            $scope.subcategories = null;
+            $scope.objects = null;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.getSubcategories = function(categoryId) {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/subcategory',
+            params: {
+                categoryId: categoryId
+            }
+        }).success(function(response) {
+            $scope.subcategories = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.getObjects = function(subcategoryId) {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/object',
+            params: {
+                subcategoryId: subcategoryId
+            }
+        }).success(function(response) {
+            $scope.objects = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.submitFormEdit = function(isValid) {
+        if (isValid) {
+            var offer = new Offers($scope.offers[0]);
+            offer.publicationId = $stateParams.id;
+            offer.userId = Authentication.user.id;
+
+            $scope.btnText = ' Guardando....';
+            offer.$save(offer,
+                function(response) {
+                    $scope.status = 'SUCCESS';
+                    $scope.btnText = 'Publicar';
+                    var retVal = confirm("Las modificaciones se han guardado con éxito");
+
+                    if (retVal === true) {
+                        $state.go("panel.offerListUser");
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                function(error) {
+                    $scope.status = 'ERROR';
+                    $scope.error = error;
+                    $scope.btnText = 'Publicar';
+                });
+        }
+    };
 
     $scope.setFavorite = function(id) {
         var data = {
@@ -195,28 +279,27 @@ angular.module('AyudarEsFacilApp.offer', [
         if (retVal === true) {
             var data = {
                 publicationId: id,
-                userId: $scope.user.id,
-                del: 'true'
+                userId: $scope.user.id
             };
 
-            $http.post('/ayudaresfacil/api/offer', data)
+            $http.post('/ayudaresfacil/api/offer/delete', data)
                 .success(function(response) {
                     $scope.error = false;
-                })
-                .error(function(response) {
+                    $state.go('panel.offerListUser');
+                }).error(function(response) {
                     $scope.error = true;
-                    $scope.credentials = {};
                 });
-            $state.go('web.offerList');
 
             return true;
         } else {
             return false;
         }
     };
+
+    $scope.getCategories();
 })
 
-.controller('CreateOfferCtrl', function CreateOfferCtrl($scope, $http, $location, $stateParams, $state, Offers, Category, Subcategory, Authentication) {
+.controller('CreateOfferCtrl', function CreateOfferCtrl($scope, $http, $location, $stateParams, $state, Offers, Authentication) {
 
     // If user is not signed in then redirect back home
     /* if (!$scope.user) {
@@ -227,16 +310,8 @@ angular.module('AyudarEsFacilApp.offer', [
     $scope.btnText = 'Publicar';
     $scope.msgSuccess = '0';
 
-    var categories = new Category();
-    var subcategories = new Subcategory();
     var date = new Date();
     var offers = new Offers();
-
-    categories.$get(function(response) {
-        $scope.categories = categories.data;
-        $scope.subcategories = null;
-        $scope.objects = null;
-    });
 
     $scope.submitForm = function(isValid) {
         if (isValid) {
@@ -316,6 +391,18 @@ angular.module('AyudarEsFacilApp.offer', [
             });
     };
 
+    $scope.getCategories = function() {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/category'
+        }).success(function(response) {
+            $scope.categories = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
     $scope.getSubcategories = function(categoryId) {
         $http({
             method: 'GET',
@@ -369,5 +456,6 @@ angular.module('AyudarEsFacilApp.offer', [
     };
 
     $scope.offersUser();
+    $scope.getCategories();
 
 });

@@ -9,10 +9,11 @@ class Subcategory_model extends CI_Model
 		return $query->result();
 	}
 	
-	public function getById($id){
+	public function getById($categoryId, $id){
 		$this->db->select('*');	
 		$this->db->from('publication_subcategory');
 		$this->db->where('subcategory_id',$id);
+		$this->db->where('category_id',$categoryId);
 		$query = $this->db->get();
 		return $query->result();
 	}

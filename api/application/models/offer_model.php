@@ -7,7 +7,7 @@ class Offer_model extends CI_Model
 		$this->db->from('publication');
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');
+		// $this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');
 		$this->db->group_by('publication.publication_id');
 		$this->db->where('publication.publication_id', $id);	
 		$query = $this->db->get();
@@ -20,7 +20,6 @@ class Offer_model extends CI_Model
 		$this->db->from('publication');
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');
 		$this->db->group_by('publication.publication_id');
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.expiration_date > current_timestamp');
@@ -34,8 +33,8 @@ class Offer_model extends CI_Model
 		$this->db->from('publication');
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');
 		$this->db->group_by('publication.publication_id');
+		$this->db->order_by("publication.creation_date","desc");	
 		$this->db->where('publication.user_id', $userId);	
 		$query = $this->db->get();
 		return $query->result();
@@ -49,12 +48,12 @@ class Offer_model extends CI_Model
 		$object = $offer->object;
 		$processStateOffer = $offer->processStateOffer;
 		$type = $offer->type;
+		// $images = $arrInfo["image"];
 
 		$this->db->trans_start();
 		$data = array 	(
 							'user_id' => $arrInfo['user'],
 							'publication_type_id' => $arrInfo['type'],
-							'creation_date' => $offer->creationDate,
 							'title' => $offer->title,
 							'description' => $offer->description,
 							'expiration_date' => $offer->expirationDate,
@@ -74,16 +73,17 @@ class Offer_model extends CI_Model
 		$data = array 	(
 							'publication_id' => $id,
 							'process_state_offer' => $processStateOffer->id,
-							'offer_type_id' => $type->id,
-							'quantity_users_to_paused' => $offer->quantityUsersToPaused,
+							'offer_type_id' => 3,
+							'quantity_users_to_paused' => 1,
 						);
 		$this->db->insert('publication_offer', $data);
-		$data = array 	(
-			'publication_id' => $id,
-			'path' => $arrInfo['path'],
-			);
-		$this->db->insert('publication_image', $data);	
-		
+		// foreach ($images as $image){
+			$data = array 	(
+				'publication_id' => $id,
+				'path' => $arrInfo["image"],
+				);
+			$this->db->insert('publication_image', $data);	
+		// };			
 		$this->db->trans_complete();
 
 		if ($this->db->trans_status() === FALSE){
@@ -93,41 +93,39 @@ class Offer_model extends CI_Model
 		return $id;
 	}
 
-	public function update($options){
-		$category = $options->category;
-		$subcategory = $options->subcategory;
-		$processState = $options->processState;
-		$object = $options->object;
-		$processStateOffer = $options->processStateOffer;
-		$type = $options->type;
+	public function update($arrInfo){
+		$offer = $arrInfo['offer'];
+		$category = $offer->category;
+		$subcategory = $offer->subcategory;
+		$processState = $offer->processState;
+		$object = $offer->object;
+		$processStateOffer = $offer->processStateOffer;
+		$images = $arrInfo["image"];
 
 		$this->db->trans_start();
 		$data = array 	(
-							'creation_date' => $options->creationDate,
-							'title' => $options->title,
-							'description' => $options->description,
-							'expiration_date' => $options->expirationDate,
+							'title' => $offer->title,
+							'description' => $offer->description,
+							'expiration_date' => $offer->expirationDate,
 							'category_id' => $category->id,
-							'subcategory_id' => $subcategory->id,
-							'views' => $options->views,
-							'process_state_id' => $processState->id,
+							'subcategory_id' => $subcategory->id
 						);
-		$this->db->where('publication_id', $options->id);
+		$this->db->where('publication_id', $offer->id);
 		$this->db->update('publication', $data);
 		$data = array 	(
 							'object_id' => $object->id,
-							'quantity' => $options->quantity,
+							'quantity' => $offer->quantity,
 						);
-		$this->db->where('publication_id', $options->id);
+		$this->db->where('publication_id', $offer->id);
 		$this->db->update('publication_object', $data);
-		$data = array 	(
-							'process_state_offer' => $processStateOffer->id,
-							'offer_type_id' => $type->id,
-							'quantity_users_to_paused' => $options->quantityUsersToPaused,
-							);
-		$this->db->where('publication_id', $options->id);
-		$this->db->update('publication_offer', $data);
-		
+		foreach ($images as $image){
+			$data = array 	(
+				'publication_id' => $offer->id,
+				'path' => $image["path"],
+				);
+			$this->db->where('image_id', $image["id"]);	
+			$this->db->update('publication_image', $data);	
+		};					
 		$this->db->trans_complete();
 
 		if ($this->db->trans_status() === FALSE){
@@ -156,10 +154,10 @@ class Offer_model extends CI_Model
 		$this->db->from('publication');
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->where('publication.user_id', $userId);
-		$this->db->order_by("publication.creation_date","desc");	
+		$this->db->where('publication.user_id', $userId);	
 		$this->db->where('publication.process_state_id <> "B"');
 		$this->db->where('publication.expiration_date > current_timestamp');
+		$this->db->order_by("publication.creation_date","desc");
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -169,8 +167,8 @@ class Offer_model extends CI_Model
 		$this->db->from('publication');
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');
 		$this->db->group_by('publication.publication_id');
+		$this->db->order_by("publication.creation_date","desc");	
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
@@ -182,8 +180,8 @@ class Offer_model extends CI_Model
 		$this->db->from('publication');
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');
 		$this->db->group_by('publication.publication_id');
+		$this->db->order_by("publication.creation_date","desc");	
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();

@@ -114,7 +114,7 @@ class CI_Offer extends CI_Publication {
 		$id = ' ';
 		if(isset($offer->id) && $offer->id > 0){
 			$id = $offer->id;
-			$CI->offer_model->update($arrInfo["offer"]);
+			$CI->offer_model->update($arrInfo);
 		}else{
 			$id = $CI->offer_model->create($arrInfo);
 		}

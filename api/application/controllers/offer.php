@@ -40,6 +40,7 @@ class Offer extends REST_Controller {
 			$offers = CI_Offer::getCurrentOffers();
 		}
 
+		// ma($offers);
 		if($offers){
 			$status = 200;
 			$return["result"] = "OK";
@@ -56,76 +57,55 @@ class Offer extends REST_Controller {
 	public function index_post(){
 		
 		// checkIsLoggedIn($this);
-
 		$status = 404;
 		$return["result"] = "NOOK";
-
 		$arrOptions['publicationId'] = ($this->post('publicationId') > 0) ? $this->post('publicationId') : 0;
 
-		if ($this->post('del') == 'true') {
-			if($arrOptions['publicationId'] > 0){
-				$offer = CI_Offer::getById($arrOptions['publicationId']);
-				if(CI_Offer::delete($offer[0])){
-					$status = 200;
-					$return["result"] = "OK";
-				}
-			}
-		}else{
-			$arrOptions['user'] = $this->post('userId');
-			$arrOptions['type'] = '1';
-			$arrOptions['creationDate'] = $this->post('creationDate');
-			$arrOptions['title'] = $this->post('title');
-			$arrOptions['description'] = $this->post('description');
-			$arrOptions['expirationDate'] = $this->post('expirationDate');
-			$arrOptions['category'] = $this->post('categoryId');
-			$arrOptions['subcategory'] = $this->post('subcategoryId');
-			$arrOptions['views'] = $this->post('views');
-			$arrOptions['processState'] = $this->post('processStateId');
-			$arrOptions['object'] = $this->post('objectId');
-			$arrOptions['quantity'] = $this->post('quantity');
-			$arrOptions['processStateIdOffer'] = $this->post('processStateIdOffer');
-			$arrOptions['offerTypeId'] = '3';
-			$arrOptions['quantityUsersToPaused'] = '1';
-			$arrOptions['path'] = $this->post('path');
+		$arrOptions['user'] = $this->post('userId');
+		$arrOptions['type'] = '1';
+		$arrOptions['creationDate'] = $this->post('creationDate');
+		$arrOptions['title'] = $this->post('title');
+		$arrOptions['description'] = $this->post('description');
+		$arrOptions['expirationDate'] = $this->post('expirationDate');
+		$arrOptions['category'] = $this->post('categoryId');
+		$arrOptions['subcategory'] = $this->post('subcategoryId');
+		$arrOptions['views'] = $this->post('views');
+		$arrOptions['processState'] = $this->post('processStateId');
+		$arrOptions['object'] = $this->post('objectId');
+		$arrOptions['quantity'] = $this->post('quantity');
+		$arrOptions['processStateIdOffer'] = $this->post('processStateIdOffer');
+		$arrOptions['offerTypeId'] = '3';
+		$arrOptions['quantityUsersToPaused'] = '1';
+		$arrOptions['image'] = $this->post('image');
 
-			if($arrOptions['publicationId'] > 0){
-				$offer = CI_Offer::getById($arrOptions['publicationId']);
-				if ($offer <> NULL) {
-					$offer = CI_Offer::getDataFromArray($arrOptions);
-				}						
-			}else{
-				$offer = CI_Offer::getDataFromArray($arrOptions);
-			}
+		$offer = CI_Offer::getDataFromArray($arrOptions);
 
-			if ($offer <> NULL) {
-				$arrInfo['user'] = $arrOptions['user'];
-				$arrInfo['type'] = $arrOptions['type'];
-				$arrInfo['path'] = $arrOptions['path'];
-				$arrInfo['offer'] = $offer;
-
-				$id = CI_Offer::save($arrInfo);
-
-				if($id <> NULL){
-					$status = 200;
-					$return["result"] = "OK";
-					$return["data"] = "";			
-					$return["publicationId"] = $id;
-					$myOffer = CI_Offer::getData($offer);	
-					$return["data"] = $myOffer;
-				}
+		if ($offer <> NULL) {
+			$arrInfo['user'] = $arrOptions['user'];
+			$arrInfo['type'] = $arrOptions['type'];
+			$arrInfo['image'] = $arrOptions['image'];
+			$arrInfo['offer'] = $offer;
+			
+			$id = CI_Offer::save($arrInfo);
+			if($id <> NULL){
+				$status = 200;
+				$return["result"] = "OK";
+				$return["data"] = "";			
+				$return["publicationId"] = $id;
+				$myOffer = CI_Offer::getData($offer);	
+				$return["data"] = $myOffer;
 			}
 		}
 		$this->response($return, $status);
 	}
 
-	public function index_delete(){
-
+	public function delete_post(){
 		// checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["data"] = "";
 		$return["result"] = "NOOK";
-		$publicationId = ($this->delete('publicationId') > 0) ? $this->delete('publicationId') :0;
+		$publicationId = ($this->post('publicationId') > 0) ? $this->post('publicationId') :0;
 
 		if($publicationId > 0){
 			$offer = CI_Offer::getById($publicationId);
