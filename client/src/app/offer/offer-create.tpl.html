@@ -72,9 +72,8 @@
 
                 <div class="form-group">
                     <label>Imagenes</label>
-                    <input type="text" class="form-control input-md" name="path" ng-model="offer.image" ng-required="true">
+                    <input type="text" class="form-control input-md" name="path" ng-file-select="onFileSelect($files)" ng-model="offer.image" ng-required="true">
                 </div>
-                <!--<input type="file" ng-model="offer.fname" ng-file-select="onFileSelect($files)" >-->
             </div>
 
             <div class="row">

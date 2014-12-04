@@ -20,7 +20,6 @@ class Request_model extends CI_Model
 			case when publication.user_id = '. $userLog .' then 1 else 0 end as isOwner');	
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');
 		$this->db->group_by('publication.publication_id');
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.process_state_id <>', 'B');
@@ -79,6 +78,7 @@ class Request_model extends CI_Model
 	}
 
 	public function create($arrInfo){
+		ma($arrInfo);
 		$request = $arrInfo['request'];
 		$category = $request->category;
 		$subcategory = $request->subcategory;
@@ -107,11 +107,11 @@ class Request_model extends CI_Model
 			'quantity' => $request->quantity,
 			);
 		$this->db->insert('publication_object', $data);	
-		$data = array 	(
-			'publication_id' => $id,
-			'path' => $arrInfo['path'],
-			);
-		$this->db->insert('publication_image', $data);	
+			$data = array 	(
+				'publication_id' => $id,
+				'path' => $arrInfo["image"],
+				);
+			$this->db->insert('publication_image', $data);	
 		foreach ($sponsors as $sponsor){
 			$data = array 	(
 				'publication_id' => $id,
@@ -128,31 +128,74 @@ class Request_model extends CI_Model
 		return $id;
 	}
 
-	public function update($options){
-		$category = $options->category;
-		$subcategory = $options->subcategory;
-		$processState = $options->processState;
-		$object = $options->object;
+	public function deleteSponsor($sponsorDel){
+		$this->db->trans_start();
+		foreach ($sponsorDel as $sponsor){
+			$this->db->where('sponsor_id', $sponsor["sponsorId"]);
+			$this->db->delete('publication_sponsor');
+			$this->db->trans_complete();
+		}
+		if ($this->db->trans_status() === FALSE){
+			$sponsorId = null;
+			log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+		}
+		return TRUE;
+	}
+
+	public function update($arrInfo){
+		$request = $arrInfo['request'];
+		$category = $request->category;
+		$subcategory = $request->subcategory;
+		$processState = $request->processState;
+		$object = $request->object;
+		$images = $arrInfo["image"];
+		$sponsors = $arrInfo["sponsors"];
+		$sponsorsn = $arrInfo["sponsorsn"];
 
 		$this->db->trans_start();
 		$data = array 	(
-			'creation_date' => $options->creationDate,
-			'title' => $options->title,
-			'description' => $options->description,
-			'expiration_date' => $options->expirationDate,
+			'title' => $request->title,
+			'description' => $request->description,
+			'expiration_date' => $request->expirationDate,
 			'category_id' => $category->id,
-			'subcategory_id' => $subcategory->id,
-			'views' => $options->views,
-			'process_state_id' => $processState->id,
+			'subcategory_id' => $subcategory->id
 			);
-		$this->db->where('publication_id', $options->id);
+		$this->db->where('publication_id', $request->id);
 		$this->db->update('publication', $data);
 		$data = array 	(
 			'object_id' => $object->id,
-			'quantity' => $options->quantity,
+			'quantity' => $request->quantity,
 			);
-		$this->db->where('publication_id', $options->id);
+		$this->db->where('publication_id', $request->id);
 		$this->db->update('publication_object', $data);		
+		foreach ($images as $image){
+			$data = array 	(
+				'publication_id' => $request->id,
+				'path' => $image["path"],
+				);
+			$this->db->where('image_id', $image["id"]);	
+			$this->db->update('publication_image', $data);	
+		};				
+		foreach ($sponsors as $sponsor){
+			if (empty($sponsor['userTw'])) {
+				$this->db->where('sponsor_id', $sponsor["id"]);
+				$this->db->delete('publication_sponsor');
+			}else{
+				$data = array 	(
+					'publication_id' => $request->id,
+					'user_tw' => $sponsor['userTw'],
+					);
+				$this->db->where('sponsor_id', $sponsor["id"]);	
+				$this->db->update('publication_sponsor', $data);
+			}
+		};			
+		foreach ($sponsorsn as $sponsorn){
+			$data = array 	(
+				'publication_id' => $request->id,
+				'user_tw' => $sponsorn['label'],
+				);
+			$this->db->insert('publication_sponsor', $data);
+		};		
 		$this->db->trans_complete();
 
 		if ($this->db->trans_status() === FALSE){
@@ -297,7 +340,7 @@ class Request_model extends CI_Model
 		$this->db->from('publication_vote');
 		$this->db->where('publication_vote.publication_id', $publicationId);
 		$query = $this->db->get();
-		return $query->result();
+		return $query->result(); 
 	}
 
 	public function setSponsor($data){

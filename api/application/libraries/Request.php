@@ -106,9 +106,10 @@ class CI_Request extends CI_Publication {
 		$CI =& get_instance();
 		$CI->load->model('request_model');
 		$id = ' ';
+		ma($arrInfo);
 		if(isset($request->id) && $request->id > 0){
 			$id = $request->id;
-			$CI->request_model->update($arrInfo["request"]);
+			$CI->request_model->update($arrInfo);
 		}else{
 			$id = $CI->request_model->create($arrInfo);
 		}
@@ -311,6 +312,13 @@ class CI_Request extends CI_Publication {
 				$return[] = $sponsor;
 			}
 		}
+		return $return;
+	}
+
+	public static function deleteSponsor($sponsorDel){
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+		$return = $CI->request_model->deleteSponsor($sponsorDel);
 		return $return;
 	}
 

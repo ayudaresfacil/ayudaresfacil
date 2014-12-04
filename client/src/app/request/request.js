@@ -35,6 +35,14 @@ angular.module('AyudarEsFacilApp.request', [
             pageTitle: 'Pedidos'
         }
     });
+    $stateProvider.state('panel.requestEdit', {
+        url: '/editar-pedido/:id',
+        controller: 'RequestCtrl',
+        templateUrl: 'request/request-edit.tpl.html',
+        data: {
+            pageTitle: 'Editar Pedido'
+        }
+    });
 
     //Set the httpProvider "not authorized" interceptor
     $httpProvider.interceptors.push(['$q', '$location', 'Authentication',
@@ -87,31 +95,12 @@ angular.module('AyudarEsFacilApp.request', [
     }
 ])
 
-.factory('Category', ['$resource',
-    function($resource) {
-        return $resource('http://localhost/ayudaresfacil/api/category', {}, {
-            update: {
-                method: 'PUT'
-            }
-        });
-    }
-])
-
-.factory('Subcategory', ['$resource',
-    function($resource) {
-        return $resource('http://localhost/ayudaresfacil/api/subcategory', {
-            categoryId: '@id'
-        }, {}, {
-            update: {
-                method: 'PUT'
-            }
-        });
-    }
-])
-
 .controller('RequestCtrl', function RequestCtrl($scope, $http, Request, $state, $location, $stateParams, Authentication) {
     $scope.myInterval = 5000;
     $scope.user = Authentication.user;
+    $scope.btnText = 'Publicar';
+    $scope.likedLabels = [];
+    $scope.sponsorDel = [];
 
     var requests = new Request();
 
@@ -143,6 +132,79 @@ angular.module('AyudarEsFacilApp.request', [
             });
         }
     }
+
+    $scope.getCategories = function() {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/category'
+        }).success(function(response) {
+            $scope.categories = response.data;
+            $scope.subcategories = null;
+            $scope.objects = null;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.getSubcategories = function(categoryId) {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/subcategory',
+            params: {
+                categoryId: categoryId
+            }
+        }).success(function(response) {
+            $scope.subcategories = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.getObjects = function(subcategoryId) {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/object',
+            params: {
+                subcategoryId: subcategoryId
+            }
+        }).success(function(response) {
+            $scope.objects = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.submitFormEdit = function(isValid) {
+        if (isValid) {
+            var request = new Request($scope.requests[0]);
+            request.publicationId = $stateParams.id;
+            request.userId = Authentication.user.id;
+            request.sponsorsn = $scope.likedLabels;
+
+            $scope.btnText = ' Guardando....';
+            request.$save(request,
+                function(response) {
+                    $scope.status = 'SUCCESS';
+                    $scope.btnText = 'Publicar';
+                    var retVal = confirm("Las modificaciones se han guardado con éxito");
+
+                    if (retVal === true) {
+                        $state.go("panel.requestListUser");
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                function(error) {
+                    $scope.status = 'ERROR';
+                    $scope.error = error;
+                    $scope.btnText = 'Publicar';
+                });
+        }
+    };
 
     $scope.setFavorite = function(id) {
         var data = {
@@ -244,24 +306,46 @@ angular.module('AyudarEsFacilApp.request', [
                 del: 'true'
             };
 
-            $http.post('/ayudaresfacil/api/request', data)
+            $http.post('/ayudaresfacil/api/request/delete', data)
                 .success(function(response) {
                     $scope.error = false;
+                    $state.go('panel.requestListUser');
                 })
                 .error(function(response) {
                     $scope.error = true;
-                    $scope.credentials = {};
                 });
-            $state.go('web.requestList');
 
             return true;
         } else {
             return false;
         }
     };
+
+    $scope.addInput = function() {
+        if ($scope.likedLabels.length < 4) {
+            $scope.likedLabels.push({
+                label: ''
+            });
+        } else {
+            $scope.msgSponsor = 'Has llegado al límite de padrinos';
+        }
+    };
+
+    $scope.deleteInput = function(idx) {
+        var request_to_delete = $scope.likedLabels[idx];
+        $scope.likedLabels.splice(idx, 1);
+    };
+
+    $scope.addDeleteSponsor = function(idx, id) {        
+        $scope.sponsorDel.push({
+            sponsorId: id
+        });
+    };
+
+    $scope.getCategories();
 })
 
-.controller('CreateRequestCtrl', function CreateRequestCtrl($scope, $http, $location, $stateParams, $state, Request, Category, Subcategory, Authentication) {
+.controller('CreateRequestCtrl', function CreateRequestCtrl($scope, $http, $location, $stateParams, $state, Request, Authentication) {
 
     // If user is not signed in then redirect back home
     /* if (!$scope.user) {
@@ -274,16 +358,8 @@ angular.module('AyudarEsFacilApp.request', [
     $scope.msgSponsor = '';
     $scope.likedLabels = [];
 
-    var categories = new Category();
-    var subcategories = new Subcategory();
     var date = new Date();
     var requests = new Request();
-
-    categories.$get(function(response) {
-        $scope.categories = categories.data;
-        $scope.subcategories = null;
-        $scope.objects = null;
-    });
 
     $scope.submitForm = function(isValid) {
         if (isValid) {
@@ -372,6 +448,50 @@ angular.module('AyudarEsFacilApp.request', [
         });
     };
 
+    $scope.getCategories = function() {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/category'
+        }).success(function(response) {
+            $scope.categories = response.data;
+            $scope.subcategories = null;
+            $scope.objects = null;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.getSubcategories = function(categoryId) {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/subcategory',
+            params: {
+                categoryId: categoryId
+            }
+        }).success(function(response) {
+            $scope.subcategories = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.getObjects = function(subcategoryId) {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/object',
+            params: {
+                subcategoryId: subcategoryId
+            }
+        }).success(function(response) {
+            $scope.objects = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
     $scope.setFavorite = function(id) {
         var data = {
             publicationId: id,
@@ -433,5 +553,6 @@ angular.module('AyudarEsFacilApp.request', [
     };
 
     $scope.requestsUser();
+    $scope.getCategories();
 
 });

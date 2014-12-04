@@ -61,73 +61,56 @@ class Request extends REST_Controller{
 		$return["result"] = "NOOK";
 
 		$arrOptions['publicationId'] = ($this->post('publicationId') > 0) ? $this->post('publicationId') : 0;
+		$arrOptions['user'] = $this->post('userId');
+		$arrOptions['type'] = '2';
+		$arrOptions['title'] = $this->post('title');
+		$arrOptions['description'] = $this->post('description');
+		$arrOptions['expirationDate'] = $this->post('expirationDate');
+		$arrOptions['creationDate'] = $this->post('creationDate');
+		$arrOptions['category'] = $this->post('categoryId');
+		$arrOptions['subcategory'] = $this->post('subcategoryId');
+		$arrOptions['views'] = $this->post('views');
+		$arrOptions['processState'] = $this->post('processStateId');
+		$arrOptions['object'] = $this->post('objectId');
+		$arrOptions['quantity'] = $this->post('quantity');
+		$arrOptions['image'] = $this->post('image');
+		ma($this->post('image'));
+		$arrOptions['votes'] = $this->post('votes');
+		$arrOptions['sponsors'] = $this->post('sponsors');
+		$arrOptions['sponsorsn'] = $this->post('sponsorsn');
 
-		if ($this->post('del') == 'true') {
-			if($arrOptions['publicationId'] > 0){
-				$offer = CI_Request::getById($arrOptions['publicationId']);
-				if(CI_Request::delete($offer[0])){
-					$status = 200;
-					$return["result"] = "OK";
-				}
-			}
-		}else{
+		$request = CI_Request::getDataFromArray($arrOptions);
 
-			$arrOptions['publicationId'] = ($this->post('publicationId') > 0) ? $this->post('publicationId') : 0;
-			$arrOptions['user'] = $this->post('userId');
-			$arrOptions['type'] = '2';
-			$arrOptions['creationDate'] = $this->post('creationDate');
-			$arrOptions['title'] = $this->post('title');
-			$arrOptions['description'] = $this->post('description');
-			$arrOptions['expirationDate'] = $this->post('expirationDate');
-			$arrOptions['category'] = $this->post('categoryId');
-			$arrOptions['subcategory'] = $this->post('subcategoryId');
-			$arrOptions['views'] = $this->post('views');
-			$arrOptions['processState'] = $this->post('processStateId');
-			$arrOptions['object'] = $this->post('objectId');
-			$arrOptions['quantity'] = $this->post('quantity');
-			$arrOptions['path'] = $this->post('path');
-			$arrOptions['votes'] = $this->post('votes');
-			$arrOptions['sponsors'] = $this->post('sponsors');
+		if ($request <> NULL) {
+			$arrInfo['user'] = $arrOptions['user'];
+			$arrInfo['type'] = $arrOptions['type'];
+			$arrInfo['image'] = $arrOptions['image'];
+			$arrInfo['sponsors'] = $arrOptions['sponsors'];
+			$arrInfo['sponsorsn'] = $arrOptions['sponsorsn'];
+			$arrInfo['request'] = $request;
 
-			if($arrOptions['publicationId'] > 0){
-				$request = CI_Request::getById($arrOptions['publicationId']);
-				if ($request <> NULL) {
-					$request = CI_Request::getDataFromArray($arrOptions);
-				}						
-			}else{
-				$request = CI_Request::getDataFromArray($arrOptions);
-			}
+			$id = CI_Request::save($arrInfo);
 
-			if ($request <> NULL) {
-				$arrInfo['user'] = $arrOptions['user'];
-				$arrInfo['type'] = $arrOptions['type'];
-				$arrInfo['path'] = $arrOptions['path'];
-				$arrInfo['sponsors'] = $arrOptions['sponsors'];
-				$arrInfo['request'] = $request;
-
-				$id = CI_Request::save($arrInfo);
-
-				if($id <> NULL){
-					$status = 200;
-					$return["result"] = "OK";
-					$return["data"] = "";			
-					$return["publicationId"] = $id;
-					$myRequest = CI_Request::getData($request);	
-					$return["data"] = $myRequest;
-				}
+			if($id <> NULL){
+				$status = 200;
+				$return["result"] = "OK";
+				$return["data"] = "";			
+				$return["publicationId"] = $id;
+				$myRequest = CI_Request::getData($request);	
+				$return["data"] = $myRequest;
 			}
 		}
 		$this->response($return, $status);
 	}
 
-	public function index_delete(){
+	public function delete_post(){
 
-		checkIsLoggedIn($this);
+		// checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["data"] = "";
 		$return["result"] = "NOOK";
-		$publicationId = ($this->delete('publicationId') > 0) ? $this->delete('publicationId') :0;
+		$publicationId = ($this->post('publicationId') > 0) ? $this->post('publicationId') :0;
 
 		if($publicationId > 0){
 			$request = CI_Request::getById($publicationId);
@@ -323,7 +306,7 @@ class Request extends REST_Controller{
 
 	public function sponsor_post(){
 		
-		checkIsLoggedIn($this);
+		// checkIsLoggedIn($this);
 
 		$status = 404;
 		$return["data"] = "";
@@ -334,6 +317,23 @@ class Request extends REST_Controller{
 
 		if($arrOptions['publicationId'] > 0){
 			if(CI_Request::setSponsor($arrOptions)){
+				$status = 200;
+				$return["result"] = "OK";
+			}
+		}
+		$this->response($return, $status);
+	}
+
+	public function sponsord_post(){
+		
+		// checkIsLoggedIn($this);
+
+		$status = 404;
+		$return["data"] = "";
+		$return["result"] = "NOOK";
+
+		if($this->post('sponsorDel') > 0){
+			if(CI_Request::deleteSponsor($this->post('sponsorDel'))){
 				$status = 200;
 				$return["result"] = "OK";
 			}

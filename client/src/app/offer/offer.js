@@ -433,27 +433,26 @@ angular.module('AyudarEsFacilApp.offer', [
         });
     };
 
-    $scope.onFileSelect = function($files) {
-        var file = $files[0];
-        $scope.offer.path = $scope.file;
+    // $scope.onFileSelect = function($files) {
+    //     var file = $files[0];
 
-        if (file.type.indexOf('image') == -1) {
-            $scope.error = 'image extension not allowed, please choose a JPEG or PNG file.';
-        }
-        if (file.size > 2097152) {
-            $scope.error = 'File size cannot exceed 2 MB';
-        }
-        $scope.upload = $upload.upload({
-            url: upload.php,
-            data: {
-                fname: filename
-            },
-            file: file
-        }).success(function(data, status, headers, config) {
-            // file is uploaded successfully
-            console.log(data);
-        });
-    };
+    //     if (file.type.indexOf('image') == -1) {
+    //         $scope.error = 'image extension not allowed, please choose a JPEG or PNG file.';
+    //     }
+    //     if (file.size > 2097152) {
+    //         $scope.error = 'File size cannot exceed 2 MB';
+    //     }
+    //     $scope.upload = $upload.upload({
+    //         url: upload.php,
+    //         data: {
+    //             fname: filename
+    //         },
+    //         file: file
+    //     }).success(function(data, status, headers, config) {
+    //         // file is uploaded successfully
+    //         console.log(data);
+    //     });
+    // };
 
     $scope.offersUser();
     $scope.getCategories();

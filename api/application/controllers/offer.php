@@ -73,10 +73,10 @@ class Offer extends REST_Controller {
 		$arrOptions['processState'] = $this->post('processStateId');
 		$arrOptions['object'] = $this->post('objectId');
 		$arrOptions['quantity'] = $this->post('quantity');
+		$arrOptions['image'] = $this->post('image');
 		$arrOptions['processStateIdOffer'] = $this->post('processStateIdOffer');
 		$arrOptions['offerTypeId'] = '3';
 		$arrOptions['quantityUsersToPaused'] = '1';
-		$arrOptions['image'] = $this->post('image');
 
 		$offer = CI_Offer::getDataFromArray($arrOptions);
 
