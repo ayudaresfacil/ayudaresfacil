@@ -53,7 +53,8 @@ class Request_model extends CI_Model
 	}
 
 	public function getWithFavorites($userId){	
-		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userId .' AND publication_id = publication.publication_id) then 1 else 0 end as isFavorite');	
+		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userId .' AND publication_id = publication.publication_id) then 1 else 0 end as isFavorite,
+								case when publication.user_id = '. $userId .' then 1 else 0 end as isOwner');	
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->order_by("publication.creation_date","desc");
@@ -65,7 +66,8 @@ class Request_model extends CI_Model
 	}
 
 	public function getWithFavoritesAndUserLog($userLog, $userId){	
-		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userLog .' AND publication_id = publication.publication_id AND user_id = '. $userLog .') then 1 else 0 end as isFavorite');	
+		$this->db->select('*, case when exists (SELECT * FROM publication_favorite WHERE user_id = '. $userLog .' AND publication_id = publication.publication_id AND user_id = '. $userLog .') then 1 else 0 end as isFavorite,
+			case when publication.user_id = '. $userLog .' then 1 else 0 end as isOwner');	
 		$this->db->from('publication');
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->where('publication.user_id', $userId);

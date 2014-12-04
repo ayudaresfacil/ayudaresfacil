@@ -28,8 +28,8 @@
                     </button>
                 </div>
             </h2>
-            <button type="button" ng-if="request.isVote == '1'" ng-click="unsetVote(request.id)" class="btn btn-default btn-xs">Quitar voto</button>
-            <button type="button" ng-if="request.isVote == '0'" ng-click="setVote(request.id)" class="btn btn-default btn-xs">Dar mi voto</button>
+            <button type="button" ng-if="request.isVote == '1' && request.isOwner == '0'" ng-click="unsetVote(request.id)" class="btn btn-default btn-xs">Quitar voto</button>
+            <button type="button" ng-if="request.isVote == '0' && request.isOwner == '0'" ng-click="setVote(request.id)" class="btn btn-default btn-xs">Dar mi voto</button>
             <small><span class="glyphicon glyphicon-heart-empty"></span> Votos de fé: {{request.votes[0].quan}}</small>
         </div>
         <div class="col-md-4">
@@ -80,10 +80,10 @@
         <div class="row">
             <hr/>
             <p class="text-center">
-                <button ng-if="request.processState.id == 'V' " type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-ok"></span> Quiero Ayudar </button>
+                <button ng-if="request.processState.id == 'V' &&request.isOwner == '0'" type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-ok"></span> Quiero Ayudar </button>
                 <button ng-if="request.processState.id == 'C' " type="button" class="btn btn-danger btn-lg disabled"><span class="glyphicon glyphicon-ban-circle"></span> Objetivo Cumplido </button>
-                <button ng-if="request.isFavorite == '0'" ng-click="setFavorite(request.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
-                <button ng-if="request.isFavorite == '1'" ng-click="unsetFavorite(request.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
+                <button ng-if="request.isFavorite == '0' && request.isOwner == '0'" ng-click="setFavorite(request.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
+                <button ng-if="request.isFavorite == '1' && request.isOwner == '0'" ng-click="unsetFavorite(request.id)" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
             </p>
         </div>
     </div>
