@@ -148,17 +148,15 @@ insert  into `message`(`message_id`,`user_id_from`,`user_id_to`,`publication_id`
 DROP TABLE IF EXISTS `object`;
 
 CREATE TABLE `object` (
-  `object_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `description` VARCHAR(200) DEFAULT NULL,
-  `created_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `subcategory_id` TINYINT(4) DEFAULT NULL,
-  PRIMARY KEY (`object_id`),
-  KEY `subcategory_id` (`subcategory_id`)
-) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
-/*Data for the table `object` */
-
-insert  into `object`(`object_id`,`description`,`created_date`) values (1,'DINERO','2014-06-08 21:00:00'),(2,'MESA','2014-06-08 21:00:00'),(3,'LIBROS','2014-06-08 21:00:00');
+  `object_id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(200) DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `subcategory_id` tinyint(4) NOT NULL,
+  `category_id` tinyint(4) NOT NULL,
+  PRIMARY KEY (`object_id`,`subcategory_id`,`category_id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `FK_Publication_Subcategory_Category_Obj` FOREIGN KEY (`category_id`) REFERENCES `publication_category` (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `offer_type` */
 
@@ -226,7 +224,7 @@ CREATE TABLE `publication` (
   KEY `category_id_2` (`category_id`,`subcategory_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `FK_Publication_Process_state` FOREIGN KEY (`process_state_id`) REFERENCES `process_state` (`process_state_id`),
- zzCONSTRAINT `FK_Publication_User` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+  CONSTRAINT `FK_Publication_User` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `publication` */
@@ -370,17 +368,15 @@ CREATE TABLE `publication_subcategory` (
   `subcategory_id` tinyint(4) NOT NULL AUTO_INCREMENT,
   `description` varchar(50) NOT NULL,
   `common_state_id` char(1) DEFAULT NULL,
-  PRIMARY KEY (`subcategory_id`),
+  PRIMARY KEY (`subcategory_id`,`category_id`),
   KEY `category_id` (`category_id`),
   KEY `common_state_id` (`common_state_id`),
   CONSTRAINT `FK_Publication_Subcategory_Category` FOREIGN KEY (`category_id`) REFERENCES `publication_category` (`category_id`),
   CONSTRAINT `FK_Subcategory_State` FOREIGN KEY (`common_state_id`) REFERENCES `common_state` (`common_state_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
-/*Data for the table `publication_subcategory` */
-
-insert  into `publication_subcategory`(`category_id`,`subcategory_id`,`description`,`common_state_id`) values (1,1,'Habitacion','A'),(2,2,'Utilitarios','A');
-
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*Table structure for table `publication_type` */
 
 DROP TABLE IF EXISTS `publication_type`;

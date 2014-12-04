@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <div class="row">
                         <label class="hidden-xs">Subcategoría</label>
-                        <select ng-model="request.subcategoryId" class="form-control input-md" ng-change="getObjects(request.subcategoryId);" required>
+                        <select ng-model="request.subcategoryId" class="form-control input-md" ng-change="getObjects(request.categoryId, request.subcategoryId);" required>
                             <option value="">-- Elige una opción --</option>
                             <option ng-repeat="subcategory in subcategories" value="{{subcategory.id}}" ng-selected="request.subcategoryId == subcategory.id">{{subcategory.description}}</option>
                         </select>

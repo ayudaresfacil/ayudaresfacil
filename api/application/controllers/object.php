@@ -10,9 +10,12 @@ class Object extends REST_Controller{
 		$return["result"] = "NOOK";
 		
 		$subcategory = $this->get("subcategoryId");
-
+		$category = $this->get("categoryId");
+		
 		if ($subcategory) {
-			$objects = CI_Object::getBySubcategory($subcategory);	
+			if ($category) {
+			$objects = CI_Object::getBySubcategory($category, $subcategory);
+			}	
 		}else{
 			$objects = CI_Object::getObjects();		
 		}

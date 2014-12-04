@@ -439,7 +439,7 @@
             </li>
             
             <li class="active selected">
-                <a ui-sref="panel.user.data">
+                <a ui-sref="#">
                     <i class="fa fa-user icon-sidebar"></i>
                     <i class="fa fa-angle-right chevron-icon-sidebar"></i>
                     {{authentication.user.email}}
@@ -449,14 +449,30 @@
                         <a ui-sref="panel.user.data">Mis datos </a>
                     </li>
                 </ul>
+            </li>
+
+            <li class="active selected">
+                <a ui-sref="panel.offerListUser">
+                    <i class="fa fa-gift icon-sidebar"></i>
+                    <i class="fa fa-angle-right chevron-icon-sidebar"></i>
+                    Mis Ofrecimientos
+                </a>
                 <ul class="submenu visible">
                     <li class="active selected">
-                        <a ui-sref="panel.offerListUser">Mis Ofrecimientos </a>
+                        <a ui-sref="panel.offerFavorites">Favoritos </a>
                     </li>
                 </ul>
+            </li>
+
+            <li class="active selected">
+                <a ui-sref="panel.requestListUser">
+                    <i class="fa fa-bullhorn icon-sidebar"></i>
+                    <i class="fa fa-angle-right chevron-icon-sidebar"></i>
+                    Mis Pedidos
+                </a>
                 <ul class="submenu visible">
                     <li class="active selected">
-                        <a ui-sref="panel.requestListUser">Mis Pedidos </a>
+                        <a ui-sref="panel.requestFavorites">Favoritos </a>
                     </li>
                 </ul>
             </li>

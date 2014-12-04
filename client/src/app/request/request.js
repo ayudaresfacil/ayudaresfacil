@@ -35,6 +35,14 @@ angular.module('AyudarEsFacilApp.request', [
             pageTitle: 'Pedidos'
         }
     });
+    $stateProvider.state('panel.requestFavorites', {
+        url: '/mis-favoritos',
+        controller: 'RequestFavorites',
+        templateUrl: 'request/request-list.tpl.html',
+        data: {
+            pageTitle: 'Pedidos favoritos'
+        }
+    });
     $stateProvider.state('panel.requestEdit', {
         url: '/editar-pedido/:id',
         controller: 'RequestCtrl',
@@ -162,12 +170,13 @@ angular.module('AyudarEsFacilApp.request', [
         });
     };
 
-    $scope.getObjects = function(subcategoryId) {
+    $scope.getObjects = function(categoryId, subcategoryId) {
         $http({
             method: 'GET',
             url: '/ayudaresfacil/api/object',
             params: {
-                subcategoryId: subcategoryId
+                subcategoryId: subcategoryId,
+                categoryId: categoryId
             }
         }).success(function(response) {
             $scope.objects = response.data;
@@ -411,21 +420,6 @@ angular.module('AyudarEsFacilApp.request', [
         });
     };
 
-    $scope.getObjects = function(subcategoryId) {
-        $http({
-            method: 'GET',
-            url: '/ayudaresfacil/api/object',
-            params: {
-                subcategoryId: subcategoryId
-            }
-        }).success(function(response) {
-            $scope.objects = response.data;
-        }).error(function(response) {
-            $scope.error = response.message;
-            $scope.status = 'ERROR';
-        });
-    };
-
     $scope.onFileSelect = function($files) {
         var file = $files[0];
         $scope.request.path = $scope.file;
@@ -477,12 +471,13 @@ angular.module('AyudarEsFacilApp.request', [
         });
     };
 
-    $scope.getObjects = function(subcategoryId) {
+    $scope.getObjects = function(categoryId, subcategoryId) {
         $http({
             method: 'GET',
             url: '/ayudaresfacil/api/object',
             params: {
-                subcategoryId: subcategoryId
+                subcategoryId: subcategoryId,
+                categoryId: categoryId
             }
         }).success(function(response) {
             $scope.objects = response.data;
@@ -555,4 +550,25 @@ angular.module('AyudarEsFacilApp.request', [
     $scope.requestsUser();
     $scope.getCategories();
 
+})
+
+.controller('RequestFavorites', function RequestFavorites($scope, $http, Authentication) {
+    $scope.user = Authentication.user;
+
+    $scope.offerFavoritesUser = function() {
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/request/favorite',
+            params: {
+                userId: Authentication.user.id
+            }
+        }).success(function(response) {
+            $scope.requests = response.data;
+        }).error(function(response) {
+            $scope.error = response.message;
+            $scope.status = 'ERROR';
+        });
+    };
+
+    $scope.offerFavoritesUser();
 });
