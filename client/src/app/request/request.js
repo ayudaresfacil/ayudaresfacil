@@ -20,7 +20,7 @@ angular.module('AyudarEsFacilApp.request', [
         }
     });
     $stateProvider.state('web.requestDetail', {
-        url: '/pedido-detalle/:id',
+        url: '/detalle-pedido/:id',
         controller: 'RequestCtrl',
         templateUrl: 'request/request-detail.tpl.html',
         data: {
@@ -213,6 +213,14 @@ angular.module('AyudarEsFacilApp.request', [
                     $scope.error = error;
                     $scope.btnText = 'Publicar';
                 });
+        }
+    };
+
+    $scope.toggleFavorite =  function(){
+        if(this.request.isFavorite === "0"){
+            this.setFavorite(this.request.id);
+        }else{
+            this.unsetFavorite(this.request.id);
         }
     };
 

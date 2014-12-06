@@ -217,7 +217,6 @@ angular.module('AyudarEsFacilApp.offer', [
     };
 
     $scope.toggleFavorite =  function(){
-        console.log(this);
         if(this.offer.isFavorite === "0"){
             this.setFavorite(this.offer.id);
         }else{

@@ -38,6 +38,13 @@
                     <i class="glyphicon glyphicon-heart text-muted"  ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
                 </a>
             </h2>
+
+            <p style="margin-top: -10px;">
+                <small>
+                    <span class="glyphicon glyphicon-heart"></span> Favoritos: {{offer.favorites[0].quan}}
+                </small>
+            </p>
+
             <p>
                 {{offer.description}}
             </p>

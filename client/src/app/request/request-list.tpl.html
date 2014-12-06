@@ -2,51 +2,45 @@
 <h1 class="page-heading">Pedidos
 	<small>Elegí una publicación y empezá a colaborar!</small>
 </h1>
-<!-- End page heading -->
 
-<!-- Begin breadcrumb -->
 <ol class="breadcrumb default square rsaquo sm">
     <li>
         <a href="index.html"><i class="fa fa-home"></i></a>
     </li>
     <li class="active">Pedidos</li>
 </ol>
-<!-- End breadcrumb -->
 
-<div class="row">
-    <p>{{message}}</p>
-    <!-- 
-	<div ng-if="msgSuccess == '1'" class="alert alert-success" role="alert">
-		<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-		Su publicación se ha realizado con exito!
-	</div> -->
-    <div class="the-box no-border property-list" ng-repeat="request in requests">
-        <div class="media">
-            <a class="pull-left" href="#fakelink">
-                <img alt="image" class="property-image img-responsive" ng-src="{{request.image[0].path}}">
-            </a>
-            <div class="col-md-7 panel panel-danger panel-square panel-no-border">
-                <div class="panel-heading">
-                    <h5 class="panel-title">{{request.title}}</h5>
-                </div>
-                <ul class="list-inline">
-                    <li>{{request.category.description}}</li>
-                    <li style="list-style: none">|</li>
-                    <li>{{request.subcategory.description}}</li>
-                </ul>
-                <div class="panel-body">
-                    <p max-width: 50px;>{{request.description}}</p>
+<div class="container-masonry">
+    <ol>
+        <li class="item-masonry" ng-repeat="request in requests">
+            <div class="the-box no-border full store-item text-center mansory-inner">
+
+                <img src="{{request.image[0].path}}" class="item-image img-responsive" alt="Image" ui-sref="web.requestDetail({id: request.id})">
+
+                <div class="the-box bg-default no-margin no-border item-des">
+                    <p style="float:right">
+                        <a href ng-click="toggleFavorite()" title="Favorito">
+                            <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': request.isFavorite == '1'}"></i>
+                        </a>
+                    </p>
+
+                    <p class="text-muted">
+                        Disponible:
+                        <strong>{{request.quantity}}</strong>
+                    </p>
+
+                    <h3><a class="bolded" ui-sref="web.requestDetail({id: request.id})">{{request.title}}</a>
+                    </h3>
+
+                    <p>{{request.description}}</p>
+
+                    <p>{{message}}</p>
+
+                    <a href="#/checkout/request/{{request.id}}" ng-if="request.isOwner == '0'" class="btn btn-danger ">
+                        <span class="glyphicon glyphicon-ok"></span>Lo necesito
+                    </a>
                 </div>
             </div>
-            <!-- /.media-body -->
-            <div class="col-sm-2 pull-right">
-                <button ui-sref="web.requestDetail({id: request.id})" class="btn btn-info btn-block">Ver detalle</button>
-                <button ng-if="request.isOwner == '0'" class="btn btn-success btn-block">Ayudar!</button>
-                <button ng-if="request.isFavorite == '0' && request.isOwner == '0'" ng-click="setFavorite(request.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
-                <button ng-if="request.isFavorite == '1' && request.isOwner == '0'" ng-click="unsetFavorite(request.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
-            </div>
-        </div>
-        <!-- /.media -->
-    </div>
-    <!-- /.the-box no-border -->
+        </li>
+    </ol>
 </div>
