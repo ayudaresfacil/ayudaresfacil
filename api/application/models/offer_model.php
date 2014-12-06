@@ -170,7 +170,7 @@ class Offer_model extends CI_Model
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->group_by('publication.publication_id');
 		$this->db->order_by("publication.creation_date","desc");	
-		$this->db->where('publication.process_state_id <>', 'B');
+		$this->db->where('publication.process_state_id', 'V');
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
 		return $query->result();
@@ -184,9 +184,10 @@ class Offer_model extends CI_Model
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
 		$this->db->group_by('publication.publication_id');
 		$this->db->order_by("publication.creation_date","desc");	
-		$this->db->where('publication.process_state_id <>', 'B');
+		$this->db->where('publication.process_state_id', 'V');
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
+		//ma($this->db->queries);
 		return $query->result();
 	}
 

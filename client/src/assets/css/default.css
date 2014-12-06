@@ -65,3 +65,9 @@
     margin-left: 0px;
     z-index: 2;
 }
+
+
+
+li.item-masonry img:hover{
+    cursor: pointer;
+}

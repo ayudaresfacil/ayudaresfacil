@@ -13,18 +13,34 @@
         <li class="active">Ofrecimientos</li>
     </ol>
     <!-- End breadcrumb -->
-    <div class="row">
-        <div class="col-md-4" ng-repeat="offer in offers">
-            <div class="the-box full no-border property-card">
-                <img ng-src="{{offer.image[0].path}}" width="250px" height="280px" alt="Image">
-                <div class="the-box no-margin no-border bg-success">
-                    <h5><span class="glyphicon glyphicon-gift"></span> {{offer.title}}</h5>
-                    <p>{{offer.object.description}}</p>
-                    <button ui-sref="web.offerDetail({id: offer.id})" class="btn btn-success btn-block">Ver detalle</button>
-                    <button class="btn btn-danger btn-block" ng-if="offer.isOwner == '0'">Pedir!</button>
-                    <button ng-if="offer.isFavorite == '0' && offer.isOwner == '0'" ng-click="setFavorite(offer.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
-                    <button ng-if="offer.isFavorite == '1' && offer.isOwner == '0'" ng-click="unsetFavorite(offer.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
+
+    <div class="container-masonry">
+        <ol>
+            <li class="item-masonry" ng-repeat="offer in offers">
+                <div class="the-box no-border full store-item text-center mansory-inner">
+                    
+                    <img src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="web.offerDetail({id: offer.id})">
+
+                    <div class="the-box bg-success no-margin no-border item-des">
+                        <p class="text-success">
+                            Cantidad: <strong>{{offer.quantity}}</strong>
+                        </p>
+
+                        <h3><a class="bolded" ui-sref="web.offerDetail({id: offer.id})">{{offer.title}}</a></h3>
+                        
+                        <p>{{offer.description}}</p>
+                        
+                        <p>
+                            <a href ng-click="toggleFavorite()" title="Favorito">
+                                <i class="glyphicon glyphicon-heart"  ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
+                            </a>
+                        </p>
+
+                        <div class="btn-group" ng-if="offer.isOwner == '0'">
+                            <button class="btn btn-danger " ng-if="offer.isOwner == '0'">Lo necesito</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ol>
     </div>

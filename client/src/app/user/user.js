@@ -209,8 +209,10 @@ angular.module( 'AyudarEsFacilApp.user', [
             $location.path('/user/data');
         }).error(function(response) { 
 
-            if(!response.message)
-                response.message = 'NOOK'
+            if(!response.message){
+                response.message = 'NOOK';
+            }
+            
             $scope.error = {};
 
             var message = {

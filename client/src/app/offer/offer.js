@@ -215,6 +215,15 @@ angular.module('AyudarEsFacilApp.offer', [
         }
     };
 
+    $scope.toggleFavorite =  function(){
+        console.log(this);
+        if(this.offer.isFavorite === "0"){
+            this.setFavorite(this.offer.id);
+        }else{
+            this.unsetFavorite(this.offer.id);
+        }
+    };
+
     $scope.setFavorite = function(id) {
         var data = {
             publicationId: id,

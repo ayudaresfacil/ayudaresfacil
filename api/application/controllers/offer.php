@@ -40,7 +40,6 @@ class Offer extends REST_Controller {
 			$offers = CI_Offer::getCurrentOffers();
 		}
 
-		// ma($offers);
 		if($offers){
 			$status = 200;
 			$return["result"] = "OK";
