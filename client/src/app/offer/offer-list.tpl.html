@@ -36,7 +36,7 @@
 
                         <p>{{message}}</p>
 
-                        <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.isOwner == '0'" class="btn btn-danger ">
+                        <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processState.id == 'V' &&  offer.isOwner == '0'" class="btn btn-danger ">
                             <span class="glyphicon glyphicon-ok"></span>Lo necesito
                         </a>
                     </div>
