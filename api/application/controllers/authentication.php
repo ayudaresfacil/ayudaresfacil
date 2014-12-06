@@ -17,7 +17,7 @@ class Authentication extends REST_Controller{
 			$return["result"] = "USER_NOT_FOUND";
 			
 			$data = CI_Authentication::signin($arrOptions); 
-
+			
 			if($data){
 				$myUser = new stdClass();
 				$myUser->id = $data['user']->getId();
