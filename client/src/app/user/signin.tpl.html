@@ -3,8 +3,16 @@
 </div>
 <div class="login-wrapper">
 
-    <div class="alert alert-warning alert-bold-border fade in alert-dismissable" ng-show="error">
+    <div class="alert alert-warning alert-bold-border fade in" ng-show="error.emptyValues">
+        <strong>Oye!</strong> Olvidates completar algunos datos. <strong class="text-warning">Corrige e intenta nuevamente.</strong>
+    </div>
+
+    <div class="alert alert-warning alert-bold-border fade in alert-dismissable" ng-show="error.userNotFound">
         <strong>Oye!</strong> Al parecer tus datos no son correctos. <strong class="text-warning">Corrigelos e intenta nuevamente.</strong>
+    </div>
+
+    <div class="alert alert-warning alert-bold-border fade in alert-dismissable" ng-show="error.nook">
+        <strong>Ups!</strong> Al parecer hubo un error en la conexión. <strong class="text-warning">Intenta nuevamente mas tarde.</strong>
     </div>
 
     <div class="alert alert-danger alert-block fade in" ng-show="activationError">

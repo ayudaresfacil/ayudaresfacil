@@ -8,21 +8,29 @@ class Authentication extends REST_Controller{
 		$arrOptions['email'] = $this->get('username');
 		$arrOptions['password'] = $this->get('password');
 
-		$data = CI_Authentication::signin($arrOptions); 
 		$status = 403;
-		$return["result"] = "NOOK";
-		if($data){
-			$status = 200;
-			$myUser = new stdClass();
-			$myUser->id = $data['user']->getId();
-			$myUser->email = $data['user']->getEmail();
-			$myUser->name = $data['user']->getName();
-			$myUser->lastName = $data['user']->getLastName();
-			$myUser->profileImage = !empty($data['user']->getGravatarEmail()) ? 'http://www.gravatar.com/avatar/' . md5($data['user']->getGravatarEmail()) : "http://www.gravatar.com/avatar/?s=100&d=mm";
+		$return["result"] = "EMPTY_VALUES";
 
-			$return["result"] = "OK";
-			$return["data"] = $myUser;
-			$return["token"] = $data['token'];
+		if(!empty($arrOptions['email']) && !empty($arrOptions['password'])){
+
+			$status = 403;
+			$return["result"] = "USER_NOT_FOUND";
+			
+			$data = CI_Authentication::signin($arrOptions); 
+
+			if($data){
+				$myUser = new stdClass();
+				$myUser->id = $data['user']->getId();
+				$myUser->email = $data['user']->getEmail();
+				$myUser->name = $data['user']->getName();
+				$myUser->lastName = $data['user']->getLastName();
+				$myUser->profileImage = !empty($data['user']->getGravatarEmail()) ? 'http://www.gravatar.com/avatar/' . md5($data['user']->getGravatarEmail()) : "http://www.gravatar.com/avatar/?s=100&d=mm";
+
+				$status = 200;
+				$return["result"] = "OK";
+				$return["data"] = $myUser;
+				$return["token"] = $data['token'];
+			}
 		}
 
         $this->response($return, $status);

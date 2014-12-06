@@ -208,7 +208,25 @@ angular.module( 'AyudarEsFacilApp.user', [
 
             $location.path('/user/data');
         }).error(function(response) { 
-            $scope.error = true;
+
+            if(!response.message)
+                response.message = 'NOOK'
+            $scope.error = {};
+
+            var message = {
+                'EMPTY_VALUES': function(){
+                    $scope.error.emptyValues = true;  
+                },
+                'USER_NOT_FOUND': function(){
+                    $scope.error.userNotFound = true;  
+                },
+                'NOOK': function(){
+                    $scope.error.nook = true;  
+                }
+            };
+
+            message[response.result]();
+
             $scope.credentials = {};
         });
     };
