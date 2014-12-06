@@ -20,7 +20,7 @@ angular.module('AyudarEsFacilApp.offer', [
         }
     });
     $stateProvider.state('web.offerDetail', {
-        url: '/ofrecimiento-detalle/:id',
+        url: '/detalle-ofrecimiento/:id',
         controller: 'OfferCtrl',
         templateUrl: 'offer/offer-detail.tpl.html',
         data: {
