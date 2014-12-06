@@ -109,6 +109,7 @@ angular.module('AyudarEsFacilApp.request', [
     $scope.btnText = 'Publicar';
     $scope.likedLabels = [];
     $scope.sponsorDel = [];
+    $scope.message = " ";
 
     var requests = new Request();
 
@@ -554,8 +555,10 @@ angular.module('AyudarEsFacilApp.request', [
 
 .controller('RequestFavorites', function RequestFavorites($scope, $http, Authentication) {
     $scope.user = Authentication.user;
+    $scope.message = " ";
 
     $scope.offerFavoritesUser = function() {
+        $scope.requests = null;
         $http({
             method: 'GET',
             url: '/ayudaresfacil/api/request/favorite',
@@ -567,6 +570,7 @@ angular.module('AyudarEsFacilApp.request', [
         }).error(function(response) {
             $scope.error = response.message;
             $scope.status = 'ERROR';
+            $scope.message = "Aún no tienes favoritos";
         });
     };
 

@@ -2,11 +2,15 @@
 
 class CI_Request extends CI_Publication {		
 	private $votes;
+	private $favorites;
 	private $sponsors;
 	private $isVote;
 
 	public function getVotes(){return $this->votes;}
 	public function setVotes($votes){$this->votes = $votes;}
+
+	public function getFavorites(){return $this->favorites;}
+	public function setFavorites($favorites){$this->favorites = $favorites;}
 
 	public function setImage($image){$this->image = CI_Image::getById($image);}
 	public function getSponsor(){
@@ -27,6 +31,7 @@ class CI_Request extends CI_Publication {
 	public function getDataFromArray($options){
 		$request = parent::getDataFromArray($options);
 		$request->votes = CI_Request::getVote($options["publicationId"]);
+		$request->favorites = CI_Request::getFavorite($options["publicationId"]);
 		$request->sponsors = CI_Sponsor::getByPublicationId($options["publicationId"]);
 		if (isset($options["isVote"])) {
 			$request->isVote = $options["isVote"];			
@@ -38,6 +43,7 @@ class CI_Request extends CI_Publication {
 		$request = parent::getData($options);
 		if(isset($options->id)){
 			$request->votes = CI_Request::getVote($options->id);			
+			$request->favorites = CI_Request::getFavorite($options->id);			
 		}else{
 			$request->votes = 0;			
 		}
@@ -54,6 +60,7 @@ class CI_Request extends CI_Publication {
 		}	
 		$request = parent::getInstance($row);		
 		$request->votes = CI_Request::getVote($row->publication_id);
+		$request->favorites = CI_Request::getFavorite($row->publication_id);
 		$request->sponsors = CI_Sponsor::getByPublicationId($row->publication_id);
 		if (isset($row->isVote)) {
 			$request->isVote = $row->isVote;			
@@ -276,6 +283,13 @@ class CI_Request extends CI_Publication {
 		return $return;
 	}
 
+	public static function getFavorite($publicationId){
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+		$return = $CI->request_model->getFavorite($publicationId);
+		return $return;
+	}
+	
 	public function deleteVote($options){
 		$userId = $options['userId'];
 		$request = $options['request'];

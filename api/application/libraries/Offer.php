@@ -4,6 +4,7 @@ class CI_Offer extends CI_Publication {
 	private $processStateOffer;
 	private $type;
 	private $quantityUsersToPaused;
+	private $favorites;
 	
 	public function getProcessStateOffer(){
 		$processStateOffer = null;
@@ -33,6 +34,9 @@ class CI_Offer extends CI_Publication {
 	public function getQuantityUsersToPaused(){return $this->quantityUsersToPaused;}
 	public function setQuantityUsersToPaused($quantityUsersToPaused){$this->quantityUsersToPaused = $quantityUsersToPaused;}
 	
+	public function getFavorites(){return $this->favorites;}
+	public function setFavorites($favorites){$this->favorites = $favorites;}
+	
 	/**
 	 * Devuelve la informacion cargada del objeto 
 	 * Uso interno
@@ -44,6 +48,7 @@ class CI_Offer extends CI_Publication {
 		$offer->processStateOffer = CI_ProcessState::getById($options["processStateIdOffer"]);
 		$offer->type = CI_OfferType::getById($options["offerTypeId"]);
 		$offer->quantityUsersToPaused = $options["quantityUsersToPaused"];
+		$offer->favorites = CI_Offer::getFavorite($options["publicationId"]);
 		return $offer;
 	}
 
@@ -52,6 +57,7 @@ class CI_Offer extends CI_Publication {
 		$offer->processStateOffer = CI_ProcessState::getData($options->processStateOffer);
 		$offer->type = CI_OfferType::getData($options->type);
 		$offer->quantityUsersToPaused = $options->quantityUsersToPaused;
+		$offer->favorites = CI_Offer::getFavorite($options->id);
 		return $offer;
 	}
 
@@ -63,6 +69,7 @@ class CI_Offer extends CI_Publication {
 		$offer->processStateOffer = CI_ProcessState::getById($row->process_state_offer);
 		$offer->type = CI_OfferType::getById($row->offer_type_id);
 		$offer->quantityUsersToPaused = (isset($row->quantity_users_to_paused)) ? $row->quantity_users_to_paused : '';
+		$offer->favorites = CI_Offer::getFavorite($row->publication_id);
 		
 		return $offer;
 	}
@@ -119,6 +126,13 @@ class CI_Offer extends CI_Publication {
 			$id = $CI->offer_model->create($arrInfo);
 		}
 		return $id;
+	}
+
+	public static function getFavorite($publicationId){
+		$CI =& get_instance();
+		$CI->load->model('offer_model');
+		$return = $CI->offer_model->getFavorite($publicationId);
+		return $return;
 	}
 
 	public function delete($offer){

@@ -74,7 +74,6 @@ class Request extends REST_Controller{
 		$arrOptions['object'] = $this->post('objectId');
 		$arrOptions['quantity'] = $this->post('quantity');
 		$arrOptions['image'] = $this->post('image');
-		ma($this->post('image'));
 		$arrOptions['votes'] = $this->post('votes');
 		$arrOptions['sponsors'] = $this->post('sponsors');
 		$arrOptions['sponsorsn'] = $this->post('sponsorsn');

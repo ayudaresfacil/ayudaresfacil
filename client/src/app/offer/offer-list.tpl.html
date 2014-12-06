@@ -30,15 +30,17 @@
                         
                         <p>{{offer.description}}</p>
                         
+                        <p>{{message}}</p>
+
                         <p>
                             <a href ng-click="toggleFavorite()" title="Favorito">
                                 <i class="glyphicon glyphicon-heart"  ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
                             </a>
                         </p>
-
-                        <div class="btn-group" ng-if="offer.isOwner == '0'">
-                            <button class="btn btn-danger " ng-if="offer.isOwner == '0'">Lo necesito</button>
-                        </div>
+                        
+                        <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.isOwner == '0'" class="btn btn-danger ">
+                            <span class="glyphicon glyphicon-ok"></span> Lo necesito 
+                        </a>
                     </div>
                 </div>
             </li>

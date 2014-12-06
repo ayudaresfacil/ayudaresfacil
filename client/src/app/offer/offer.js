@@ -110,6 +110,7 @@ angular.module('AyudarEsFacilApp.offer', [
     $scope.myInterval = 5000;
     $scope.user = Authentication.user;
     $scope.btnText = 'Publicar';
+    $scope.message = " ";
 
     var offers = new Offers();
 
@@ -459,8 +460,10 @@ angular.module('AyudarEsFacilApp.offer', [
 
 .controller('OfferFavorites', function OfferFavorites($scope, $http, Offers, Authentication) {
     $scope.user = Authentication.user;
+    $scope.message = " ";
 
     $scope.offerFavoritesUser = function() {
+        $scope.offers = null;
         $http({
             method: 'GET',
             url: '/ayudaresfacil/api/offer/favorite',
@@ -472,6 +475,7 @@ angular.module('AyudarEsFacilApp.offer', [
         }).error(function(response) {
             $scope.error = response.message;
             $scope.status = 'ERROR';
+            $scope.message = "Aún no tienes favoritos";
         });
     };
 
