@@ -80,7 +80,6 @@ class Request_model extends CI_Model
 	}
 
 	public function create($arrInfo){
-		ma($arrInfo);
 		$request = $arrInfo['request'];
 		$category = $request->category;
 		$subcategory = $request->subcategory;
@@ -106,7 +105,7 @@ class Request_model extends CI_Model
 		$data = array 	(
 			'publication_id' => $id,
 			'object_id' => $object->id,
-			'quantity' => $request->quantity,
+			'quantity' => 1,
 			);
 		$this->db->insert('publication_object', $data);	
 			$data = array 	(

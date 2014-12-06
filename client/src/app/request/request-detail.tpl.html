@@ -94,6 +94,14 @@
  -->
 
 <div class="the-box no-border" ng-repeat="request in requests">
+    <div class="btn-group" role="group" aria-label="...">
+        <button ng-if="request.isOwner == '1'" ng-click="requestDelete(request.id)" class="btn btn-danger">
+            <i class="glyphicon glyphicon-remove"></i>Dar de baja
+        </button>
+        <button ng-if="request.isOwner == '1'" ui-sref="panel.requestEdit({id: request.id})" class="btn btn-info">
+            <i class="glyphicon glyphicon-pencil"></i>Editar
+        </button>
+    </div>
     <div class="row">
         <div class="col-md-4 col-sm-6">
             <carousel interval="myInterval" style="height:350px">
@@ -102,7 +110,7 @@
                 </slide>
             </carousel>
         </div>
-    
+
         <div class="col-md-8 col-sm-6">
             <h2 class="medium-heading more-margin-bottom text-primary">
                 {{request.title}}
@@ -110,7 +118,7 @@
                     <i class="glyphicon glyphicon-heart text-muted"  ng-class="{'text-warning': request.isFavorite == '1'}"></i>
                 </a>
             </h2>
-            
+
             <p style="margin-top: -10px;">
                 <small style="margin: -20px 20px 0 0;">
                     <span class="glyphicon glyphicon-thumbs-up"></span> Votos de fé: {{request.votes[0].quan}} 
@@ -133,7 +141,8 @@
                             {{request.category.description}} > {{request.subcategory.description}}
                         </p>
                         <p>
-                            Disponible: <strong>{{request.quantity}}</strong></p>
+                            Disponible: <strong>{{request.quantity}}</strong>
+                        </p>
                         </p>
                         <p>Visto:
                             <strong>{{request.views}}</strong> veces</p>
@@ -143,7 +152,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="the-box transparent">
                 <p>
                     <span class="badge badge-primary">Padrinos</span>
@@ -155,7 +164,7 @@
                         </a>
                         <div class="media-body">
                             <!-- <h4 class="media-heading">Nombre de padrino</h4> -->
-                            <p class="text-danger">{{sponsor.userTw}}</p>
+                            <a href="https://twitter.com/{{sponsor.userTw}}"><p class="text-danger">{{sponsor.userTw}}</p></a>
                         </div>
                     </li>
                 </ul>
@@ -171,7 +180,7 @@
                         <span class="glyphicon glyphicon-ok"></span> Quiero Ayudar</a>
 
                     <button ng-if="request.processState.id == 'C' " type="button" class="btn btn-danger btn-md disabled"><span class="glyphicon glyphicon-ban-circle"></span> Objetivo Cumplido </button>
-                    
+
                     <button type="button" ng-if="request.isVote == '1' && request.isOwner == '0'" ng-click="unsetVote(request.id)" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down"></span>Ya no doy fe!</button>
 
                     <button type="button" ng-if="request.isVote == '0' && request.isOwner == '0'" ng-click="setVote(request.id)" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span>Doy fe!</button>

@@ -12,16 +12,16 @@
     <li class="active">Ver Detalle</li>
 </ol>
 
-<!-- <div class="btn-group pull-right" role="group" aria-label="...">
-    <button ng-if="offer.isOwner == '1'" ng-click="offerDelete(offer.id)" class="btn btn-danger">
-        <i class="glyphicon glyphicon-remove"></i>Dar de baja
-    </button>
-    <button ng-if="offer.isOwner == '1'" ui-sref="panel.offerEdit({id: offer.id})" class="btn btn-info">
-        <i class="glyphicon glyphicon-pencil"></i>Editar
-    </button>
-</div> -->
-
 <div class="the-box no-border" ng-repeat="offer in offers">
+
+    <div class="btn-group" role="group" aria-label="...">
+        <button ng-if="offer.isOwner == '1'" ng-click="offerDelete(offer.id)" class="btn btn-danger">
+            <i class="glyphicon glyphicon-remove"></i>Dar de baja
+        </button>
+        <button ng-if="offer.isOwner == '1'" ui-sref="panel.offerEdit({id: offer.id})" class="btn btn-info">
+            <i class="glyphicon glyphicon-pencil"></i>Editar
+        </button>
+    </div>
     <div class="row">
         <div class="col-md-4 col-sm-6">
             <carousel interval="myInterval" style="height:350px">
@@ -30,7 +30,7 @@
                 </slide>
             </carousel>
         </div>
-    
+
         <div class="col-md-8 col-sm-6">
             <h2 class="medium-heading more-margin-bottom text-primary">
                 {{offer.title}}
@@ -48,7 +48,7 @@
             <p>
                 {{offer.description}}
             </p>
-            
+
             <blockquote>
                 <p>{{offer.type.description}}</p>
                 <small>{{offer.type.comment}}</small>
@@ -57,14 +57,15 @@
             <div class="panel-group">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        
+
 
                         <h4>{{offer.object.description}}</h4>
                         <p>
                             {{offer.category.description}} > {{offer.subcategory.description}}
                         </p>
                         <p>
-                            Disponible: <strong>{{offer.quantity}}</strong></p>
+                            Disponible: <strong>{{offer.quantity}}</strong>
+                        </p>
                         </p>
                         <p>Visto:
                             <strong>{{offer.views}}</strong> veces</p>

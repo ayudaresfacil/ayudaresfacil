@@ -67,7 +67,7 @@ class Offer_model extends CI_Model
 		$data = array 	(
 							'publication_id' => $id,
 							'object_id' => $object->id,
-							'quantity' => $offer->quantity,
+							'quantity' => 1,
 						);
 		$this->db->insert('publication_object', $data);
 		$data = array 	(
