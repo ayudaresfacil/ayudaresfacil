@@ -21,9 +21,15 @@
                     
                     <img src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="web.offerDetail({id: offer.id})">
 
-                    <div class="the-box bg-success no-margin no-border item-des">
+                    <div class="the-box bg-default no-margin no-border item-des">
+                        <p style="float:right">
+                            <a href ng-click="toggleFavorite()" title="Favorito">
+                                <i class="glyphicon glyphicon-heart text-muted"  ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
+                            </a>
+                        </p>
+
                         <p class="text-success">
-                            Cantidad: <strong>{{offer.quantity}}</strong>
+                            Disponible: <strong>{{offer.quantity}}</strong>
                         </p>
 
                         <h3><a class="bolded" ui-sref="web.offerDetail({id: offer.id})">{{offer.title}}</a></h3>
@@ -31,12 +37,8 @@
                         <p>{{offer.description}}</p>
                         
                         <p>{{message}}</p>
-
-                        <p>
-                            <a href ng-click="toggleFavorite()" title="Favorito">
-                                <i class="glyphicon glyphicon-heart"  ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
-                            </a>
-                        </p>
+                        
+                        
                         
                         <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.isOwner == '0'" class="btn btn-danger ">
                             <span class="glyphicon glyphicon-ok"></span> Lo necesito 
