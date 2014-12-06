@@ -14,17 +14,20 @@
 
 <div class="the-box no-border" ng-repeat="offer in offers">
     <div class="row">
+        <div class="btn-group pull-right" role="group" aria-label="...">
+            <button ng-if="offer.isOwner == '1'" ng-click="offerDelete(offer.id)" class="btn btn-danger">
+                <i class="glyphicon glyphicon-remove"></i>Dar de baja
+            </button>
+            <button ng-if="offer.isOwner == '1'" ui-sref="panel.offerEdit({id: offer.id})" class="btn btn-info">
+                <i class="glyphicon glyphicon-pencil"></i>Editar
+            </button>
+        </div>
         <div class="jumbotron jumbotron-sm text-center">
             <h2>{{offer.title}}
-                <div class="btn-group pull-right" role="group" aria-label="...">
-                    <button ng-if="offer.isOwner == '1'" ng-click="offerDelete(offer.id)" class="btn btn-danger">
-                        <i class="glyphicon glyphicon-remove"></i>Dar de baja
-                    </button>
-                    <button ng-if="offer.isOwner == '1'" ui-sref="panel.offerEdit({id: offer.id})" class="btn btn-info">
-                        <i class="glyphicon glyphicon-pencil"></i>Editar
-                    </button>
-                </div>
             </h2>
+            <small>
+                <span class="glyphicon glyphicon-star"></span> Favoritos: {{offer.favorites[0].quan}}
+            </small>
         </div>
         <div class="col-md-4">
             <carousel interval="myInterval" style="height:350px">
@@ -36,7 +39,7 @@
         <div class="col-md-8 panel panel-danger panel-square panel-no-border">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                   Se necesita {{offer.object.description}}</h4>
+                   Se ofrece {{offer.object.description}}</h4>
             </div>
             <div class="panel-body">
                 <p style="height:150px">

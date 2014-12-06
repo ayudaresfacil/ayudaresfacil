@@ -14,6 +14,7 @@
     </ol>
     <!-- End breadcrumb -->
     <div class="row">
+        <p>{{message}}</p>
         <div class="col-md-4" ng-repeat="offer in offers">
             <div class="the-box full no-border property-card">
                 <img ng-src="{{offer.image[0].path}}" width="250px" height="280px" alt="Image">
@@ -21,7 +22,7 @@
                     <h5><span class="glyphicon glyphicon-gift"></span> {{offer.title}}</h5>
                     <p>{{offer.object.description}}</p>
                     <button ui-sref="web.offerDetail({id: offer.id})" class="btn btn-success btn-block">Ver detalle</button>
-                    <button class="btn btn-danger btn-block" ng-if="offer.isOwner == '0'">Pedir!</button>
+                    <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processStateOffer.id == 'V' && offer.isOwner == '0'" class="btn btn-danger btn-block"><span class="glyphicon glyphicon-ok"></span> Lo necesito </a>
                     <button ng-if="offer.isFavorite == '0' && offer.isOwner == '0'" ng-click="setFavorite(offer.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star"></span> Poner en Favoritos </button>
                     <button ng-if="offer.isFavorite == '1' && offer.isOwner == '0'" ng-click="unsetFavorite(offer.id)" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-star-empty"></span> Sacar de Favoritos </button>
                 </div>

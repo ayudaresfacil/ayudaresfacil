@@ -340,7 +340,15 @@ class Request_model extends CI_Model
 	public function getVotes($publicationId){
 		$this->db->select('count(*) AS quan');	
 		$this->db->from('publication_vote');
-		$this->db->where('publication_vote.publication_id', $publicationId);
+		$this->db->where('publication_id', $publicationId);
+		$query = $this->db->get();
+		return $query->result(); 
+	}
+
+	public function getFavorite($publicationId){
+		$this->db->select('count(*) AS quan');	
+		$this->db->from('publication_favorite');
+		$this->db->where('publication_id', $publicationId);
 		$query = $this->db->get();
 		return $query->result(); 
 	}
