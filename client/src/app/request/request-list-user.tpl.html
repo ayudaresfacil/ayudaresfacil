@@ -1,0 +1,46 @@
+<!-- Begin page heading -->
+<h1 class="page-heading">Pedidos
+	<small>Elegí una publicación y empezá a colaborar!</small>
+</h1>
+
+<ol class="breadcrumb default square rsaquo sm">
+    <li>
+        <a href="index.html"><i class="fa fa-home"></i></a>
+    </li>
+    <li class="active">Pedidos</li>
+</ol>
+
+<div class="container-masonry">
+    <ol>
+        <li class="item-masonry" ng-repeat="request in requests">
+            <div class="the-box no-border full store-item text-center mansory-inner">
+
+                <img src="{{request.image[0].path}}" class="item-image img-responsive" alt="Image" ui-sref="panel.requestDetailUser({id: request.id})">
+
+                <div class="the-box bg-default no-margin no-border item-des">
+                    <p style="float:right">
+                        <a href ng-click="toggleFavorite()" title="Favorito">
+                            <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': request.isFavorite == '1'}"></i>
+                        </a>
+                    </p>
+
+                    <p class="text-muted">
+                        Disponible:
+                        <strong>{{request.quantity}}</strong>
+                    </p>
+
+                    <h3><a class="bolded" ui-sref="panel.requestDetailUser({id: request.id})">{{request.title}}</a>
+                    </h3>
+
+                    <p>{{request.description}}</p>
+
+                    <p>{{message}}</p>
+
+                    <a href="#/checkout/request/{{request.id}}" ng-if="request.isOwner == '0'" class="btn btn-danger ">
+                        <span class="glyphicon glyphicon-ok"></span>Quiero ayudar!
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ol>
+</div>

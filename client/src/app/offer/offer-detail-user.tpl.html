@@ -14,6 +14,19 @@
 
 <div class="the-box no-border" ng-repeat="offer in offers">
     <div class="row">
+        <div class="col-md-12 col-sm-10">
+            <div class="pull-right">
+                <a href ng-click="offerDelete(offer.id)" title="Dar de baja">
+                    <i class="glyphicon glyphicon-remove"></i>
+                </a> |
+                <a href ui-sref="panel.offerEdit({id: offer.id})" title="Editar">
+                    <i class="glyphicon glyphicon-pencil"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-md-4 col-sm-6">
             <carousel interval="myInterval" style="height:350px">
                 <slide ng-repeat="slide in offer.image" active="slide.active">

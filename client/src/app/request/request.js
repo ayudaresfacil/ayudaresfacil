@@ -27,10 +27,18 @@ angular.module('AyudarEsFacilApp.request', [
             pageTitle: 'Detalle del Pedido'
         }
     });
+    $stateProvider.state('panel.requestDetailUser', {
+        url: '/detalle-mi-pedido/:id',
+        controller: 'RequestCtrl',
+        templateUrl: 'request/request-detail-user.tpl.html',
+        data: {
+            pageTitle: 'Detalle del Pedido'
+        }
+    });
     $stateProvider.state('panel.requestListUser', {
         url: '/mis-pedidos',
         controller: 'CreateRequestCtrl',
-        templateUrl: 'request/request-list.tpl.html',
+        templateUrl: 'request/request-list-user.tpl.html',
         data: {
             pageTitle: 'Pedidos'
         }
