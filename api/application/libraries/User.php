@@ -35,15 +35,7 @@ class CI_User {
 	public function setDescription($description){$this->description = $description;}
 
 	public function getPhones(){
-				$phones = null;
-				foreach ($this->phones as $key => $phone){
-				 		$myUserPhone = new stdClass();
-						$myUserPhone->number = $phone->getNumber();
-						$myUserPhone->areaCode = $phone->getAreaCode();
-						$myUserPhone->typeId = $phone->getTypeId();
-						$phones[$key] = $myUserPhone;
-					}
-			 	return $phones;
+                    return CI_Phone::getDataFromArray($this->phones);
 			 	}
 
 	public function setPhones($phones){
@@ -63,23 +55,7 @@ class CI_User {
 		 	}
 
 	public function getAddresses(){
-				$addresses = null;
-				foreach ($this->addresses as $key => $address){
-				 		$myUserAddress = new stdClass();
-						$myUserAddress->id = $address->getId();
-						$myUserAddress->street = $address->getStreet();
-						$myUserAddress->number = $address->getNumber();
-						$myUserAddress->floor = $address->getFloor();
-						$myUserAddress->apartment = $address->getApartment();
-						$myUserAddress->postalCode = $address->getPostalCode();
-						$myUserAddress->provinceId = $address->getProvinceId();
-						$myUserAddress->departmentId = $address->getDepartmentId();
-						$myUserAddress->cityId = $address->getCityId();
-						$myUserAddress->principal = $address->getPrincipal();
-						$addresses[$key] = $myUserAddress;
-					}
-			 	return $addresses;
-		 	}
+                    return CI_Address::getDataFromArray($this->addresses);}
 
 	public function setAddresses($addresses){
 				CI_Address::deleteByUserId($this->id);
@@ -117,20 +93,20 @@ class CI_User {
 	 * Uso interno
 	 * @return object
 	 */
-	private function getData(){
+	public function getData($options){
 		$object = new stdClass();
-		$object->id = $this->id;
-		$object->email = $this->email;
-		$object->password = $this->password;
-		$object->name = $this->name;
-		$object->lastName = $this->lastName;
-		$object->birthdayDate = $this->birthdayDate;
-		$object->description = $this->description;
-		$object->phones = $this->phones;
-		$object->addresses = $this->addresses;
-		$object->gravatarEmail = $this->gravatarEmail;
-		$object->enabled = $this->enabled;
-		$object->deleted = $this->deleted;
+		$object->id = $options->id;
+		$object->email = $options->email;
+		$object->password = $options->password;
+		$object->name = $options->name;
+		$object->lastName = $options->lastName;
+		$object->birthdayDate = $options->birthdayDate;
+		$object->description = $options->description;
+		$object->phones = CI_Phone::getDataFromArray($options->phones);
+		$object->addresses = CI_Address::getDataFromArray($options->addresses);
+		$object->gravatarEmail = $options->gravatarEmail;
+		$object->enabled = $options->enabled;
+		$object->deleted = $options->deleted;
 		return $object;
 	}
 	

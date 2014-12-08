@@ -45,21 +45,40 @@ class CI_Address {
 	 * Uso interno
 	 * @return object
 	 */
-	private function getData(){
+	public function getData($options){
 		$object = new stdClass();
-		$object->id = $this->id;
-		$object->street = $this->street;
-		$object->number = $this->number;
-		$object->floor = $this->floor;
-		$object->apartment = $this->apartment;
-		$object->postalCode = $this->postalCode;
-		$object->principal = $this->principal;
-		$object->provinceId = $this->provinceId;
-		$object->departmentId = $this->departmentId;
-		$object->cityId = $this->cityId;
+		$object->id = $options->id;
+		$object->street = $options->street;
+		$object->number = $options->number;
+		$object->floor = $options->floor;
+		$object->apartment = $options->apartment;
+		$object->postalCode = $options->postalCode;
+		$object->principal = $options->principal;
+		$object->provinceId = $options->provinceId;
+		$object->departmentId = $options->departmentId;
+		$object->cityId = $options->cityId;
 		return $object;
 	}
 	
+    public function getDataFromArray($options){
+        $addresses = null;
+        foreach ($options as $key => $address){
+                $myUserAddress = new stdClass();
+                $myUserAddress->id = $address->getId();
+                $myUserAddress->street = $address->getStreet();
+                $myUserAddress->number = $address->getNumber();
+                $myUserAddress->floor = $address->getFloor();
+                $myUserAddress->apartment = $address->getApartment();
+                $myUserAddress->postalCode = $address->getPostalCode();
+                $myUserAddress->provinceId = $address->getProvinceId();
+                $myUserAddress->departmentId = $address->getDepartmentId();
+                $myUserAddress->cityId = $address->getCityId();
+                $myUserAddress->principal = $address->getPrincipal();
+                $addresses[$key] = $myUserAddress;
+            }
+        return $addresses;
+    }
+
 	public static function getInstance($row){
 		if(!($row instanceof stdClass)){
 			show_error("El row debe ser una instancia de stdClass.");
