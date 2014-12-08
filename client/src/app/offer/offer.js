@@ -11,10 +11,18 @@ angular.module('AyudarEsFacilApp.offer', [
             pageTitle: 'Ofrecimientos'
         }
     });
-    $stateProvider.state('panel.offerCreate', {
+    $stateProvider.state('web.offerCreate', {
         url: '/ofrecer-ayuda',
         controller: 'CreateOfferCtrl',
         templateUrl: 'offer/offer-create.tpl.html',
+        data: {
+            pageTitle: 'Crear Ofrecimiento'
+        }
+    });
+    $stateProvider.state('panel.createOfferUser', {
+        url: '/crear-ofrecimiento',
+        controller: 'CreateOfferCtrl',
+        templateUrl: 'offer/offer-create-user.tpl.html',
         data: {
             pageTitle: 'Crear Ofrecimiento'
         }
@@ -290,6 +298,7 @@ angular.module('AyudarEsFacilApp.offer', [
                 .success(function(response) {
                     $scope.error = false;
                     $state.go('panel.offerListUser');
+                    $scope.offersUser();
                 }).error(function(response) {
                     $scope.error = true;
                 });
@@ -341,6 +350,31 @@ angular.module('AyudarEsFacilApp.offer', [
                     $scope.error = error;
                     $scope.btnText = 'Publicar';
                 });
+        }
+    };
+
+
+    $scope.offerDelete = function(id) {
+        var retVal = confirm("Seguro que quieres dar de baja la publicación?");
+
+        if (retVal === true) {
+            var data = {
+                publicationId: id,
+                userId: $scope.user.id
+            };
+
+            $http.post('/ayudaresfacil/api/offer/delete', data)
+                .success(function(response) {
+                    $scope.error = false;
+                    $state.go('panel.offerListUser');
+                    $scope.offersUser();
+                }).error(function(response) {
+                    $scope.error = true;
+                });
+
+            return true;
+        } else {
+            return false;
         }
     };
 

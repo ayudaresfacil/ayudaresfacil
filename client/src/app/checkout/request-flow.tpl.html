@@ -17,29 +17,29 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2">
-                            <h4 class="small-heading">{{user.name}}, haz dicho que necesitas esto?</h4>
+                            <h4 class="small-heading">{{user.name}}, haz dicho que puedes ayudar?</h4>
                             
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-sm-12">
                                     <div class="alert alert-info alert-bold-border square fade in">
                                         <strong>Recuerda!</strong> Otras personas con menores posibilidades podrían necesitarlo también.
                                         <a href="#fakelink" class="alert-link"></a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div class="row" data-ng-if="offer">
+                            <div class="row" data-ng-if="request">
                                 <div class="col-sm-6">
-                                    <img class="img-thumbnail" ng-src="{{offer.image[0].path}}" alt="{{offer.object.description}}"/>
+                                    <img class="img-thumbnail" ng-src="{{request.image[0].path}}" alt="{{request.object.description}}"/>
                                 </div>
                             
                                 <div class="col-sm-6">
-                                    <h3>{{offer.title}}</h3>
+                                    <h3>{{request.title}}</h3>
                                     <p>
-                                        <small>{{offer.description}}</small>
+                                        <small>{{request.description}}</small>
                                     </p>
                                     <p>
-                                        <span class="badge badge-default"> {{offer.quantity}} disponibles</span>
+                                        <span class="badge badge-default"> {{request.quantity}} disponibles</span>
                                     </p>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
 
                         <div class="col-sm-8 col-sm-offset-2">
                             <h4 class="small-heading more-margin-bottom">Quieres agregar algo?</h4>
-                            <p>Si quieres, puedes hacer una observación al dueño de la publicación sobre el pedido que haz iniciado</p>
+                            <p>Si quieres, puedes hacer una observación al dueño de la publicación sobre el ofrecimiento que haz iniciado</p>
                             <form role="form">
                                 <div class="form-group">
                                     <label>Comentarios</label>

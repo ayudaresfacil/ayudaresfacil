@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="form-group">
-                    <h4>$<input ng-if="request.categoryId == '9'" type="text" class="form-control input-md" name="cantidad" ng-model="request.quantity" placeholder="Cantidad de dinero necesario" ng-required="true"></h4>
+                    <h4 ng-if="request.categoryId == '9'">$<input type="text" class="form-control input-md" name="cantidad" ng-model="request.quantity" placeholder="Cantidad de dinero necesario" ng-required="true"></h4>
                 </div>
 
                 <div class="form-group">
@@ -106,7 +106,7 @@
                     <input class="form-control input-md" name="label" ng-model="item.label" ng-required="true"/>
                 </div>
             </div>
-                
+        </div>
         <div class="row">
             <hr/>
             <p class="text-center">
@@ -114,7 +114,5 @@
                 <button ui-sref="web.requestList()" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>Cancelar</button> 
             </p>
         </div>
-
-    </div>
     </form>
 </div>

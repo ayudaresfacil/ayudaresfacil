@@ -177,7 +177,7 @@ class CI_User {
 		$CI = & get_instance();
 		$CI->load->model('user_model');
 		if(isset($this->id) && $this->id > 0){
-			$CI->user_model->update($this->getData());
+			$CI->user_model->update($this->getData($this));
 			if(!empty($this->phones)){
 				foreach($this->phones as $phone) {
 					$phone->save($this->id);

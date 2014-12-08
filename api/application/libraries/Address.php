@@ -127,7 +127,7 @@ class CI_Address {
 		$return = TRUE;
 		$CI = & get_instance();
 		$CI->load->model('address_model');
-		$data = $this->getData();
+		$data = $this->getData($this);
 		$data->userId = $userId;
 		if(isset($this->id) && $this->id > 0)
 			$CI->address_model->update($data);
