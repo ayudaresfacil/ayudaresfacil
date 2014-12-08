@@ -300,8 +300,8 @@ angular.module('AyudarEsFacilApp.offer', [
         }
     };
 
-    $scope.openConversation=function(){
-        ConversationService.openConversation();
+    $scope.openConversation=function(id){
+        ConversationService.openConversation(id);
     };
 
     $scope.getCategories();
