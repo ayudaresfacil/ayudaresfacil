@@ -9,20 +9,36 @@ angular.module( 'AyudarEsFacilApp.mail', [
 		})
 		.state( 'panel.mail.inbox', {        
 			url: '/mensajes/bandeja-de-entrada',
-			controller: 'MailCtrl',
+			controller: 'InBoxCtrl',
 			templateUrl: 'mail/mail-inbox.tpl.html',
 			data:{ pageTitle: 'Bandeja de Entrada' }
 		})
 		.state( 'panel.mail.read', {        
 			url: '/mensajes/leer/:id',
-			controller: 'MailCtrl',
+			controller: 'ConversationCtrl',
 			templateUrl: 'mail/mail-read.tpl.html',
 			data:{ pageTitle: 'Mensaje' }
 		});
 })
 
-.controller( 'MailCtrl', function OfferCtrl( $scope ) {
+.service('ConversationService',[ '$modal', function($modal) {
+    this.openConversation = function () {
+        var modalInstance = $modal.open({
+        templateUrl: 'mail/mail-read.tpl.html',
+        controller: 'ConversationCtrl',
+        size: 'sm'});
 
+        return modalInstance;
+    };
+}])
+
+.controller( 'InBoxCtrl', function OfferCtrl( $scope, ConversationService ) {
+    $scope.openConversation=function(){
+        ConversationService.openConversation();
+    };
 })
 
+.controller( 'ConversationCtrl', function OfferCtrl( $scope ) {
+
+})
 ;
