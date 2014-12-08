@@ -186,7 +186,7 @@ CREATE TABLE `process_state` (
 
 /*Data for the table `process_state` */
 
-insert  into `process_state`(`process_state_id`,`description`) values ('B','BORRADO'),('C','CERRADO'),('P','PAUSADO'),('V','VIGENTE');
+-- insert  into `process_state`(`process_state_id`,`description`) values ('B','BORRADO'),('C','CERRADO'),('P','PAUSADO'),('V','VIGENTE');
 
 /*Table structure for table `province` */
 
@@ -229,6 +229,8 @@ CREATE TABLE `publication` (
 
 /*Data for the table `publication` */
 
+-- insert  into `publication`(`publication_id`,`user_id`,`publication_type_id`,`creation_date`,`title`,`description`,`expiration_date`,`category_id`,`subcategory_id`,`views`,`process_state_id`) values (0,4,NULL,'0000-00-00 00:00:00','','',NULL,NULL,NULL,NULL,NULL),(1,1,1,'2014-06-09 00:00:00','Prueba de Ofrecimiento','Este es un registro de prueba para ver si se puede obtener un ofrecimiento','2014-12-30 00:00:00',1,1,100,'V');
+
 /*Table structure for table `publication_category` */
 
 DROP TABLE IF EXISTS `publication_category`;
@@ -244,6 +246,9 @@ CREATE TABLE `publication_category` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `publication_category` */
+
+
+-- insert  into `publication_category`(`category_id`,`description`,`common_state_id`) values (1,'Muebles','A'),(2,'Salud','A');
 
 /*Table structure for table `publication_favorite` */
 
@@ -262,6 +267,8 @@ CREATE TABLE `publication_favorite` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `publication_favorite` */
+
+-- insert  into `publication_favorite`(`favorite_id`,`publication_id`,`user_id`,`start_date`) values (2,1,1,'2014-06-09 15:03:30');
 
 /*Table structure for table `publication_image` */
 
@@ -382,24 +389,7 @@ CREATE TABLE `publication_type` (
 
 /*Data for the table `publication_type` */
 
-insert  into `publication_type`(`publication_type_id`,`name`,`description`) values (1,'Ofrecimiento',NULL),(2,'Pedido Monetario',NULL),(3,'Pedido de Objetos',NULL);
-
-/*Table structure for table `publication_vote` */
-
-DROP TABLE IF EXISTS `publication_vote`;
-
-CREATE TABLE `publication_vote` (
-  `vote_id` int(11) NOT NULL AUTO_INCREMENT,
-  `publication_id` int(11) NOT NULL,
-  `user_id` mediumint(9) NOT NULL,
-  PRIMARY KEY (`vote_id`,`publication_id`,`user_id`),
-  KEY `publication_id` (`publication_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `FK_Publication_vote_Publication` FOREIGN KEY (`publication_id`) REFERENCES `publication` (`publication_id`),
-  CONSTRAINT `FK_Publication_vote_User` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `publication_vote` */
+-- insert  into `publication_type`(`publication_type_id`,`name`,`description`) values (1,'Ofrecimiento',NULL),(2,'Pedido Monetario',NULL),(3,'Pedido de Objetos',NULL);
 
 /*Table structure for table `sponsor` */
 
@@ -557,6 +547,23 @@ CREATE TABLE `user_score` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `user_score` */
+
+/*Table structure for table `publication_vote` */
+
+DROP TABLE IF EXISTS `publication_vote`;
+
+CREATE TABLE `publication_vote` (
+  `vote_id` int(11) NOT NULL AUTO_INCREMENT,
+  `publication_id` int(11) NOT NULL,
+  `user_id` mediumint(9) NOT NULL,
+  PRIMARY KEY (`vote_id`,`publication_id`,`user_id`),
+  KEY `publication_id` (`publication_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `FK_Publication_vote_Publication` FOREIGN KEY (`publication_id`) REFERENCES `publication` (`publication_id`),
+  CONSTRAINT `FK_Publication_vote_User` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `publication_vote` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

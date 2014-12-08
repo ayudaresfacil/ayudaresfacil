@@ -33,6 +33,7 @@ angular.module( 'AyudarEsFacilApp.checkout', [
 
 .controller('CheckoutCtrl', function CheckoutCtrl($scope, $http, $location, $state, $stateParams, Authentication, Offers) {  
     $scope.user = Authentication.user;
+
     if (!$scope.user) {
         $location.path('/');
         return;
@@ -54,6 +55,7 @@ angular.module( 'AyudarEsFacilApp.checkout', [
         this.offerService = new Offers();
         
         $scope.flow.endStep = this.steps;
+        $scope.comments = '';
 
         this.getData = function(){
             this.promiseOffer = this.offerService.$get({
@@ -65,8 +67,30 @@ angular.module( 'AyudarEsFacilApp.checkout', [
             });
         };
 
-        this.end = function(){            
-            console.log($scope.comments);
+        this.end = function(){   
+            $scope.status = 'loading';
+            
+            var message = $scope.user.name + ' ha dicho que necesita lo que ofreces. Contacta con el para finalizar el proceso';
+
+            if($scope.comments.length > 0){
+                message += '. Comentarios: ' + $scope.comments;
+            }
+
+            $http.post('/ayudaresfacil/api/message?asd=213',{
+                userIdFrom: $scope.user.id,
+                userIdTo: $scope.offer.user.id, 
+                publicationId: $scope.offer.id, 
+                FAQ: "0", 
+                commonStateId: "N", 
+                subject: "Te han pedido lo que ofreciste", 
+                text: message, 
+                token: $scope.user.token
+            })
+            .success(function(response) {
+                $scope.status = 'congrats';
+            }).error(function(response) {
+                $scope.status = 'fail';
+            });
         };
 
         this.getData();
