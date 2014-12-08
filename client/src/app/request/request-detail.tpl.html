@@ -114,7 +114,7 @@
         <div class="col-md-8 col-sm-6">
             <h2 class="medium-heading more-margin-bottom text-primary">
                 {{request.title}}
-                 <a href class="pull-right" ng-click="toggleFavorite()" title="Favorito">
+                 <a href ng-if="request.isOwner == '0'" class="pull-right" ng-click="toggleFavorite()" title="Favorito">
                     <i class="glyphicon glyphicon-heart text-muted"  ng-class="{'text-warning': request.isFavorite == '1'}"></i>
                 </a>
             </h2>
