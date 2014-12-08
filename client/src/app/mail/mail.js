@@ -69,12 +69,15 @@ angular.module( 'AyudarEsFacilApp.mail', [
 
 .controller( 'InBoxCtrl', function InBoxCtrl( $scope, $filter, ConversationService, Conversations, Authentication ) {
 	var today = new Date();
-
+    $scope.conversations= null;
+    $scope.noConversations = true;
     $scope.openConversation=function(object){
         ConversationService.openConversation(object.id);
     };
 
     $scope.getAllConversationsFromAllPublications=function(){
+        $scope.conversations= null;
+        $scope.noConversations = true;
         var conversations = Conversations.get({userInConversations:Authentication.user.id}, function(response){
             if (response.result === undefined || response.result == "NOOK"){
                $scope.noConversations = true;
@@ -104,6 +107,8 @@ angular.module( 'AyudarEsFacilApp.mail', [
 	};
 
     $scope.getAllConversationsFromMyPublications=function(){
+        $scope.conversations= null;
+        $scope.noConversations = true;
         var conversations = Conversations.get({userOwner:Authentication.user.id}, function(response){
             if (response.result === undefined || response.result == "NOOK"){
                $scope.noConversations = true;
@@ -133,6 +138,8 @@ angular.module( 'AyudarEsFacilApp.mail', [
     };
 
     $scope.getAllConversationsFromOthersPublications=function(){
+        $scope.conversations= null;
+        $scope.noConversations = true;
         var conversations = Conversations.get({userNoOwner:Authentication.user.id}, function(response){
             if (response.result === undefined || response.result == "NOOK"){
                $scope.noConversations = true;
