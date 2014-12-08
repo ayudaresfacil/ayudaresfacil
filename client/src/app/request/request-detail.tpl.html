@@ -176,6 +176,10 @@
 
             <div class="row">
                 <div class="col-sm-10 col-xs-6">
+                    <button ng-if="request.isOwner == '0'" class="btn btn-success btn-md" ng-click="openConversation()">
+                        <span class="fa fa-envelope"></span> Envíale un mensaje
+                    </button>
+
                     <a href="#/checkout/request/{{request.id}}" ng-if="request.processState.id == 'V' && request.isOwner == '0'" class="btn btn-danger">
                         <span class="glyphicon glyphicon-ok"></span> Quiero Ayudar</a>
 

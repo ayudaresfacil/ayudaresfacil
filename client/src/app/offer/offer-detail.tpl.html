@@ -69,8 +69,13 @@
 
             <div class="row">
                 <div class="col-sm-10 col-xs-6">
+                    <button ng-if="offer.isOwner == '0'" class="btn btn-success btn-lg" ng-click="openConversation()">
+                        <span class="fa fa-envelope"></span> Envíale un mensaje
+                    </button>
+                    
                     <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processStateOffer.id == 'V' && offer.isOwner == '0'" class="btn btn-danger btn-lg">
                         <span class="glyphicon glyphicon-ok"></span> Lo necesito</a>
+
                     <button ng-if="offer.processStateOffer.id == 'P' " class="btn btn-danger btn-lg disabled">
                         <span class="glyphicon glyphicon-ban-circle"></span> Publicación Pausada
                     </button>

@@ -15,6 +15,7 @@ class CI_Publication {
 	private $image;
 	private $isFavorite;
 	private $isOwner;
+    private $user;
 
 	public function getId() {return $this->id;}
 	
@@ -106,6 +107,8 @@ class CI_Publication {
 	public function getIsOwner(){return $this->isOwner;}
 	public function setIsOwner($isOwner){$this->isOwner = $isOwner;}
 
+    public function getUser(){return $this->user;}
+
 	/**
 	 * Devuelve la informacion cargada del objeto 
 	 * Uso interno
@@ -162,7 +165,8 @@ class CI_Publication {
 		if (isset($options->isOwner)) {
 			$publication->isOwner = $options->isOwner;			
 		}
-		return $publication;
+        $publication->user = CI_User::getData($options->user);
+        return $publication;
 	}
 
 	protected static function getInstance($row){
@@ -188,6 +192,20 @@ class CI_Publication {
 		if (isset($row->isOwner)) {
 			$publication->isOwner = (isset($row->isOwner)) ? $row->isOwner : '';
 		}
+        $publication->user = (isset($row->user_id)) ? CI_User::getById($row->user_id)[0] : '';
 		return $publication;
+	}
+
+	public static function getById($id){
+		$CI = & get_instance();
+		$CI->load->model('publication_model');
+		$results = $CI->publication_model->getById($id);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result) {
+				$return[] = self::getInstance($result);
+			}
+		}
+		return $return;
 	}
 }

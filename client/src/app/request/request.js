@@ -111,7 +111,7 @@ angular.module('AyudarEsFacilApp.request', [
     }
 ])
 
-.controller('RequestCtrl', function RequestCtrl($scope, $http, Request, $state, $location, $stateParams, Authentication) {
+.controller('RequestCtrl', function RequestCtrl($scope, $http, Request, $state, $location, $stateParams, Authentication, ConversationService) {
     $scope.myInterval = 5000;
     $scope.user = Authentication.user;
     $scope.btnText = 'Publicar';
@@ -341,6 +341,10 @@ angular.module('AyudarEsFacilApp.request', [
         $scope.sponsorDel.push({
             sponsorId: id
         });
+    };
+
+    $scope.openConversation=function(){
+        ConversationService.openConversation();
     };
 
     $scope.getCategories();

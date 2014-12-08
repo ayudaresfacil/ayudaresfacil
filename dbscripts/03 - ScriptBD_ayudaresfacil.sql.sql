@@ -120,7 +120,7 @@ CREATE TABLE `message` (
   `user_id_from` mediumint(9) NOT NULL,
   `user_id_to` mediumint(9) NOT NULL,
   `publication_id` int(11) DEFAULT NULL,
-  `first_message_id` int(11) DEFAULT NULL,
+  `conversation_id` int(11) DEFAULT NULL,
   `FAQ` tinyint(1) DEFAULT '0',
   `common_state_id` char(1) NOT NULL DEFAULT 'N',
   `subject` varchar(350) DEFAULT NULL,

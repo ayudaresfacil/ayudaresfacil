@@ -22,13 +22,25 @@ class CI_Phone {
 	 * Uso interno
 	 * @return object
 	 */
-	private function getData(){
+	public function getData($options){
 		$object = new stdClass();
-		$object->id = $this->id;
-		$object->number = $this->number;
-		$object->areaCode = $this->areaCode;
-		$object->typeId = $this->typeId;
+		$object->id = $options->id;
+		$object->number = $options->number;
+		$object->areaCode = $options->areaCode;
+		$object->typeId = $options->typeId;
 		return $object;
+	}
+
+	public function getDataFromArray($options){
+		$phones = null;
+		foreach ($options as $key => $phone){
+				 	$myUserPhone = new stdClass();
+					$myUserPhone->number = $phone->getNumber();
+					$myUserPhone->areaCode = $phone->getAreaCode();
+					$myUserPhone->typeId = $phone->getTypeId();
+					$phones[$key] = $myUserPhone;
+				}
+		return $phones;
 	}
 	
 	public static function getInstance($row){

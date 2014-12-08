@@ -114,7 +114,7 @@ angular.module('AyudarEsFacilApp.offer', [
     }
 ])
 
-.controller('OfferCtrl', function OfferCtrl($scope, $http, Offers, $state, $stateParams, Authentication) {
+.controller('OfferCtrl', function OfferCtrl($scope, $http, Offers, $state, $stateParams, Authentication, ConversationService) {
     $scope.myInterval = 5000;
     $scope.user = Authentication.user;
     $scope.btnText = 'Publicar';
@@ -299,6 +299,10 @@ angular.module('AyudarEsFacilApp.offer', [
         } else {
             return false;
         }
+    };
+
+    $scope.openConversation=function(){
+        ConversationService.openConversation();
     };
 
     $scope.getCategories();
