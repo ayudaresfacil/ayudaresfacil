@@ -87,7 +87,7 @@ class CI_Phone {
 		$return = TRUE;
 		$CI = & get_instance();
 		$CI->load->model('phone_model');
-		$data = $this->getData();
+		$data = $this->getData($this);
 		$data->userId = $userId;
 		$this->id = $CI->phone_model->create($data);
 		
