@@ -31,7 +31,7 @@ angular.module( 'AyudarEsFacilApp.checkout', [
     });
 })
 
-.controller('CheckoutCtrl', function CheckoutCtrl($scope, $http, $location, $state, $stateParams, Authentication, Offers) {  
+.controller('CheckoutCtrl', function CheckoutCtrl($scope, $http, $location, $state, $stateParams, Authentication, Offers, Request) {  
     $scope.user = Authentication.user;
 
     if (!$scope.user) {
@@ -76,7 +76,7 @@ angular.module( 'AyudarEsFacilApp.checkout', [
                 message += '. Comentarios: ' + $scope.comments;
             }
 
-            $http.post('/ayudaresfacil/api/message?asd=213',{
+            $http.post('/ayudaresfacil/api/message',{
                 userIdFrom: $scope.user.id,
                 userIdTo: $scope.offer.user.id, 
                 publicationId: $scope.offer.id, 
@@ -96,11 +96,54 @@ angular.module( 'AyudarEsFacilApp.checkout', [
         this.getData();
     };
 
-    this.moneyAction = function(){
+    this.requestFlow = function(){
+        this.steps = 2;
+        this.requestService = new Request();
         
+        $scope.flow.endStep = this.steps;
+        $scope.comments = '';
+
+        this.getData = function(){
+            this.promiseRequest = this.requestService.$get({
+                publicationId: $scope.publicationId
+            });
+
+            this.promiseRequest.then(function(response) {
+                $scope.request = response.data[0];
+            });
+        };
+
+        this.end = function(){   
+            $scope.status = 'loading';
+            
+            var message = $scope.user.name + ' ha dicho que tiene lo que necesitas. Contacta con el para finalizar el proceso';
+
+            if($scope.comments.length > 0){
+                message += '. Comentarios: ' + $scope.comments;
+            }
+
+            $http.post('/ayudaresfacil/api/message',{
+                userIdFrom: $scope.user.id,
+                userIdTo: $scope.request.user.id, 
+                publicationId: $scope.request.id, 
+                FAQ: "0", 
+                commonStateId: "N", 
+                subject: "Han dicho que pueden ayudarte", 
+                text: message, 
+                token: $scope.user.token
+            })
+            .success(function(response) {
+                $scope.status = 'congrats';
+            }).error(function(response) {
+                $scope.status = 'fail';
+            });
+        };
+
+        this.getData();
     };
 
-    this.requestAction = function(){
+
+    this.moneyFlow = function(){
         
     };
 
