@@ -1,102 +1,102 @@
-<h1 class="page-heading">Pedidos
-    <small>Detalle del pedido</small>
-</h1>
+<!-- BEGIN USER APPS INBOX -->
+<div class="mail-apps-wrap">
 
-<ol class="breadcrumb default square rsaquo sm">
-    <li>
-        <a href="index.html"><i class="fa fa-home"></i></a>
-    </li>
-    <li>
-        <a href="index.html#/pedidos">Pedidos</a>
-    </li>
-    <li class="active">Ver Detalle</li>
-</ol>
-
-<div class="the-box no-border" ng-repeat="request in requests">
-    <div class="row">
-        <div class="col-md-4 col-sm-6">
-            <carousel interval="myInterval" style="height:350px">
-                <slide ng-repeat="slide in request.image" active="slide.active">
-                    <img ng-src="{{slide.path}}" style="margin:auto;">
-                </slide>
-            </carousel>
+    <div class="the-box bg-warning no-border no-margin heading">
+        <div class="row">
+            <h1><i class="fa fa-bullhorn icon-lg icon-circle icon-bordered"></i> Detalle del pedido</h1>
         </div>
+        <!-- /.row -->
+    </div>
+    <!-- the-box -->
 
-        <div class="col-md-8 col-sm-6">
-            <h2 class="medium-heading more-margin-bottom text-primary">
+    <div class="row">&nbsp;</div>
+
+    <div class="the-box no-border" ng-repeat="request in requests">
+        <div class="row">
+            <div class="col-md-4 col-sm-6">
+                <carousel interval="myInterval" style="height:350px">
+                    <slide ng-repeat="slide in request.image" active="slide.active">
+                        <img ng-src="{{slide.path}}" style="margin:auto;">
+                    </slide>
+                </carousel>
+            </div>
+
+            <div class="col-md-8 col-sm-6">
+                <h2 class="medium-heading more-margin-bottom text-primary">
                 {{request.title}}            
             </h2>
 
-            <p style="margin-top: -10px;">
-                <small style="margin: -20px 20px 0 0;">
+                <p style="margin-top: -10px;">
+                    <small style="margin: -20px 20px 0 0;">
                     <span class="glyphicon glyphicon-thumbs-up"></span> Votos de fé: {{request.votes[0].quan}} 
                 </small>
-                <small>
+                    <small>
                     <span class="glyphicon glyphicon-heart"></span> Favoritos: {{request.favorites[0].quan}}
                 </small>
-            </p>
+                </p>
 
-            <p>
-                {{request.description}}
-            </p>
+                <p>
+                    {{request.description}}
+                </p>
 
-            <div class="panel-group">
-                <div class="panel panel-default">
-                    <div class="panel-body">
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
 
-                        <h4>{{request.object.description}}</h4>
-                        <p>
-                            {{request.category.description}} > {{request.subcategory.description}}
-                        </p>
-                        <p>
-                            Disponible: <strong>{{request.quantity}}</strong>
-                        </p>
-                        </p>
-                        <p>Visto:
-                            <strong>{{request.views}}</strong> veces</p>
-                        <p>Vencimiento:
-                            <strong>{{request.expirationDate}}</strong>
-                        </p>
+                            <h4>{{request.object.description}}</h4>
+                            <p>
+                                {{request.category.description}} > {{request.subcategory.description}}
+                            </p>
+                            <p>
+                                Disponible: <strong>{{request.quantity}}</strong>
+                            </p>
+                            </p>
+                            <p>Visto:
+                                <strong>{{request.views}}</strong> veces</p>
+                            <p>Vencimiento:
+                                <strong>{{request.expirationDate}}</strong>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="the-box transparent">
-                <p>
-                    <span class="badge badge-primary">Padrinos</span>
-                </p>
-                <ul class="col-md-4 media-list media-sm media-team" ng-repeat="sponsor in request.sponsors">
-                    <li class="media">
-                        <a class="pull-left">
-                            <img class="media-object img-circle" src="assets/images/avatar/avatar.jpg" alt="Avatar">
-                        </a>
-                        <div class="media-body">
-                            <!-- <h4 class="media-heading">Nombre de padrino</h4> -->
-                            <a href="https://twitter.com/{{sponsor.userTw}}">
-                                <p class="text-danger">{{sponsor.userTw}}</p>
+                <div class="the-box transparent">
+                    <p>
+                        <span class="badge badge-primary">Padrinos</span>
+                    </p>
+                    <ul class="col-md-4 media-list media-sm media-team" ng-repeat="sponsor in request.sponsors">
+                        <li class="media">
+                            <a class="pull-left">
+                                <img class="media-object img-circle" src="assets/images/avatar/avatar.jpg" alt="Avatar">
                             </a>
-                        </div>
-                    </li>
-                </ul>
-                <p ng-if="request.sponsors == ''">
-                    Esta publicación aún no tiene padrinos..
-                </p>
-            </div>
-
-
-            <div class="row">
-                <div class="col-sm-10 col-xs-6">
-                    <a href="#/checkout/request/{{request.id}}" ng-if="request.processState.id == 'V' && request.isOwner == '0'" class="btn btn-danger">
-                        <span class="glyphicon glyphicon-ok"></span> Quiero Ayudar</a>
-
-                    <button ng-if="request.processState.id == 'C' " type="button" class="btn btn-danger btn-md disabled"><span class="glyphicon glyphicon-ban-circle"></span> Objetivo Cumplido </button>
-
-                    <button type="button" ng-if="request.isVote == '1' && request.isOwner == '0'" ng-click="unsetVote(request.id)" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down"></span>Ya no doy fe!</button>
-
-                    <button type="button" ng-if="request.isVote == '0' && request.isOwner == '0'" ng-click="setVote(request.id)" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span>Doy fe!</button>
+                            <div class="media-body">
+                                <!-- <h4 class="media-heading">Nombre de padrino</h4> -->
+                                <a href="https://twitter.com/{{sponsor.userTw}}">
+                                    <p class="text-danger">{{sponsor.userTw}}</p>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                    <p ng-if="request.sponsors == ''">
+                        Esta publicación aún no tiene padrinos..
+                    </p>
                 </div>
-            </div>
 
+
+                <div class="row">
+                    <div class="col-sm-10 col-xs-6">
+                        <a href="#/checkout/request/{{request.id}}" ng-if="request.processState.id == 'V' && request.isOwner == '0'" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-ok"></span> Quiero Ayudar</a>
+
+                        <button ng-if="request.processState.id == 'C' " type="button" class="btn btn-danger btn-md disabled"><span class="glyphicon glyphicon-ban-circle"></span> Objetivo Cumplido </button>
+
+                        <button type="button" ng-if="request.isVote == '1' && request.isOwner == '0'" ng-click="unsetVote(request.id)" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down"></span>Ya no doy fe!</button>
+
+                        <button type="button" ng-if="request.isVote == '0' && request.isOwner == '0'" ng-click="setVote(request.id)" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span>Doy fe!</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>

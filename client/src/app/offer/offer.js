@@ -11,10 +11,18 @@ angular.module('AyudarEsFacilApp.offer', [
             pageTitle: 'Ofrecimientos'
         }
     });
-    $stateProvider.state('panel.offerCreate', {
+    $stateProvider.state('web.offerCreate', {
         url: '/ofrecer-ayuda',
         controller: 'CreateOfferCtrl',
         templateUrl: 'offer/offer-create.tpl.html',
+        data: {
+            pageTitle: 'Crear Ofrecimiento'
+        }
+    });
+    $stateProvider.state('panel.createOfferUser', {
+        url: '/crear-ofrecimiento',
+        controller: 'CreateOfferCtrl',
+        templateUrl: 'offer/offer-create-user.tpl.html',
         data: {
             pageTitle: 'Crear Ofrecimiento'
         }

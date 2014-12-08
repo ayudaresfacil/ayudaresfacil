@@ -75,15 +75,14 @@
                     <input type="text" class="form-control input-md" name="path" ng-file-select="onFileSelect($files)" ng-model="offer.image" ng-required="true">
                 </div>
             </div>
+        </div>
 
-            <div class="row">
-                <hr/>
-                <p class="text-center">
-                    <button ng-click="submitForm(myForm.$valid)" class="btn btn-success" type="submit"><i class="glyphicon glyphicon-ok" ng-disabled="myForm.$invalid"></i>{{btnText}}</button>
-                    <button ui-sref="web.offerList" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>Cancelar</button>
-                </p>
-            </div>
-
+        <div class="row">
+            <hr/>
+            <p class="text-center">
+                <button ng-click="submitForm(myForm.$valid)" class="btn btn-success" type="submit"><i class="glyphicon glyphicon-ok" ng-disabled="myForm.$invalid"></i>{{btnText}}</button>
+                <button ui-sref="web.offerList" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>Cancelar</button>
+            </p>
         </div>
     </form>
 </div>

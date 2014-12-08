@@ -11,10 +11,18 @@ angular.module('AyudarEsFacilApp.request', [
             pageTitle: 'Pedidos'
         }
     });
-    $stateProvider.state('panel.requestCreate', {
+    $stateProvider.state('web.requestCreate', {
         url: '/pedir-ayuda',
         controller: 'CreateRequestCtrl',
         templateUrl: 'request/request-create.tpl.html',
+        data: {
+            pageTitle: 'Crear Pedido'
+        }
+    });
+    $stateProvider.state('panel.requestCreateUser', {
+        url: '/crear-pedido',
+        controller: 'CreateRequestCtrl',
+        templateUrl: 'request/request-create-user.tpl.html',
         data: {
             pageTitle: 'Crear Pedido'
         }
