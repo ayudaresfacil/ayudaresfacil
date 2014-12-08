@@ -20,10 +20,10 @@ class Message extends REST_Controller{
 
         if($id){
             $messages = CI_Message::getById($id);   
-        }elseif ($userNoOwnerPublications) {
-            $messages = CI_Message::getConversationFromOthersPublications($userNoOwnerPublications);
-        }elseif ($userOwnerPublications) {
-            $messages = CI_Message::getConversationFromMyPublications($userOwnerPublications);
+        }elseif ($userNoOwner) {
+            $messages = CI_Message::getConversationFromOthersPublications($userNoOwner);
+        }elseif ($userOwner) {
+            $messages = CI_Message::getConversationFromMyPublications($userOwner);
         }elseif ($userInConversations) {
             $messages = CI_Message::getConversationFromAllPublications($userInConversations);
         }elseif ($conversationId) {
@@ -124,5 +124,19 @@ class Message extends REST_Controller{
 		}
 		$this->response($return, $status);
 	}
-
+    
+    public function getConversationByUserPublication_get(){
+        $status = 404;
+        $return["data"] = "";
+        $return["result"] = "NOOK";
+        $userId = $this->get("userId");
+        $publicationId = $this->get("publicationId");
+        $conversationId = CI_Message::getConversationByUserPublication($publicationId,$userId);
+        if(isset($conversationId["conversationId"])){
+            $status = 200;
+            $return["data"] = $conversationId;
+            $return["result"] = "OK";
+        }
+        $this->response($return, $status);
+    }
 }
