@@ -13,23 +13,23 @@
 <div class="container-masonry">
     <ol>
         <li class="item-masonry" ng-repeat="request in requests">
-            <div class="the-box no-border full store-item text-center mansory-inner">
+            <div ng-if="request.isFavorite == '1'" class="the-box no-border full store-item text-center mansory-inner">
 
-                <img src="{{request.image[0].path}}" class="item-image img-responsive" alt="Image" ui-sref="panel.requestDetailUser({id: request.id})">
+                <img src="{{request.image[0].path}}" class="item-image img-responsive" alt="Image" ui-sref="web.requestDetail({id: request.id})">
 
                 <div class="the-box bg-default no-margin no-border item-des">
-                    <!-- <p style="float:right">
+                    <p style="float:right">
                         <a href ng-click="toggleFavorite()" title="Favorito">
                             <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': request.isFavorite == '1'}"></i>
                         </a>
                     </p>
- -->
+
                     <p class="text-muted">
                         Disponible:
                         <strong>{{request.quantity}}</strong>
                     </p>
 
-                    <h3><a class="bolded" ui-sref="panel.requestDetailUser({id: request.id})">{{request.title}}</a>
+                    <h3><a class="bolded" ui-sref="web.requestDetail({id: request.id})">{{request.title}}</a>
                     </h3>
 
                     <p>{{request.description}}</p>

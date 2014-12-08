@@ -44,9 +44,9 @@ angular.module('AyudarEsFacilApp.request', [
         }
     });
     $stateProvider.state('panel.requestFavorites', {
-        url: '/mis-favoritos',
+        url: '/mis-pedidos-favoritos',
         controller: 'RequestFavorites',
-        templateUrl: 'request/request-list.tpl.html',
+        templateUrl: 'request/request-favorites.tpl.html',
         data: {
             pageTitle: 'Pedidos favoritos'
         }
@@ -224,10 +224,10 @@ angular.module('AyudarEsFacilApp.request', [
         }
     };
 
-    $scope.toggleFavorite =  function(){
-        if(this.request.isFavorite === "0"){
+    $scope.toggleFavorite = function() {
+        if (this.request.isFavorite === "0") {
             this.setFavorite(this.request.id);
-        }else{
+        } else {
             this.unsetFavorite(this.request.id);
         }
     };
@@ -362,7 +362,7 @@ angular.module('AyudarEsFacilApp.request', [
         $scope.likedLabels.splice(idx, 1);
     };
 
-    $scope.addDeleteSponsor = function(idx, id) {        
+    $scope.addDeleteSponsor = function(idx, id) {
         $scope.sponsorDel.push({
             sponsorId: id
         });
@@ -410,6 +410,14 @@ angular.module('AyudarEsFacilApp.request', [
                 });
         }
 
+    };
+
+    $scope.toggleFavorite = function() {
+        if (this.request.isFavorite === "0") {
+            this.setFavorite(this.request.id);
+        } else {
+            this.unsetFavorite(this.request.id);
+        }
     };
 
     $scope.requestsUser = function(message) {
@@ -569,11 +577,58 @@ angular.module('AyudarEsFacilApp.request', [
 
 })
 
-.controller('RequestFavorites', function RequestFavorites($scope, $http, Authentication) {
+.controller('RequestFavorites', function RequestFavorites($scope, $http, Authentication, Request, $stateParams) {
     $scope.user = Authentication.user;
     $scope.message = " ";
 
-    $scope.offerFavoritesUser = function() {
+    var requests = new Request();
+
+    $scope.setFavorite = function(id) {
+        var data = {
+            publicationId: id,
+            userId: $scope.user.id
+        };
+
+        $http.post('/ayudaresfacil/api/request/favorite', data)
+            .success(function(response) {
+                $scope.error = false;
+                requests.$get({
+                    userLog: Authentication.user.id,
+                    publicationId: $stateParams.id
+                }, function(response) {
+                    $scope.requests = requests.data;
+                });
+            })
+            .error(function(response) {
+                $scope.error = true;
+                $scope.credentials = {};
+            });
+    };
+
+    $scope.unsetFavorite = function(id) {
+        var data = {
+            publicationId: id,
+            userId: $scope.user.id,
+            del: 'true'
+        };
+
+        $http.post('/ayudaresfacil/api/request/favorite', data)
+            .success(function(response) {
+                $scope.error = false;
+                requests.$get({
+                    userLog: Authentication.user.id,
+                    publicationId: $stateParams.id
+                }, function(response) {
+                    $scope.requests = requests.data;
+                });
+            })
+            .error(function(response) {
+                $scope.error = true;
+                $scope.credentials = {};
+            });
+    };
+
+    $scope.requestFavoritesUser = function() {
         $scope.requests = null;
         $http({
             method: 'GET',
@@ -590,5 +645,13 @@ angular.module('AyudarEsFacilApp.request', [
         });
     };
 
-    $scope.offerFavoritesUser();
+    $scope.toggleFavorite = function() {
+        if (this.request.isFavorite === "0") {
+            this.setFavorite(this.request.id);
+        } else {
+            this.unsetFavorite(this.request.id);
+        }
+    };
+
+    $scope.requestFavoritesUser();
 });

@@ -25,7 +25,7 @@
         <div class="col-md-8 col-sm-6">
             <h2 class="medium-heading more-margin-bottom text-primary">
                 {{offer.title}}
-                 <a href class="pull-right" ng-click="toggleFavorite()" title="Favorito">
+                 <a href ng-if="offer.isOwner == '0'" class="pull-right" ng-click="toggleFavorite()" title="Favorito">
                     <i class="glyphicon glyphicon-heart text-muted"  ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
                 </a>
             </h2>

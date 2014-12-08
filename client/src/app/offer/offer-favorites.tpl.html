@@ -13,23 +13,23 @@
     <div class="container-masonry">
         <ol>
             <li class="item-masonry" ng-repeat="offer in offers">
-                <div class="the-box no-border full store-item text-center mansory-inner">
+                <div ng-if="offer.isFavorite == '1'" class="the-box no-border full store-item text-center mansory-inner">
 
-                    <img src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="panel.offerDetailUser({id: offer.id})">
+                    <img src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="web.offerDetail({id: offer.id})">
 
                     <div class="the-box bg-default no-margin no-border item-des">
-                       <!--  <p style="float:right">
+                        <p style="float:right">
                             <a href ng-click="toggleFavorite()" title="Favorito">
                                 <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
                             </a>
-                        </p> -->
+                        </p>
 
                         <p class="text-muted">
                             Disponible:
                             <strong>{{offer.quantity}}</strong>
                         </p>
 
-                        <h3><a class="bolded" ui-sref="panel.offerDetailUser({id: offer.id})">{{offer.title}}</a>
+                        <h3><a class="bolded" ui-sref="web.offerDetail({id: offer.id})">{{offer.title}}</a>
                         </h3>
 
                         <p>{{offer.description}}</p>

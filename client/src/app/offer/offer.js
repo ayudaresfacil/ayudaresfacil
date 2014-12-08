@@ -44,9 +44,9 @@ angular.module('AyudarEsFacilApp.offer', [
         }
     });
     $stateProvider.state('panel.offerFavorites', {
-        url: '/mis-favoritos',
+        url: '/mis-ofrecimientos-favoritos',
         controller: 'OfferFavorites',
-        templateUrl: 'offer/offer-list.tpl.html',
+        templateUrl: 'offer/offer-favorites.tpl.html',
         data: {
             pageTitle: 'Ofrecimientos favoritos'
         }
@@ -395,6 +395,14 @@ angular.module('AyudarEsFacilApp.offer', [
             });
     };
 
+    $scope.toggleFavorite =  function(){
+        if(this.offer.isFavorite === "0"){
+            this.setFavorite(this.offer.id);
+        }else{
+            this.unsetFavorite(this.offer.id);
+        }
+    };
+    
     $scope.getCategories = function() {
         $http({
             method: 'GET',
@@ -465,9 +473,64 @@ angular.module('AyudarEsFacilApp.offer', [
 
 })
 
-.controller('OfferFavorites', function OfferFavorites($scope, $http, Offers, Authentication) {
+.controller('OfferFavorites', function OfferFavorites($scope, $http, Offers, Authentication, $stateParams) {
     $scope.user = Authentication.user;
     $scope.message = " ";
+
+    var offers = new Offers();
+
+    $scope.setFavorite = function(id) {
+        var data = {
+            publicationId: id,
+            userId: $scope.user.id
+        };
+
+        $http.post('/ayudaresfacil/api/offer/favorite', data)
+            .success(function(response) {
+                $scope.error = false;
+                offers.$get({
+                    userLog: Authentication.user.id,
+                    publicationId: $stateParams.id
+                }, function(response) {
+                    $scope.offers = offers.data;
+                });
+            })
+            .error(function(response) {
+                $scope.error = true;
+                $scope.credentials = {};
+            });
+    };
+
+    $scope.unsetFavorite = function(id) {
+        var data = {
+            publicationId: id,
+            userId: $scope.user.id,
+            del: 'true'
+        };
+
+        $http.post('/ayudaresfacil/api/offer/favorite', data)
+            .success(function(response) {
+                $scope.error = false;
+                offers.$get({
+                    userLog: Authentication.user.id,
+                    publicationId: $stateParams.id
+                }, function(response) {
+                    $scope.offers = offers.data;
+                });
+            })
+            .error(function(response) {
+                $scope.error = true;
+                $scope.credentials = {};
+            });
+    };
+
+    $scope.toggleFavorite =  function(){
+        if(this.offer.isFavorite === "0"){
+            this.setFavorite(this.offer.id);
+        }else{
+            this.unsetFavorite(this.offer.id);
+        }
+    };
 
     $scope.offerFavoritesUser = function() {
         $scope.offers = null;
