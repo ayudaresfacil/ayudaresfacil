@@ -236,7 +236,7 @@ angular.module( 'AyudarEsFacilApp.user', [
 })
 
 .controller('UserCtrl', function UserCtrl($scope, $http, $location, Users, Authentication) {
-//Set Change User Password - Begin
+    //Set Change User Password - Begin
     $scope.btnText='Guardar Mis Datos';
 
     $scope.updateUserProfile = function() {
@@ -314,7 +314,7 @@ angular.module( 'AyudarEsFacilApp.user', [
     };
 
     this.getUser = function(){
-            $scope.user = Users.get({id:Authentication.user.id}, function() {
+        $scope.user = Users.get({id:Authentication.user.id}, function() {
             var user = $scope.user;
             var userData;
             var userAddress;
