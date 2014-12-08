@@ -89,12 +89,23 @@
             <div class="tab-pane fade" ng-class="{active: flow.step == 2, in: flow.step == 2}" id="wizard-1-step3">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2">
+                        <div class="col-sm-8 col-sm-offset-2"> 
+
+                            <div ng-if="status == 'loading'">
+                                Cargando...
+                            </div>
                             
-                            <div class="jumbotron">
+                            <div class="jumbotron" ng-if="status == 'congrats'">
                                 <h1>Felicitaciones!</h1>
                                 <p>Haz finalizado el pedido.</p>
                                 <p>En breve le enviaremos un mensaje al dueño de la publicación, poniendolos en contacto para concretar la operación.</p>
+                                <p><a ui-sref="web.home" class="btn btn-primary btn-lg" role="button">Ir al home</a></p>
+                            </div>
+
+                            <div class="jumbotron" ng-if="status == 'fail'">
+                                <h1>Ups! Lo sentimos...</h1>
+                                <p>Al parecer surgió un error al intentar realizar esta operación</p>
+                                <p>Por favor, intenta nuevamente mas tarde. Si el problema persiste, ponte en contacto con el equipo de desarrollo.</p>
                                 <p><a ui-sref="web.home" class="btn btn-primary btn-lg" role="button">Ir al home</a></p>
                             </div>
                         </div>
