@@ -322,31 +322,6 @@ angular.module('AyudarEsFacilApp.request', [
             });
     };
 
-    $scope.requestDelete = function(id) {
-        var retVal = confirm("Seguro que quieres dar de baja la publicación?");
-
-        if (retVal === true) {
-            var data = {
-                publicationId: id,
-                userId: $scope.user.id,
-                del: 'true'
-            };
-
-            $http.post('/ayudaresfacil/api/request/delete', data)
-                .success(function(response) {
-                    $scope.error = false;
-                    $state.go('panel.requestListUser');
-                })
-                .error(function(response) {
-                    $scope.error = true;
-                });
-
-            return true;
-        } else {
-            return false;
-        }
-    };
-
     $scope.addInput = function() {
         if ($scope.likedLabels.length < 4) {
             $scope.likedLabels.push({
@@ -410,6 +385,31 @@ angular.module('AyudarEsFacilApp.request', [
                 });
         }
 
+    };
+
+    $scope.requestDelete = function(id) {
+        var retVal = confirm("Seguro que quieres dar de baja la publicación?");
+
+        if (retVal === true) {
+            var data = {
+                publicationId: id,
+                userId: $scope.user.id,
+                del: 'true'
+            };
+
+            $http.post('/ayudaresfacil/api/request/delete', data)
+                .success(function(response) {
+                    $scope.error = false;
+                    $scope.requestsUser();
+                })
+                .error(function(response) {
+                    $scope.error = true;
+                });
+
+            return true;
+        } else {
+            return false;
+        }
     };
 
     $scope.toggleFavorite = function() {
