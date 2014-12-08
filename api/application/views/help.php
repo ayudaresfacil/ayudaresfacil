@@ -670,11 +670,59 @@
 					</a>
 					
 					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">GetAll</h4>
+						<h4 class="list-group-item-heading">GetConversationFromOthersPublications</h4>
 						<p class="list-group-item-text">
 							<strong>Url:</strong> <?php echo $SERVER_URL?>message <br>
 							<strong>Method:</strong> <code>GET</code>
 						</p>
+						<strong>Params:</strong> 
+						<code>
+						{
+							userNoOwner: "4"
+						}
+						</code>
+					</a>
+
+					<a href="#" class="list-group-item">
+						<h4 class="list-group-item-heading">GetConversationFromMyPublications</h4>
+						<p class="list-group-item-text">
+							<strong>Url:</strong> <?php echo $SERVER_URL?>message <br>
+							<strong>Method:</strong> <code>GET</code>
+						</p>
+						<strong>Params:</strong> 
+						<code>
+						{
+							userOwner: "4"
+						}
+						</code>
+					</a>
+
+					<a href="#" class="list-group-item">
+						<h4 class="list-group-item-heading">GetConversationFromAllPublications</h4>
+						<p class="list-group-item-text">
+							<strong>Url:</strong> <?php echo $SERVER_URL?>message <br>
+							<strong>Method:</strong> <code>GET</code>
+						</p>
+						<strong>Params:</strong> 
+						<code>
+						{
+							userInConversations: "4"
+						}
+						</code>
+					</a>
+
+					<a href="#" class="list-group-item">
+						<h4 class="list-group-item-heading">GetConversation</h4>
+						<p class="list-group-item-text">
+							<strong>Url:</strong> <?php echo $SERVER_URL?>message <br>
+							<strong>Method:</strong> <code>GET</code>
+						</p>
+						<strong>Params:</strong> 
+						<code>
+						{
+							conversationId: "4"
+						}
+						</code>
 					</a>
 
 					<a href="#" class="list-group-item">
@@ -686,59 +734,13 @@
 						<strong>Params:</strong> 
 						<code>
 						{
-							id: "4",
-							token: "Aadsjk34hjksad"
+							id: "4"
 						}
 						</code>
 					</a>		
 
 					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">getByUserIdTo</h4>
-						<p class="list-group-item-text">
-							<strong>Url:</strong> <?php echo $SERVER_URL?>message <br>
-							<strong>Method:</strong> <code>GET</code>
-						</p>
-						<strong>Params:</strong> 
-						<code>
-						{
-							userIdTo:"4",
-							token: "Aadsjk34hjksad"
-						}
-						</code>
-					</a>
-
-					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">getByUserIdFrom</h4>
-						<p class="list-group-item-text">
-							<strong>Url:</strong> <?php echo $SERVER_URL?>message <br>
-							<strong>Method:</strong> <code>GET</code>
-						</p>
-						<strong>Params:</strong> 
-						<code>
-						{
-							userIdFrom:"4",
-							token: "Aadsjk34hjksad"
-						}
-						</code>
-					</a>
-
-					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">getConversation</h4>
-						<p class="list-group-item-text">
-							<strong>Url:</strong> <?php echo $SERVER_URL?>message <br>
-							<strong>Method:</strong> <code>GET</code>
-						</p>
-						<strong>Params:</strong> 
-						<code>
-						{
-							firstMessageId:"2",
-							token:"Aadsjk34hjksad"
-						}
-						</code>
-					</a>
-
-					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">Send</h4>
+						<h4 class="list-group-item-heading">Save</h4>
 						<p class="list-group-item-text">
 							<strong>Url:</strong> <?php echo $SERVER_URL?>message <br>
 							<strong>Method:</strong> <code>POST</code> <br>
@@ -748,42 +750,14 @@
 								userIdFrom:"4",
 							    userIdTo:"2",
 							    publicationId:"1",
-							    firstMessageId:"1",
-							    FAQ:"0",
-							    commonStateId:"N",
-							    subject:"subject Prueba",
-							    text:"Texto Prueba",
-							    token:"Aadsjk34hjksad"
+							    text:"Texto Prueba"
 							}
 							</code>
 						</p>
 					</a>
 
 					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">Update</h4>
-						<p class="list-group-item-text">
-							<strong>Url:</strong> <?php echo $SERVER_URL?>message <br>
-							<strong>Method:</strong> <code>POST</code> <br>
-							<strong>Params:</strong> 
-							<code>
-							{
-								id:"1",
-								userIdFrom:"4",
-							    userIdTo:"2",
-							    publicationId:"1",
-							    firstMessageId:"1",
-							    FAQ:"0",
-							    commonStateId:"N",
-							    subject:"subject Prueba",
-							    text:"Texto Prueba",
-							    token:"Aadsjk34hjksad"
-							}
-							</code>
-						</p>
-					</a>
-
-					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">DeleteById</h4>
+						<h4 class="list-group-item-heading">Delete</h4>
 						<p class="list-group-item-text">
 							<strong>Url:</strong> <?php echo $SERVER_URL?>message <br>
 							<strong>Method:</strong> <code>DELETE</code>
@@ -791,8 +765,7 @@
 						<strong>Params:</strong> 
 						<code>
 						{
-							id: 1,
-							token: 'Aadsjk34hjksad'
+							id: 1
 						}
 						</code>
 					</a>

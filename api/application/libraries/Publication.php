@@ -195,4 +195,17 @@ class CI_Publication {
         $publication->user = (isset($row->user_id)) ? CI_User::getById($row->user_id)[0] : '';
 		return $publication;
 	}
+
+	public static function getById($id){
+		$CI = & get_instance();
+		$CI->load->model('publication_model');
+		$results = $CI->publication_model->getById($id);
+		$return = array();
+		if(!empty($results)){
+			foreach($results as $result) {
+				$return[] = self::getInstance($result);
+			}
+		}
+		return $return;
+	}
 }

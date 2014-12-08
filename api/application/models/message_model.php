@@ -11,84 +11,91 @@ class Message_model extends CI_Model
 		return $query->result();
 	}
 
-	public function getByUserIdFrom($userId){
-		$this->db->select('*');	
-		$this->db->from('message');
-		$this->db->where('user_id_from',$userId);
-		$this->db->where('delete_date',null);
-		$query = $this->db->get();
-		return $query->result();
-	}
+    public function getConversationFromMyPublications($userId){
+        $sql   = " SELECT * FROM MESSAGE WHERE MESSAGE_ID IN (";
+        $sql  .= " SELECT MAX(message_id)";
+        $sql  .= " FROM message m ";
+        $sql  .= " WHERE EXISTS (SELECT publication_id FROM publication p";
+        $sql  .= "         WHERE p.publication_id = m.publication_id";
+        $sql  .= "         AND user_id = $userId)";
+        $sql  .= " AND delete_date IS NULL";
+        $sql  .= " GROUP BY conversation_id)";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 
-	public function getByUserIdTo($userId){
-		$this->db->select('*');	
-		$this->db->from('message');
-		$this->db->where('user_id_to',$userId);
-		$this->db->where('delete_date',null);
-		$query = $this->db->get();
-		return $query->result();
-	}
-
-	public function getByPublicationId($publicationId){
-		$this->db->select('*');
-		$this->db->from('message');
-		$this->db->where('publication_Id',$publicationId);
-		$this->db->where('delete_date',null);
-		$query = $this->db->get();
-		return $query->result();
-	}
-
-	public function getAll(){
-		$this->db->select('*');
-		$this->db->from('message');
-		$this->db->where('delete_date',null);
-		$query = $this->db->get();
-		return $query->result();
-	}
-
-	public function getConversation($firstMessageId){
-		$this->db->select('*');
-		$this->db->from('message');
-		$this->db->where('message_id',$firstMessageId);
-		$this->db->where('delete_date',null);
-		$query1 = $this->db->get()->result();
-
-		$this->db->select('*');
-		$this->db->from('message');
-		$this->db->where('first_message_id',$firstMessageId);
-		$this->db->where('delete_date',null);
-		$this->db->order_by('create_date','asc');
-		$query2 = $this->db->get()->result();
-
-		$query = array_merge($query1, $query2);
-
-		return $query;
-	}
+    public function getConversationFromOthersPublications($userId){
+        $sql   = " SELECT * FROM MESSAGE WHERE MESSAGE_ID IN (";
+        $sql  .= " SELECT MAX(message_id)";
+        $sql  .= " FROM message m ";
+        $sql  .= " WHERE (user_id_from = $userId OR user_id_to = $userId) ";
+        $sql  .= " AND NOT EXISTS (SELECT publication_id FROM publication p";
+        $sql  .= "         WHERE p.publication_id = m.publication_id";
+        $sql  .= "         AND user_id = $userId)";
+        $sql  .= " AND delete_date IS NULL";
+        $sql  .= " GROUP BY conversation_id)";
+        $query = $this->db->query($sql);
+        //echo $this->db->last_query();
+        return $query->result();
+    }
+    
+    public function getConversationFromAllPublications($userId){
+        $sql   = " SELECT * FROM MESSAGE WHERE MESSAGE_ID IN (";
+        $sql  .= " SELECT MAX(message_id)";
+        $sql  .= " FROM message m ";
+        $sql  .= " WHERE (user_id_from = $userId OR user_id_to = $userId) ";
+        $sql  .= " AND delete_date IS NULL";
+        $sql  .= " GROUP BY conversation_id)";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 
 	public function create($options){
-		$this->db->trans_start();
-		$data = array 	(
-							'user_Id_From' => $options->UserIdFrom,
-							'user_Id_To' => $options->UserIdTo,
-							'publication_Id' => $options->publicationId,
-							'first_Message_Id' => $options->firstMessageId,
-							'FAQ' => $options->FAQ,
-							'common_State_Id' => $options->commonState->getId(),
-							'subject' => $options->subject,
-							'text' => $options->text,
-							'create_date' => $options->createDate
-						);
-		$this->db->insert('message', $data);
-		$this->db->trans_complete();
+        $sql   = " SELECT distinct(conversation_id) FROM MESSAGE ";
+        $sql  .= " WHERE (user_id_from = $options->userFrom OR  user_id_to = $options->userFrom)";
+        $sql  .= " AND publication_id = $options->publication  AND delete_date is null";
+        $query = $this->db->query($sql);
 
-		$id = $this->db->insert_id();
+        $results = $query->result();
+        if(!empty($results)){
+            foreach($results as $result) {
+                    $conversationId = $result->conversation_id;
+            }
+        }
 
-		if ($this->db->trans_status() === FALSE){
-			$id = null;
-      		log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
-		}
+        if (!(isset($conversationId))){
+            $this->db->select('IFNULL(MAX(conversation_id),0)+1 conversation_id');
+            $this->db->from('message');
+            $this->db->where('delete_date',null);
+            $results = $this->db->get()->result();
+            
+            foreach($results as $result) {
+                    $conversationId = $result->conversation_id;
+            }
+        }
 
-		return $id;
+        $this->db->trans_start();
+        $data = array   (
+                            'user_Id_From' => $options->userFrom,
+                            'user_Id_To' => $options->userTo,
+                            'publication_Id' => $options->publication,
+                            'conversation_Id' => $conversationId,
+                            'FAQ' => $options->FAQ,
+                            'common_State_Id' => $options->commonState->getId(),
+                            'subject' => $options->subject,
+                            'text' => $options->text
+                        );
+        $this->db->insert('message', $data);
+        $this->db->trans_complete();
+
+        $id = $this->db->insert_id();
+
+        if ($this->db->trans_status() === FALSE){
+            $id = null;
+            log_message('error', "DB Error: (".$this->db->_error_number().") ".$this->db->_error_message());
+        }
+
+        return $id;
 	}
 
 	public function update($options){
@@ -132,5 +139,24 @@ class Message_model extends CI_Model
 		
 		return $id;
 	}
+
+    public function getConversationByUserPublication($publicationId,$userId){
+        $sql   = " SELECT distinct(conversation_id) FROM MESSAGE ";
+        $sql  .= " WHERE (user_id_from = $userId OR  user_id_to = $userId)";
+        $sql  .= " AND publication_id = $publicationId  AND delete_date is null";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+
+    public function getConversation($conversationId){
+        $this->db->select('*');
+        $this->db->from('message');
+        $this->db->where('conversation_id',$conversationId);
+        $this->db->where('delete_date',null);
+        $this->db->order_by('create_date','asc');
+        $query = $this->db->get()->result();
+        return $query;
+    }
 
 }

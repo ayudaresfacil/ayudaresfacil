@@ -19,24 +19,16 @@
             </div>
             <!-- /.col-sm-4 col-md-3 -->
             <div class="col-sm-8 col-md-9">
-                <div class="the-box full no-border">
-                    <form role="form">
-                        <div class="form-group has-feedback no-label">
-                            <input type="text" class="form-control" placeholder="Search mail...">
-                            <span class="fa fa-search form-control-feedback"></span>
-                        </div>
-                    </form>
+                <div ng-if="noConversations" class="alert alert-warning alert-bold-border square fade in alert-dismissable">
+                Todavia no tenés mensajes... Escribe en alguna publicación o haz una nueva publicación, alguién puede necesitarte <strong>más de lo que te imaginas!</strong> :)
                 </div>
-                <div class="list-group success square no-side-border">
+                <div class="list-group success square no-side-border" ng-repeat="conversation in conversations">
                     <a ng-click="openConversation()" class="list-group-item mail-list">
                         <!--<span class="favorite fa fa-star"></span>-->
-                        <img src="assets/images/avatar/avatar.jpg" class="avatar img-circle" alt="Avatar">
-                        <span class="name">Paris</span>
-                        <span class="subject">
-                            <!--<span class="label label-info">Family</span>-->Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod</span>
-                        <span class="attachment"><i class="fa fa-paperclip"></i>
-                        </span>
-                        <span class="time">11:00 AM</span>
+                        <img data-ng-src="{{conversation.userFrom.profileImage}}" class="avatar img-circle" alt="Avatar">
+                        <span class="name">{{conversation.userFrom.name}}</span>
+                        <span class="subject">{{conversation.text}}</span>
+                        <span class="time">{{conversation.createDate}}</span>
                     </a>
                 </div>
             </div>
