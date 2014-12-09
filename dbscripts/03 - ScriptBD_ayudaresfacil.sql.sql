@@ -1,4 +1,4 @@
-/*
+﻿/*
 SQLyog Enterprise - MySQL GUI v8.05 
 MySQL - 5.6.16 : Database - ayudaresfacil
 *********************************************************************
@@ -293,7 +293,7 @@ DROP TABLE IF EXISTS `publication_object`;
 CREATE TABLE `publication_object` (
   `publication_id` int(11) NOT NULL,
   `object_id` int(11) NOT NULL,
-  `quantity` decimal(4,0) DEFAULT NULL,
+  `quantity` decimal(7,0) DEFAULT NULL,
   PRIMARY KEY (`publication_id`,`object_id`),
   KEY `object_id` (`object_id`),
   KEY `publication_id` (`publication_id`),
