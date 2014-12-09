@@ -351,7 +351,7 @@ angular.module('AyudarEsFacilApp.request', [
         });
     };
 
-    $scope.openConversation=function(){
+    $scope.openConversation = function() {
         ConversationService.openConversation();
     };
 

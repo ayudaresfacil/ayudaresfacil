@@ -46,8 +46,12 @@
                             <p>
                                 {{offer.category.description}} > {{offer.subcategory.description}}
                             </p>
-                            <p>
+                            <p ng-if="offer.quantity == '1'">
                                 Disponible: <strong>{{offer.quantity}}</strong>
+                            </p>
+                            <p ng-if="offer.quantity != '1'">
+                                Disponible: <strong><span id="currency-default">{{ offer.quantity | currency}}</span></strong>
+                                <br>
                             </p>
                             </p>
                             <p>Visto:

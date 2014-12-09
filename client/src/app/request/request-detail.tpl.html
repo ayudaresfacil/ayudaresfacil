@@ -51,9 +51,12 @@
                         <p>
                             {{request.category.description}} > {{request.subcategory.description}}
                         </p>
-                        <p>
-                            Disponible: <strong>{{request.quantity}}</strong>
+                        <p ng-if="request.quantity == '1'">
+                            Se necesita: <strong>{{request.quantity}}</strong>
                         </p>
+                        <p ng-if="request.quantity != '1'">
+                            Se necesita: <strong><span id="currency-default">{{ request.quantity | currency}}</span></strong>
+                            <br>
                         </p>
                         <p>Visto:
                             <strong>{{request.views}}</strong> veces</p>

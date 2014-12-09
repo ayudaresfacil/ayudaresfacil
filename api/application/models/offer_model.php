@@ -64,11 +64,21 @@ class Offer_model extends CI_Model
 						);
 		$this->db->insert('publication', $data);
 		$id = $this->db->insert_id();
-		$data = array 	(
-							'publication_id' => $id,
-							'object_id' => $object->id,
-							'quantity' => 1,
-						);
+		if ($category->id == '9') {
+			if ($offer->quantity) {
+				$data = array 	(
+					'publication_id' => $id,
+					'object_id' => $object->id,
+					'quantity' => $offer->quantity,
+				);
+			}
+		}else{
+			$data = array 	(
+				'publication_id' => $id,
+				'object_id' => $object->id,
+				'quantity' => 1,
+			);			
+		}
 		$this->db->insert('publication_object', $data);
 		$data = array 	(
 							'publication_id' => $id,
@@ -112,10 +122,17 @@ class Offer_model extends CI_Model
 						);
 		$this->db->where('publication_id', $offer->id);
 		$this->db->update('publication', $data);
-		$data = array 	(
-							'object_id' => $object->id,
-							'quantity' => $offer->quantity,
-						);
+		if ($category->id == '9') {
+			$data = array 	(
+				'object_id' => $object->id,
+				'quantity' => $request->quantity,
+				);
+		}else{
+			$data = array 	(
+				'object_id' => $object->id,
+				'quantity' => 1,
+				);			
+		}
 		$this->db->where('publication_id', $offer->id);
 		$this->db->update('publication_object', $data);
 		foreach ($images as $image){

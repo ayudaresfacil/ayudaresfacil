@@ -24,17 +24,11 @@
                             <i class="glyphicon glyphicon-pencil"></i>
                         </a>
                     </div>
-                    <!--  <p style="float:right">
-                            <a href ng-click="toggleFavorite()" title="Favorito">
-                                <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
-                            </a>
-                        </p> -->
 
                     <p class="text-muted">
-                        Disponible:
-                        <strong>{{offer.quantity}}</strong>
+                        {{offer.object.description}}
                     </p>
-
+                    
                     <h3><a class="bolded" ui-sref="panel.offerDetailUser({id: offer.id})">{{offer.title}}</a>
                         </h3>
 

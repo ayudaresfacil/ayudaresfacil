@@ -102,17 +102,25 @@ class Request_model extends CI_Model
 			);
 		$this->db->insert('publication', $data);
 		$id = $this->db->insert_id();
-		$data = array 	(
-			'publication_id' => $id,
-			'object_id' => $object->id,
-			'quantity' => 1,
+		if ($request->quantity) {
+			$data = array 	(
+				'publication_id' => $id,
+				'object_id' => $object->id,
+				'quantity' => $request->quantity,
 			);
+		}else{
+			$data = array 	(
+				'publication_id' => $id,
+				'object_id' => $object->id,
+				'quantity' => 1,
+			);			
+		}
 		$this->db->insert('publication_object', $data);	
 			$data = array 	(
 				'publication_id' => $id,
 				'path' => $arrInfo["image"],
 				);
-			$this->db->insert('publication_image', $data);	
+		$this->db->insert('publication_image', $data);	
 		foreach ($sponsors as $sponsor){
 			$data = array 	(
 				'publication_id' => $id,
@@ -163,10 +171,17 @@ class Request_model extends CI_Model
 			);
 		$this->db->where('publication_id', $request->id);
 		$this->db->update('publication', $data);
-		$data = array 	(
-			'object_id' => $object->id,
-			'quantity' => $request->quantity,
-			);
+		if ($category->id == '9') {
+			$data = array 	(
+				'object_id' => $object->id,
+				'quantity' => $request->quantity,
+				);
+		}else{
+			$data = array 	(
+				'object_id' => $object->id,
+				'quantity' => 1,
+				);			
+		}
 		$this->db->where('publication_id', $request->id);
 		$this->db->update('publication_object', $data);		
 		foreach ($images as $image){

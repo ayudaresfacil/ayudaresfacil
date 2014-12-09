@@ -64,7 +64,12 @@
                 </div>
 
                 <div class="form-group">
-                    <h4 ng-if="request.categoryId == '9'">$<input type="text" class="form-control input-md" name="cantidad" ng-model="request.quantity" placeholder="Cantidad de dinero necesario" ng-required="true"></h4>
+                    <div class="row">
+                        <div ng-if="request.categoryId == '9'" class="form-group">
+                            <label class="hidden-xs">Cantidad de dinero necesario</label>
+                            <input type="text" class="form-control input-md" name="cantidad" ng-model="request.quantity" placeholder="Ingrese la suma sin signos / ej.: 1000000" ng-required="true">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
