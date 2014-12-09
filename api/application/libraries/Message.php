@@ -73,7 +73,7 @@ class CI_Message {
 	* @return object
 *****/
 
-	private function getData(){
+	public function getData(){
 		$object = new stdClass();
 
 		$object->id = $this->id;

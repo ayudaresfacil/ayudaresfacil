@@ -67,23 +67,22 @@ class Message extends REST_Controller{
 		$datestring = "%Y/%m/%d %H:%i:%s";
 		$currDate = mdate($datestring, now());
 
-		$arrOptions['userIdFrom'] = $this->post('userIdFrom');
-		$arrOptions['userIdTo'] = $this->post('userIdTo');
-		$arrOptions['publicationId'] = $this->post('publicationId');
-		$arrOptions['FAQ'] = $this->post('FAQ');
-		$arrOptions['commonStateId'] = $this->post('commonStateId');
-        $arrOptions['subject'] = $this->post('subject');
+		$arrOptions['userFrom'] = $this->post('userFrom');
+		$arrOptions['userTo'] = $this->post('userTo');
+		$arrOptions['publication'] = $this->post('publication');
+		//$arrOptions['FAQ'] = $this->post('FAQ');
+		//$arrOptions['commonStateId'] = $this->post('commonStateId');
+        //$arrOptions['subject'] = $this->post('subject');
 		$arrOptions['text'] = $this->post('text');
-		$arrOptions['updateDate'] = $currDate;
-
+		//$arrOptions['updateDate'] = $currDate;
 		$message = new CI_Message();
-		$message ->setUpdateDate($arrOptions['updateDate']);
-		$message ->setUserFrom($arrOptions['userIdFrom']);
-		$message ->setUserTo($arrOptions['userIdTo']);
-		$message ->setPublication($arrOptions['publicationId']);
-		$message ->setFAQ($arrOptions['FAQ']);
-		$message ->setCommonState(CI_CommonState::getById($arrOptions['commonStateId']));
-		$message ->setSubject($arrOptions['subject']);
+		//$message ->setUpdateDate($arrOptions['updateDate']);
+		$message ->setUserFrom($arrOptions['userFrom']);
+		$message ->setUserTo($arrOptions['userTo']);
+		$message ->setPublication($arrOptions['publication']);
+		//$message ->setFAQ($arrOptions['FAQ']);
+		//$message ->setCommonState(CI_CommonState::getById($arrOptions['commonStateId']));
+		//$message ->setSubject($arrOptions['subject']);
 		$message ->setText($arrOptions['text']);
 	
 		if($message->save()){

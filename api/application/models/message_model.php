@@ -80,9 +80,9 @@ class Message_model extends CI_Model
                             'user_Id_To' => $options->userTo,
                             'publication_Id' => $options->publication,
                             'conversation_Id' => $conversationId,
-                            'FAQ' => $options->FAQ,
-                            'common_State_Id' => $options->commonState->getId(),
-                            'subject' => $options->subject,
+                            //'FAQ' => $options->FAQ,
+                            //'common_State_Id' => $options->commonState->getId(),
+                            //'subject' => $options->subject,
                             'text' => $options->text
                         );
         $this->db->insert('message', $data);

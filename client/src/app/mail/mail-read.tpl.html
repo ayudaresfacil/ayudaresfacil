@@ -42,15 +42,15 @@
                             <div class="col-sm-8">
                                 <form role="form">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Escribe un mensaje y presiona enter">
+                                        <input id="inputText" ng-keypress="$event.keyCode == 13 ? saveMessage() : null" type="text" class="form-control" placeholder="Escribe un mensaje y presiona enter">
                                     </div>
                                 </form>
                             </div>
                             <!-- /.col-xs-8 -->
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <a data-toggle="tooltip" title="Enviar Mensaje" class="btn btn-sm btn-success"><i class="fa fa-send"></i></a>
-                                    <a data-toggle="tooltip" title="Actualizar" class="btn btn-sm btn-info"><i class="fa fa-refresh"></i></a>
+                                    <a data-toggle="tooltip" ng-click="saveMessage()" title="Enviar Mensaje" class="btn btn-sm btn-success"><i class="fa fa-send"></i></a>
+                                    <a data-toggle="tooltip" ng-click="getConversation()" title="Actualizar" class="btn btn-sm btn-info"><i class="fa fa-refresh"></i></a>
                                 </div>
                             </div>
                             <!-- /.col-xs-8 -->

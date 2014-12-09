@@ -211,6 +211,33 @@ angular.module( 'AyudarEsFacilApp.mail', [
             });
         });
     };
+
+    $scope.saveMessage=function(){
+        if($scope.messages!==undefined){
+            if($scope.messages[0].userTo.id == Authentication.user.id){
+                userIdTo = $scope.messages[0].userFrom.id;
+            }else{
+                userIdTo = $scope.messages[0].userTo.id;
+            }
+        }else{
+            userIdTo = $scope.publication.userId.id;
+        }
+        var userIdFrom = Authentication.user.id;
+        var text = $('#inputText').val();       
+        var message={"userFrom":userIdFrom,
+                     "userTo":userIdTo,
+                     "text":text,
+                     "publication":publicationId};
+        var messages = new Messages(message);
+        messages.$save(message,
+                function(responseData){
+                    $scope.getConversation();
+                    $('#inputText').val("");
+                }, 
+                function(error){
+                    alert("fail");
+                });
+    };
     $scope.getPublication();
     $scope.getConversation();
 
