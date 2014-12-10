@@ -47,35 +47,39 @@ class CI_Address {
 	 */
 	public function getData($options){
 		$object = new stdClass();
-		$object->id = $options->id;
-		$object->street = $options->street;
-		$object->number = $options->number;
-		$object->floor = $options->floor;
-		$object->apartment = $options->apartment;
-		$object->postalCode = $options->postalCode;
-		$object->principal = $options->principal;
-		$object->provinceId = $options->provinceId;
-		$object->departmentId = $options->departmentId;
-		$object->cityId = $options->cityId;
+		if(isset($options)){
+			$object->id = $options->id;
+			$object->street = $options->street;
+			$object->number = $options->number;
+			$object->floor = $options->floor;
+			$object->apartment = $options->apartment;
+			$object->postalCode = $options->postalCode;
+			$object->principal = $options->principal;
+			$object->provinceId = $options->provinceId;
+			$object->departmentId = $options->departmentId;
+			$object->cityId = $options->cityId;
+		}
 		return $object;
 	}
 	
     public function getDataFromArray($options){
         $addresses = null;
-        foreach ($options as $key => $address){
-                $myUserAddress = new stdClass();
-                $myUserAddress->id = $address->getId();
-                $myUserAddress->street = $address->getStreet();
-                $myUserAddress->number = $address->getNumber();
-                $myUserAddress->floor = $address->getFloor();
-                $myUserAddress->apartment = $address->getApartment();
-                $myUserAddress->postalCode = $address->getPostalCode();
-                $myUserAddress->provinceId = $address->getProvinceId();
-                $myUserAddress->departmentId = $address->getDepartmentId();
-                $myUserAddress->cityId = $address->getCityId();
-                $myUserAddress->principal = $address->getPrincipal();
-                $addresses[$key] = $myUserAddress;
-            }
+		if(isset($options)){
+	        foreach ($options as $key => $address){
+	                $myUserAddress = new stdClass();
+	                $myUserAddress->id = $address->getId();
+	                $myUserAddress->street = $address->getStreet();
+	                $myUserAddress->number = $address->getNumber();
+	                $myUserAddress->floor = $address->getFloor();
+	                $myUserAddress->apartment = $address->getApartment();
+	                $myUserAddress->postalCode = $address->getPostalCode();
+	                $myUserAddress->provinceId = $address->getProvinceId();
+	                $myUserAddress->departmentId = $address->getDepartmentId();
+	                $myUserAddress->cityId = $address->getCityId();
+	                $myUserAddress->principal = $address->getPrincipal();
+	                $addresses[$key] = $myUserAddress;
+	            }
+		}
         return $addresses;
     }
 

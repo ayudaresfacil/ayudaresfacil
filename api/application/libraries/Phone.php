@@ -24,22 +24,26 @@ class CI_Phone {
 	 */
 	public function getData($options){
 		$object = new stdClass();
-		$object->id = $options->id;
-		$object->number = $options->number;
-		$object->areaCode = $options->areaCode;
-		$object->typeId = $options->typeId;
+		if(isset($options)){
+			$object->id = $options->id;
+			$object->number = $options->number;
+			$object->areaCode = $options->areaCode;
+			$object->typeId = $options->typeId;
+		}
 		return $object;
 	}
 
 	public function getDataFromArray($options){
 		$phones = null;
-		foreach ($options as $key => $phone){
-				 	$myUserPhone = new stdClass();
-					$myUserPhone->number = $phone->getNumber();
-					$myUserPhone->areaCode = $phone->getAreaCode();
-					$myUserPhone->typeId = $phone->getTypeId();
-					$phones[$key] = $myUserPhone;
-				}
+		if(isset($options)){
+			foreach ($options as $key => $phone){
+					 	$myUserPhone = new stdClass();
+						$myUserPhone->number = $phone->getNumber();
+						$myUserPhone->areaCode = $phone->getAreaCode();
+						$myUserPhone->typeId = $phone->getTypeId();
+						$phones[$key] = $myUserPhone;
+					}
+		}
 		return $phones;
 	}
 	

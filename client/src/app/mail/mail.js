@@ -220,14 +220,15 @@ angular.module( 'AyudarEsFacilApp.mail', [
                 userIdTo = $scope.messages[0].userTo.id;
             }
         }else{
-            userIdTo = $scope.publication.userId.id;
+            userIdTo = $scope.publication.userId;
         }
         var userIdFrom = Authentication.user.id;
         var text = $('#inputText').val();       
         var message={"userFrom":userIdFrom,
                      "userTo":userIdTo,
                      "text":text,
-                     "publication":publicationId};
+                     "publication":publicationId,
+                     "token":$scope.user.token};
         var messages = new Messages(message);
         messages.$save(message,
                 function(responseData){

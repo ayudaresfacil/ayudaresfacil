@@ -189,7 +189,7 @@ class CI_User {
 				}
 			}
 		}else{
-			$this->id = $CI->user_model->create($this->getData());
+			$this->id = $CI->user_model->create($this->getData($this));
 			if($this->id === null)
 				$return = FALSE;
 		}

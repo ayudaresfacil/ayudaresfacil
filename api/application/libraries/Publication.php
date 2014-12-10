@@ -15,7 +15,7 @@ class CI_Publication {
 	private $image;
 	private $isFavorite;
 	private $isOwner;
-    private $user;
+    private $userId;
 
 	public function getId() {return $this->id;}
 	
@@ -107,7 +107,7 @@ class CI_Publication {
 	public function getIsOwner(){return $this->isOwner;}
 	public function setIsOwner($isOwner){$this->isOwner = $isOwner;}
 
-    public function getUser(){return $this->user;}
+    public function getUserId(){return $this->userId;}
 
 	/**
 	 * Devuelve la informacion cargada del objeto 
@@ -139,7 +139,10 @@ class CI_Publication {
 		if (isset($options["isOwner"])) {
 			$publication->isOwner = $options["isOwner"];			
 		}
-		
+
+        if (isset($options["userId"])){
+            $publication->userId = $options["userId"];
+        }
 		return $publication;
 	}
 
@@ -165,7 +168,9 @@ class CI_Publication {
 		if (isset($options->isOwner)) {
 			$publication->isOwner = $options->isOwner;			
 		}
-        $publication->user = CI_User::getData($options->user);
+        if (isset($options->userId)){
+            $publication->userId = $options->userId;
+        }
         return $publication;
 	}
 
@@ -192,7 +197,9 @@ class CI_Publication {
 		if (isset($row->isOwner)) {
 			$publication->isOwner = (isset($row->isOwner)) ? $row->isOwner : '';
 		}
-        $publication->user = (isset($row->user_id)) ? CI_User::getById($row->user_id)[0] : '';
+        if (isset($row->user_id)){
+            $publication->userId = (isset($row->user_id)) ? $row->user_id : '';
+        }
 		return $publication;
 	}
 

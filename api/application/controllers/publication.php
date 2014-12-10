@@ -14,7 +14,7 @@ class Publication extends REST_Controller{
 			$return["data"] = "";
 			$myPublication = new stdClass();
 			$myPublication->id = $publication->id;
-			$myPublication->userId = CI_User::getData($publication->user);
+			$myPublication->userId = $publication->userId;
 			$myPublication->title = $publication->title;
 			$myPublication->description = $publication->description;
 			$myPublication->creationDate = $publication->creationDate;

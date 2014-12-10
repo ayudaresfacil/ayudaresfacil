@@ -77,12 +77,12 @@ angular.module( 'AyudarEsFacilApp.checkout', [
             }
 
             $http.post('/ayudaresfacil/api/message',{
-                userIdFrom: $scope.user.id,
-                userIdTo: $scope.offer.user.id, 
-                publicationId: $scope.offer.id, 
-                FAQ: "0", 
-                commonStateId: "N", 
-                subject: "Te han pedido lo que ofreciste", 
+                userFrom: $scope.user.id,
+                userTo: $scope.offer.userId, 
+                publication: $scope.offer.id, 
+                //FAQ: "0", 
+                //commonStateId: "N", 
+                //subject: "Te han pedido lo que ofreciste", 
                 text: message, 
                 token: $scope.user.token
             })
@@ -123,13 +123,13 @@ angular.module( 'AyudarEsFacilApp.checkout', [
             }
 
             $http.post('/ayudaresfacil/api/message',{
-                userIdFrom: $scope.user.id,
-                userIdTo: $scope.request.user.id, 
-                publicationId: $scope.request.id, 
-                FAQ: "0", 
-                commonStateId: "N", 
-                subject: "Han dicho que pueden ayudarte", 
-                text: message, 
+                userFrom: $scope.user.id,
+                userTo: $scope.request.userId, 
+                publication: $scope.request.id, 
+                //FAQ: "0", 
+                //commonStateId: "N", 
+                //subject: "Han dicho que pueden ayudarte", 
+                text: message,
                 token: $scope.user.token
             })
             .success(function(response) {
