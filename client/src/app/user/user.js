@@ -115,6 +115,7 @@ angular.module( 'AyudarEsFacilApp.user', [
 
     this.signout = function(){
         Authentication.user = null;
+        $scope.user = null;
         localStorage.clear();
         $state.transitionTo('web.home'); 
     };

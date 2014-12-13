@@ -232,10 +232,10 @@ angular.module('AyudarEsFacilApp.offer', [
         }
     };
 
-    $scope.toggleFavorite =  function(){
-        if(this.offer.isFavorite === "0"){
+    $scope.toggleFavorite = function() {
+        if (this.offer.isFavorite === "0") {
             this.setFavorite(this.offer.id);
-        }else{
+        } else {
             this.unsetFavorite(this.offer.id);
         }
     };
@@ -309,7 +309,7 @@ angular.module('AyudarEsFacilApp.offer', [
         }
     };
 
-    $scope.openConversation=function(id){
+    $scope.openConversation = function(id) {
         ConversationService.openConversation(id);
     };
 
@@ -318,12 +318,13 @@ angular.module('AyudarEsFacilApp.offer', [
 
 .controller('CreateOfferCtrl', function CreateOfferCtrl($scope, $http, $location, $stateParams, $state, Offers, Authentication) {
 
-    // If user is not signed in then redirect back home
-    /* if (!$scope.user) {
-       $location.path('/signin');
-     }*/
-
     $scope.user = Authentication.user;
+
+    // If user is not signed in then redirect back home
+    if (!$scope.user) {
+        $location.path('/signin');
+    }
+
     $scope.btnText = 'Publicar';
     $scope.msgSuccess = '0';
 
@@ -433,14 +434,14 @@ angular.module('AyudarEsFacilApp.offer', [
             });
     };
 
-    $scope.toggleFavorite =  function(){
-        if(this.offer.isFavorite === "0"){
+    $scope.toggleFavorite = function() {
+        if (this.offer.isFavorite === "0") {
             this.setFavorite(this.offer.id);
-        }else{
+        } else {
             this.unsetFavorite(this.offer.id);
         }
     };
-    
+
     $scope.getCategories = function() {
         $http({
             method: 'GET',
@@ -562,10 +563,10 @@ angular.module('AyudarEsFacilApp.offer', [
             });
     };
 
-    $scope.toggleFavorite =  function(){
-        if(this.offer.isFavorite === "0"){
+    $scope.toggleFavorite = function() {
+        if (this.offer.isFavorite === "0") {
             this.setFavorite(this.offer.id);
-        }else{
+        } else {
             this.unsetFavorite(this.offer.id);
         }
     };

@@ -351,7 +351,7 @@ angular.module('AyudarEsFacilApp.request', [
         });
     };
 
-    $scope.openConversation=function(id){
+    $scope.openConversation = function(id) {
         ConversationService.openConversation(id);
     };
 
@@ -360,12 +360,13 @@ angular.module('AyudarEsFacilApp.request', [
 
 .controller('CreateRequestCtrl', function CreateRequestCtrl($scope, $http, $location, $stateParams, $state, Request, Authentication) {
 
-    // If user is not signed in then redirect back home
-    /* if (!$scope.user) {
-       $location.path('/signin');
-     }*/
-
     $scope.user = Authentication.user;
+
+    // If user is not signed in then redirect back home
+    if (!$scope.user) {
+        $location.path('/signin');
+    }
+
     $scope.btnText = 'Publicar';
     $scope.msgSuccess = '0';
     $scope.msgSponsor = '';
