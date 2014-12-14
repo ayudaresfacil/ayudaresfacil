@@ -18,12 +18,6 @@
                     <img data-ng-src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="web.offerDetail({id: offer.id})">
 
                     <div class="the-box bg-default no-margin no-border item-des">
-                        <p style="float:right">
-                            <a href ng-click="toggleFavorite()" title="Favorito">
-                                <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
-                            </a>
-                        </p>
-
                         <p class="text-muted">
                             {{offer.object.description}}
                         </p>
@@ -35,9 +29,21 @@
 
                         <p>{{message}}</p>
 
-                        <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processState.id == 'V' &&  offer.isOwner == '0'" class="btn btn-danger ">
+                        <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processState.id == 'V' &&  offer.isOwner == '0'" class="btn btn-danger btn-block">
                             <span class="glyphicon glyphicon-ok"></span>Lo necesito
                         </a>
+
+                        <div class="row extra-data">
+                            <div class="col-md-6 text-left">
+                                <a href ng-click="toggleFavorite()" title="Favorito">
+                                    <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
+                                </a>
+                                {{offer.favorites[0].quan}}
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <i class="glyphicon glyphicon-eye-open text-muted"></i> {{offer.views}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </li>
