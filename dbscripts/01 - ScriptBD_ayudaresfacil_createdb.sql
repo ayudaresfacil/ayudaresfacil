@@ -19,5 +19,5 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `ayudaresfacil`
 --
-CREATE DATABASE IF NOT EXISTS `ayudaresfacil` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+CREATE DATABASE IF NOT EXISTS `ayudaresfacil2` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
 USE `ayudaresfacil`;
