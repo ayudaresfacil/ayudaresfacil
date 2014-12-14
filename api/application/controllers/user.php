@@ -1,23 +1,18 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-
 require APPPATH.'/libraries/REST_Controller.php';
-
 class User extends REST_Controller{
-
 	public function index_get(){
 		
 		//checkIsLoggedIn($this);
 		
 		$id = $this->get("id"); 
 		$users =  $id ? CI_User::getById($id) : CI_User::getUsers();
-
 		$status = 404;
 		$return["result"] = "NOOK";
 		if($users){
 			$status = 200;
 			$return["result"] = "OK";
 			$return["data"] = "";
-
 			foreach ($users as $key => $user) {
 			 	$myUser = new stdClass();
 				$myUser->id = $user->getId();
@@ -32,15 +27,12 @@ class User extends REST_Controller{
 				$return["data"][$key] = $myUser;
 			}
 		}
-
         $this->response($return, $status);
 	}
 	
 	public function index_post(){
 		
 		//checkIsLoggedIn($this);
-
-
 		$arrOptions['id'] = $this->post('id');
 		$arrOptions['email'] = $this->post('email');
 		$arrOptions['name'] = $this->post('name');
@@ -51,9 +43,7 @@ class User extends REST_Controller{
 		$arrOptions['addresses'] = $this->post('addresses');
 		$arrOptions['enabled'] = $this->post('enabled');
 		$arrOptions['deleted'] = $this->post('deleted');
-
 		$users = CI_User::getById($arrOptions['id']);
-
 		$user = $users[0];
 		$user->setEmail($arrOptions['email']);
 		$user->setName($arrOptions['name']);
@@ -75,19 +65,15 @@ class User extends REST_Controller{
 			$myUser = new stdClass();
 			$myUser->id = $user->getId();
 			$myUser->email = $user->getEmail();
-
 			$status = 200;
 			$return["result"] = "OK";
 			$return["data"] = $myUser;
 		} 
-
 		$this->response($return, $status);
 	}
 	
 	public function index_delete(){
-
 		checkIsLoggedIn($this);
-
 		$status = 404;
 		$return["data"] = "";
 		$return["result"] = "NOOK";

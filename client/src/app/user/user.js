@@ -1,61 +1,60 @@
-
-angular.module( 'AyudarEsFacilApp.user', [
-    'ui.router','ui.bootstrap'
+angular.module('AyudarEsFacilApp.user', [
+    'ui.router', 'ui.bootstrap'
 ])
 
 .config(function config($stateProvider, $httpProvider) {
     $stateProvider.state('panel.user', {
-        template: '<ui-view/>'
-    })
-    .state('panel.user.data', {
-        url: '/user/data',
-        controller: 'UserCtrl',
-        templateUrl: 'user/user-data.tpl.html',
-        data: {
-            pageTitle: 'Información del usuario'
-        }
-    })
-    .state('panel.user.password', {
-        url: '/user/password',
-        controller: 'UserCtrl',
-        templateUrl: 'user/user-password.tpl.html',
-        data: {
-            pageTitle: 'Cambiar mi contraseña'
-        }
-    })
-    .state('account.signin', {
-        url: '/signin',
-        controller: 'AuthenticationCtrl',
-        templateUrl: 'user/signin.tpl.html',
-        data: {
-            pageTitle: 'Inicia Sesión',
-            bodyClass: "login tooltips"
-        }
-    })
-    .state('account.signout', {
-        url: '/signout',
-        controller: 'AuthenticationCtrl',
-        templateUrl: 'user/signin.tpl.html',
-        data: {
-            action: 'signout'
-        }
-    })
-    .state('account.signup', {
-        url: '/signup',
-        controller: 'AuthenticationCtrl',
-        templateUrl: 'user/signup.tpl.html',
-        data: {
-            pageTitle: 'Registrarme',
-            bodyClass: 'login tooltips'
-        }
-    })
-    .state('account.confirm', {
-        url: '/account/confirm/:token',
-        controller: 'AuthenticationCtrl',
-        data: {
-            action: 'confirm'
-        }
-    });
+            template: '<ui-view/>'
+        })
+        .state('panel.user.data', {
+            url: '/user/data',
+            controller: 'UserCtrl',
+            templateUrl: 'user/user-data.tpl.html',
+            data: {
+                pageTitle: 'Información del usuario'
+            }
+        })
+        .state('panel.user.password', {
+            url: '/user/password',
+            controller: 'UserCtrl',
+            templateUrl: 'user/user-password.tpl.html',
+            data: {
+                pageTitle: 'Cambiar mi contraseña'
+            }
+        })
+        .state('account.signin', {
+            url: '/signin',
+            controller: 'AuthenticationCtrl',
+            templateUrl: 'user/signin.tpl.html',
+            data: {
+                pageTitle: 'Inicia Sesión',
+                bodyClass: "login tooltips"
+            }
+        })
+        .state('account.signout', {
+            url: '/signout',
+            controller: 'AuthenticationCtrl',
+            templateUrl: 'user/signin.tpl.html',
+            data: {
+                action: 'signout'
+            }
+        })
+        .state('account.signup', {
+            url: '/signup',
+            controller: 'AuthenticationCtrl',
+            templateUrl: 'user/signup.tpl.html',
+            data: {
+                pageTitle: 'Registrarme',
+                bodyClass: 'login tooltips'
+            }
+        })
+        .state('account.confirm', {
+            url: '/account/confirm/:token',
+            controller: 'AuthenticationCtrl',
+            data: {
+                action: 'confirm'
+            }
+        });
 
     //Set the httpProvider "not authorized" interceptor
     $httpProvider.interceptors.push(['$q', '$location', 'Authentication',
@@ -84,10 +83,14 @@ angular.module( 'AyudarEsFacilApp.user', [
 
 // Users service used for communicating with the users REST endpoint
 .factory('Users', ['$resource', function($resource) {
-        return $resource('/ayudaresfacil/api/user',{id:'@id'} , {}, {
-            update: {method: 'PUT'}
-        });
-    }])
+    return $resource('/ayudaresfacil/api/user', {
+        id: '@id'
+    }, {}, {
+        update: {
+            method: 'PUT'
+        }
+    });
+}])
 
 // Authentication service for user variables
 .factory('Authentication', [
@@ -109,33 +112,33 @@ angular.module( 'AyudarEsFacilApp.user', [
     $scope.activationError = false;
     $scope.newRegistration = false;
     $scope.activating = false;
-    
+
     $scope.sendButton = 'REGISTRARME';
 
 
-    this.signout = function(){
+    this.signout = function() {
         Authentication.user = null;
         $scope.user = null;
         localStorage.clear();
-        $state.transitionTo('web.home'); 
+        $state.transitionTo('web.home');
     };
 
-    this.confirm = function(){
-        
-        $http.get('/ayudaresfacil/api/account/confirm',{
-            params: {
-                token: $stateParams.token
-            }
-        })
-        .success(function(response) {
-            $scope.activating = true;
-            $location.path('/signin');
-        }).error(function(response) {
-            $scope.activationError = true;
-        });
+    this.confirm = function() {
+
+        $http.get('/ayudaresfacil/api/account/confirm', {
+                params: {
+                    token: $stateParams.token
+                }
+            })
+            .success(function(response) {
+                $scope.activating = true;
+                $location.path('/signin');
+            }).error(function(response) {
+                $scope.activationError = true;
+            });
     };
 
-    this.saveSession = function(data){
+    this.saveSession = function(data) {
         var user = {
             id: data.id,
             email: data.email,
@@ -150,95 +153,95 @@ angular.module( 'AyudarEsFacilApp.user', [
         localStorage.setItem("user", JSON.stringify(user));
     };
 
-    if($state.current.data.action == 'signout'){
+    if ($state.current.data.action == 'signout') {
         this.signout();
-    }else if($state.current.data.action == 'confirm'){
+    } else if ($state.current.data.action == 'confirm') {
         this.confirm();
-    }else{
+    } else {
         $scope.authentication = Authentication;
     }
 
     $scope.signup = function() {
         $scope.sendButton = 'GUARDANDO...';
         $http.put('/ayudaresfacil/api/account', $scope.credentials)
-        .success(function(response) {
-            $scope.newRegistration = true;
-        }).error(function(response) {
-            
-            $scope.error = {};
+            .success(function(response) {
+                $scope.newRegistration = true;
+            }).error(function(response) {
 
-            var message = {
-                'EMPTY_VALUES': function(){
-                    $scope.error.emptyValues = true;  
-                },
-                'REPEAT_ENTRY': function(){
-                    $scope.error.repeatEntry = true;  
-                },
-                'NOOK': function(){
-                    $scope.error.nook = true;  
-                }
-            };
+                $scope.error = {};
 
-            message[response.result]();
+                var message = {
+                    'EMPTY_VALUES': function() {
+                        $scope.error.emptyValues = true;
+                    },
+                    'REPEAT_ENTRY': function() {
+                        $scope.error.repeatEntry = true;
+                    },
+                    'NOOK': function() {
+                        $scope.error.nook = true;
+                    }
+                };
 
-            $scope.sendButton = 'REGISTRARME';
-        });
+                message[response.result]();
+
+                $scope.sendButton = 'REGISTRARME';
+            });
     };
 
     $scope.signin = function() {
         var that = this;
 
         $http.get('/ayudaresfacil/api/authentication/signin', {
-            params: $scope.credentials
-        })
-        .success(function(response) {
-            $scope.error = false;   
-            
-            var user = {
-                id: response.data.id,
-                email: response.data.email,
-                name: response.data.name,
-                lastName: response.data.lastName,
-                profileImage: response.data.profileImage,
-                token: response.token
-            };
+                params: $scope.credentials
+            })
+            .success(function(response) {
+                $scope.error = false;
 
-            $scope.authentication.user = user;
+                var user = {
+                    id: response.data.id,
+                    email: response.data.email,
+                    name: response.data.name,
+                    lastName: response.data.lastName,
+                    profileImage: response.data.profileImage,
+                    token: response.token
+                };
 
-            localStorage.setItem("user", JSON.stringify(user));
+                $scope.authentication.user = user;
 
-            $location.path('/user/data');
-        }).error(function(response) { 
+                localStorage.setItem("user", JSON.stringify(user));
 
-            if(!response.message){
-                response.message = 'NOOK';
-            }
-            
-            $scope.error = {};
+                $location.path('/user/data');
+            }).error(function(response) {
 
-            var message = {
-                'EMPTY_VALUES': function(){
-                    $scope.error.emptyValues = true;  
-                },
-                'USER_NOT_FOUND': function(){
-                    $scope.error.userNotFound = true;  
-                },
-                'NOOK': function(){
-                    $scope.error.nook = true;  
+                if (!response.message) {
+                    response.message = 'NOOK';
                 }
-            };
 
-            message[response.result]();
+                $scope.error = {};
 
-            $scope.credentials = {};
-        });
+                var message = {
+                    'EMPTY_VALUES': function() {
+                        $scope.error.emptyValues = true;
+                    },
+                    'USER_NOT_FOUND': function() {
+                        $scope.error.userNotFound = true;
+                    },
+                    'NOOK': function() {
+                        $scope.error.nook = true;
+                    }
+                };
+
+                message[response.result]();
+
+                $scope.credentials = {};
+            });
     };
 
 })
 
 .controller('UserCtrl', function UserCtrl($scope, $http, $location, Users, Authentication) {
     //Set Change User Password - Begin
-    $scope.btnText='Guardar Mis Datos';
+    $scope.btnText = 'Guardar Mis Datos';
 
     $scope.updateUserProfile = function() {
         $scope.success = $scope.error = null;
@@ -263,9 +266,9 @@ angular.module( 'AyudarEsFacilApp.user', [
             $scope.error = response.message;
         });
     };
-//Set Change User Password - End
+    //Set Change User Password - End
 
-//Datepicker Config and Functions - Begin
+    //Datepicker Config and Functions - Begin
     $scope.today = function() {
         $scope.datepicker = new Date();
     };
@@ -277,9 +280,9 @@ angular.module( 'AyudarEsFacilApp.user', [
         formatYear: 'yyyy',
         startingDay: 0
     };
-//Datepicker Config and Functions - End
+    //Datepicker Config and Functions - End
 
-    $scope.getProvinces = function(){ 
+    $scope.getProvinces = function() {
         $http.get('/ayudaresfacil/api/province').success(function(response) {
             $scope.provinces = response.data;
         }).error(function(response) {
@@ -288,11 +291,13 @@ angular.module( 'AyudarEsFacilApp.user', [
         });
     };
 
-    $scope.getDepartments = function(provinceId){ 
+    $scope.getDepartments = function(provinceId) {
         $http({
-            method:'GET',
-            url:'/ayudaresfacil/api/department',
-            params:{provinceId:provinceId}
+            method: 'GET',
+            url: '/ayudaresfacil/api/department',
+            params: {
+                provinceId: provinceId
+            }
         }).success(function(response) {
             $scope.departments = response.data;
         }).error(function(response) {
@@ -301,11 +306,13 @@ angular.module( 'AyudarEsFacilApp.user', [
         });
     };
 
-    $scope.getCities = function(departmentId){ 
+    $scope.getCities = function(departmentId) {
         $http({
-            method:'GET',
-            url:'/ayudaresfacil/api/city',
-            params:{departmentId:departmentId}
+            method: 'GET',
+            url: '/ayudaresfacil/api/city',
+            params: {
+                departmentId: departmentId
+            }
         }).success(function(response) {
             $scope.cities = response.data;
         }).error(function(response) {
@@ -314,26 +321,28 @@ angular.module( 'AyudarEsFacilApp.user', [
         });
     };
 
-    this.getUser = function(){
-        $scope.user = Users.get({id:Authentication.user.id}, function() {
+    this.getUser = function() {
+        $scope.user = Users.get({
+            id: Authentication.user.id
+        }, function() {
             var user = $scope.user;
             var userData;
             var userAddress;
 
-            if(user === undefined || !($.isEmptyObject(user.data))){
-               userData = user.data[0];
-            }else{
-                $scope.status='ERROR';
-                $scope.error='No se encontraron datos para el usuario que estás buscando...';
+            if (user === undefined || !($.isEmptyObject(user.data))) {
+                userData = user.data[0];
+            } else {
+                $scope.status = 'ERROR';
+                $scope.error = 'No se encontraron datos para el usuario que estás buscando...';
                 return false;
             }
 
-            if(!($.isEmptyObject(userData.addresses))){
+            if (!($.isEmptyObject(userData.addresses))) {
                 userAddress = userData.addresses[0];
                 $scope.getDepartments(userAddress.provinceId);
                 $scope.getCities(userAddress.departmentId);
-            }else{
-                userData.addresses=[{}];
+            } else {
+                userData.addresses = [{}];
             }
             $scope.getProvinces();
             $scope.user = userData;
@@ -341,34 +350,38 @@ angular.module( 'AyudarEsFacilApp.user', [
     };
 
     $scope.addPhone = function() {
-    if ($scope.user.phones == null){
-        $scope.user.phones = [];
-    }
-    var phone = {"areaCode":$scope.areaCode,"number":$scope.number,"typeId":$scope.typeId};
-    $scope.user.phones.push(phone);
-    $scope.areaCode = null;
-    $scope.number = null;
-    $scope.typeId = null;
+        if ($scope.user.phones == null) {
+            $scope.user.phones = [];
+        }
+        var phone = {
+            "areaCode": $scope.areaCode,
+            "number": $scope.number,
+            "typeId": $scope.typeId
+        };
+        $scope.user.phones.push(phone);
+        $scope.areaCode = null;
+        $scope.number = null;
+        $scope.typeId = null;
     };
 
-    $scope.deletePhone = function ( idx ) {
-      var phone_to_delete = $scope.user.phones[idx];
-      $scope.user.phones.splice(idx, 1);
+    $scope.deletePhone = function(idx) {
+        var phone_to_delete = $scope.user.phones[idx];
+        $scope.user.phones.splice(idx, 1);
     };
 
     $scope.saveUser = function() {
         var user = new Users($scope.user);
-        $scope.btnText=' Guardando....';
+        $scope.btnText = ' Guardando....';
         user.$save(user,
-                function(responseData){
-                    $scope.status = 'SUCCESS';
-                    $scope.btnText='Guardar Mis Datos';
-                }, 
-                function(error){
-                    $scope.status = 'ERROR';
-                    $scope.error = error;
-                    $scope.btnText='Guardar Mis Datos';
-                });
+            function(responseData) {
+                $scope.status = 'SUCCESS';
+                $scope.btnText = 'Guardar Mis Datos';
+            },
+            function(error) {
+                $scope.status = 'ERROR';
+                $scope.error = error;
+                $scope.btnText = 'Guardar Mis Datos';
+            });
     };
 
     $scope.user = Authentication.user;
