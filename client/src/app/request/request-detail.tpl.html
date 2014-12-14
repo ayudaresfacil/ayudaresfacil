@@ -92,7 +92,7 @@
 
             <div class="row">
                 <div class="col-sm-10 col-xs-6">
-                    <button ng-if="request.isOwner == '0'" class="btn btn-success btn-md" ng-click="openConversation(request.id)">
+                    <button ng-if="request.isOwner == '0'" class="btn btn-success btn-md" ng-click="openConversation({publicationId:request.id})">
                         <span class="fa fa-envelope"></span> Envíale un mensaje
                     </button>
 

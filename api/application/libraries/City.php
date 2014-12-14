@@ -52,7 +52,9 @@ class CI_City {
 		$results = $CI->city_model->getById($id);
 		$return = array();
 		if(!empty($results)){
-			$return = self::getInstance($results[0]);
+			foreach($results as $result) {
+				$return[] = self::getInstance($result);
+			}
 		}
 		return $return;
 	}

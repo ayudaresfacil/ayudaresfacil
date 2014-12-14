@@ -1,8 +1,6 @@
 <?php
-
 class Message_model extends CI_Model
 {
-
 	public function getById($id){
 		$this->db->select('*');	
 		$this->db->from('message');
@@ -10,7 +8,6 @@ class Message_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
-
     public function getConversationFromMyPublications($userId){
         $sql   = " SELECT * FROM MESSAGE WHERE MESSAGE_ID IN (";
         $sql  .= " SELECT MAX(message_id)";
@@ -20,10 +17,10 @@ class Message_model extends CI_Model
         $sql  .= "         AND user_id = $userId)";
         $sql  .= " AND delete_date IS NULL";
         $sql  .= " GROUP BY conversation_id)";
+        $sql  .= " ORDER BY message_id";
         $query = $this->db->query($sql);
         return $query->result();
     }
-
     public function getConversationFromOthersPublications($userId){
         $sql   = " SELECT * FROM MESSAGE WHERE MESSAGE_ID IN (";
         $sql  .= " SELECT MAX(message_id)";
@@ -34,11 +31,11 @@ class Message_model extends CI_Model
         $sql  .= "         AND user_id = $userId)";
         $sql  .= " AND delete_date IS NULL";
         $sql  .= " GROUP BY conversation_id)";
+        $sql  .= " ORDER BY message_id";
         $query = $this->db->query($sql);
         //echo $this->db->last_query();
         return $query->result();
     }
-    
     public function getConversationFromAllPublications($userId){
         $sql   = " SELECT * FROM MESSAGE WHERE MESSAGE_ID IN (";
         $sql  .= " SELECT MAX(message_id)";
@@ -46,31 +43,32 @@ class Message_model extends CI_Model
         $sql  .= " WHERE (user_id_from = $userId OR user_id_to = $userId) ";
         $sql  .= " AND delete_date IS NULL";
         $sql  .= " GROUP BY conversation_id)";
+        $sql  .= " ORDER BY message_id";
         $query = $this->db->query($sql);
         return $query->result();
     }
-
 	public function create($options){
-        $sql   = " SELECT distinct(conversation_id) FROM MESSAGE ";
-        $sql  .= " WHERE (user_id_from = $options->userFrom OR  user_id_to = $options->userFrom)";
-        $sql  .= " AND publication_id = $options->publication  AND delete_date is null";
-        $query = $this->db->query($sql);
-
-        $results = $query->result();
-        if(!empty($results)){
-            foreach($results as $result) {
-                    $conversationId = $result->conversation_id;
+        if(isset($options->conversationId)&&$options->conversationId>0){
+            $conversationId = $options->conversationId;
+        }else{
+            $sql   = " SELECT distinct(conversation_id) FROM MESSAGE ";
+            $sql  .= " WHERE (user_id_from = $options->userFrom OR  user_id_to = $options->userFrom)";
+            $sql  .= " AND publication_id = $options->publication  AND delete_date is null";
+            $query = $this->db->query($sql);
+            $results = $query->result();
+            if(!empty($results)){
+                foreach($results as $result) {
+                        $conversationId = $result->conversation_id;
+                }
             }
-        }
-
-        if (!(isset($conversationId))){
-            $this->db->select('IFNULL(MAX(conversation_id),0)+1 conversation_id');
-            $this->db->from('message');
-            $this->db->where('delete_date',null);
-            $results = $this->db->get()->result();
-            
-            foreach($results as $result) {
-                    $conversationId = $result->conversation_id;
+            if (!(isset($conversationId))||$conversationId==0){
+                $this->db->select('IFNULL(MAX(conversation_id),0)+1 conversation_id');
+                $this->db->from('message');
+                $this->db->where('delete_date',null);
+                $results = $this->db->get()->result();
+                foreach($results as $result) {
+                        $conversationId = $result->conversation_id;
+                }
             }
         }
 
@@ -97,7 +95,6 @@ class Message_model extends CI_Model
 
         return $id;
 	}
-
 	public function update($options){
 		$this->db->trans_start();
 		
@@ -123,7 +120,6 @@ class Message_model extends CI_Model
 
 		return $this->db->update('message', $data);
 	}
-
 	public function delete($id){
 		$this->db->trans_start();
 		
@@ -139,16 +135,30 @@ class Message_model extends CI_Model
 		
 		return $id;
 	}
-
     public function getConversationByUserPublication($publicationId,$userId){
-        $sql   = " SELECT distinct(conversation_id) FROM MESSAGE ";
+        $sql   = " SELECT MAX(conversation_id) conversation_id FROM MESSAGE ";
         $sql  .= " WHERE (user_id_from = $userId OR  user_id_to = $userId)";
         $sql  .= " AND publication_id = $publicationId  AND delete_date is null";
         $query = $this->db->query($sql);
-
-        return $query->result();
+        $results = $query->result();
+        if(!empty($results)){
+            foreach($results as $result) {
+                    $conversationId = $result->conversation_id;
+            }
+        }
+        if (!(isset($conversationId))||$conversationId==0){
+            $this->db->select('IFNULL(MAX(conversation_id),0)+1 conversation_id');
+            $this->db->from('message');
+            $this->db->where('delete_date',null);
+            $results = $this->db->get()->result();
+            if(!empty($results)){
+                foreach($results as $result) {
+                        $conversationId = $result->conversation_id;
+                }
+            }
+        }
+        return $conversationId;
     }
-
     public function getConversation($conversationId){
         $this->db->select('*');
         $this->db->from('message');

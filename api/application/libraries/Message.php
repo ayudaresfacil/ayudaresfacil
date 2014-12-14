@@ -101,7 +101,7 @@ class CI_Message {
 		$message->userFrom = (isset($row->user_id_from)) ? $row->user_id_from : '';
 		$message->userTo = (isset($row->user_id_to)) ? $row->user_id_to : '';
 		$message->publication = (isset($row->publication_id)) ? $row->publication_id : '';
-		$message->conversationId = (isset($row->conversationId)) ? $row->conversationId : '';
+		$message->conversationId = (isset($row->conversation_id)) ? $row->conversation_id : '';
 		$message->FAQ = (isset($row->FAQ)) ? $row->FAQ : '';
 		$message->commonState = (isset($row->common_state_id)) ? CI_CommonState::getById ($row->common_state_id):'';
 		$message->subject = (isset($row->subject)) ? $row->subject : '';		
@@ -109,7 +109,7 @@ class CI_Message {
 		$message->createDate = (isset($row->create_date)) ? $row->create_date : '';
 		$message->updateDate = (isset($row->update_date)) ? $row->update_date : '';
 		$message->deleteDate = (isset($row->delete_date)) ? $row->delete_date : '';
-		return $message;
+        return $message;
 	}
 
 	public static function getById($id){
@@ -181,12 +181,12 @@ class CI_Message {
         $CI = & get_instance();
         $CI->load->model('message_model');
         $results = $CI->message_model->getConversationByUserPublication($publicationId,$userId);
-        $return = array();
+        /*$return = array();
         if(!empty($results)){
-            foreach($results as $result) {
-                $return["conversationId"] = (isset($result->conversation_id)) ? $result->conversation_id : '';
-            }
-        }
+            foreach($results as $result) {*/
+                $return["conversationId"] = $results;//(isset($result->conversation_id)) ? $result->conversation_id : '';
+            //}
+       // }
         return $return;
     }
 
