@@ -12,7 +12,7 @@ MySQL - 5.6.16 : Database - ayudaresfacil
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
-USE `ayudaresfacil2`;
+USE `ayudaresfacil`;
 
 /*Table structure for table `action` */
 
