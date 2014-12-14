@@ -14,7 +14,7 @@ angular.module( 'AyudarEsFacilApp.mail', [
 			data:{ pageTitle: 'Bandeja de Entrada' }
 		})
 		.state( 'panel.mail.read', {        
-			url: '/mensajes/leer/:conversationId/:id',
+			url: '/mensajes/leer',
 			controller: 'ConversationCtrl',
 			templateUrl: 'mail/mail-read.tpl.html',
 			data:{ pageTitle: 'Mensaje' }
@@ -22,14 +22,14 @@ angular.module( 'AyudarEsFacilApp.mail', [
 })
 
 .service('ConversationService',[ '$modal', function($modal) {
-    this.openConversation = function (id) {
+    this.openConversation = function (options) {
         var modalInstance = $modal.open({
         templateUrl: 'mail/mail-read.tpl.html',
         controller: 'ConversationCtrl',
         size: 'sm',
         resolve: {
-        publicationId: function () {
-          return id;
+        conversationOptions: function () {
+                return options;
             }
         }
     });
@@ -72,7 +72,7 @@ angular.module( 'AyudarEsFacilApp.mail', [
     $scope.conversations= null;
     $scope.noConversations = true;
     $scope.openConversation=function(object){
-        ConversationService.openConversation(object.id);
+        ConversationService.openConversation(object);
     };
 
     $scope.getAllConversationsFromAllPublications=function(){
@@ -172,27 +172,36 @@ angular.module( 'AyudarEsFacilApp.mail', [
 
 })
 
-.controller( 'ConversationCtrl', function ConversationCtrl( $scope, $http, $stateParams, $filter, ConversationService, Conversations, Authentication, Messages, publicationId, Publications ) {
+.controller( 'ConversationCtrl', function ConversationCtrl( $scope, $http, $stateParams, $filter, ConversationService, Conversations, Authentication, Messages, conversationOptions, Publications ) {
     var today = new Date();
     $scope.user = Authentication.user;
     $scope.getPublication=function(){
-        var publication = Publications.get({publicationId:publicationId}, function(response){
+        var publication = Publications.get({publicationId:conversationOptions.publicationId}, function(response){
             $scope.publication = response.data[0];
         });
     };
     $scope.getConversation=function(){
-            var p_data = {"userId":Authentication.user.id,"publicationId":publicationId};
+            var p_data = {};
+            if (conversationOptions.conversationId===undefined){
+                p_data["userId"] = Authentication.user.id;
+                p_data["publicationId"] = conversationOptions.publicationId;
 
-            $http({method:'GET',
-                   url:'/ayudaresfacil/api/message/getConversationByUserPublication',
-                   params: p_data
-               })
-            .success(function(response) {
-                $scope.conversationId = response.data.conversationId;
-                $scope.getMessageFromConversation();
-            });
+                $http({method:'GET',
+                       url:'/ayudaresfacil/api/message/getConversationByUserPublication',
+                       params: p_data
+                   })
+                .success(function(response) {
+                        $scope.conversationId = response.data.conversationId;
+                        $scope.getMessagesFromConversation();
+                    })
+                .error(function(error){alert(JSON.stringify(error));});
+            }else{
+                    $scope.conversationId = conversationOptions.conversationId;
+                    $scope.getMessagesFromConversation();
+            }
+
     };
-    $scope.getMessageFromConversation=function(){
+    $scope.getMessagesFromConversation=function(){
         var messages = Messages.get({conversationId:$scope.conversationId}, function(response){
             if (response.result == "NOOK"){
                $scope.noMessages = true;
@@ -227,8 +236,8 @@ angular.module( 'AyudarEsFacilApp.mail', [
         var message={"userFrom":userIdFrom,
                      "userTo":userIdTo,
                      "text":text,
-                     "publication":publicationId,
-                     "token":$scope.user.token};
+                     "publication":conversationOptions.publicationId,
+                     "conversationId":$scope.conversationId};
         var messages = new Messages(message);
         messages.$save(message,
                 function(responseData){

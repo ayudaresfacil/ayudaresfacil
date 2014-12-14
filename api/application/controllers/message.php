@@ -70,6 +70,7 @@ class Message extends REST_Controller{
 		$arrOptions['userFrom'] = $this->post('userFrom');
 		$arrOptions['userTo'] = $this->post('userTo');
 		$arrOptions['publication'] = $this->post('publication');
+		$arrOptions['conversationId'] = $this->post('conversationId');
 		//$arrOptions['FAQ'] = $this->post('FAQ');
 		//$arrOptions['commonStateId'] = $this->post('commonStateId');
         //$arrOptions['subject'] = $this->post('subject');
@@ -80,6 +81,7 @@ class Message extends REST_Controller{
 		$message ->setUserFrom($arrOptions['userFrom']);
 		$message ->setUserTo($arrOptions['userTo']);
 		$message ->setPublication($arrOptions['publication']);
+        $message ->setConversationId($arrOptions['conversationId']);
 		//$message ->setFAQ($arrOptions['FAQ']);
 		//$message ->setCommonState(CI_CommonState::getById($arrOptions['commonStateId']));
 		//$message ->setSubject($arrOptions['subject']);

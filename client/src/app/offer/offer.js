@@ -309,8 +309,8 @@ angular.module('AyudarEsFacilApp.offer', [
         }
     };
 
-    $scope.openConversation = function(id) {
-        ConversationService.openConversation(id);
+    $scope.openConversation = function(ConversationsOptions) {
+        ConversationService.openConversation(ConversationsOptions);
     };
 
     $scope.getCategories();
