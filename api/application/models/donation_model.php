@@ -37,7 +37,8 @@ class Donation_model extends CI_Model
 		$this->db->trans_start();
 		$data = array 	(
 							'user_Id' => $options->userId,
-							'publication_Id' => $options->publicationId
+							'publication_Id' => $options->publicationId,
+							'process_State_Id' => $options->processState
 						);
 		$this->db->insert('donation', $data);
 		$id = $this->db->insert_id();
@@ -56,7 +57,8 @@ class Donation_model extends CI_Model
 		
 		$data = array 	(
 							'user_Id' => $options->UserId,
-							'publication_Id' => $options->publicationId
+							'publication_Id' => $options->publicationId,
+							'process_State_Id' => $options->processState
 						); 
 
 		$this->db->where('donation_id', $options->id);

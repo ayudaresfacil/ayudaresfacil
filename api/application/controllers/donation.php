@@ -53,7 +53,8 @@ class Donation extends REST_Controller{
 		$arrOptions['userId'] = $this->input->post('userId')? $this->input->post('userId') : '';
 		$arrOptions['publicationId'] = $this->input->post('publicationId') ? $this->input->post('publicationId')  : '';
 		$arrOptions['donatedObjects'] = $this->input->post('donatedObjects') ? $this->input->post('donatedObjects') : '';
-		
+		$arrOptions['processState'] = $this->input->post('processState') ? $this->input->post('processState') : '';
+
 		$objs = array();
 		$donatedObjects = $arrOptions['donatedObjects'];
 
@@ -70,6 +71,7 @@ class Donation extends REST_Controller{
 		
 		$donation->setUserId($arrOptions['userId']);
 		$donation->setPublicationId($arrOptions['publicationId']);
+		$donation->setProcessState($arrOptions['processState']); 
 		$donation->setDonatedObjects($donatedObjects);
 
 		if($id = $donation->save()){
@@ -84,9 +86,9 @@ class Donation extends REST_Controller{
 			$return['result'] = 'OK';
 			$myDonation = new stdClass();
 			$myDonation->id = $donation->getId();
-			$myDonation->userId = $donation->getUserId();
+			/*$myDonation->userId = $donation->getUserId();
 			$myDonation->publicationId = $donation->getPublicationId();
-			$myDonation->donatedObjects = $donation->getDonatedObjects();
+			$myDonation->donatedObjects = $donation->getDonatedObjects();*/
 
 			$return['data'] = $myDonation;
 		}else{

@@ -23,12 +23,27 @@ class CI_DonatedObject {
 	 * @return object
 	 */
 
-	private function getData(){
+	public function getDataFromArray($options){
+		$objects = null;
+		if(isset($options)){
+			foreach ($options  as $key => $object){
+					 	$myObject = new stdClass();
+						$myObject->id = $object->id;
+						$myObject->donationId = $object->donationId;
+						$myObject->objectId = $object->objectId;
+						$myObject->quantity = $object->quantity;
+						$objects[$key] = $myObject;
+					}
+		}
+		return $objects;
+	}
+
+	public function getData($options){
 		$object = new stdClass();
-		$object->id = $this->id;
-		$object->donationId = $this->donationId;
-		$object->objectId = $this->objectId;
-		$object->quantity = $this->quantity;
+		$object->id = $options->id;
+		$object->donationId = $options->donationId;
+		$object->objectId = $options->objectId;
+		$object->quantity = $options->quantity;
 		return $object;
 	}
 	
@@ -88,9 +103,9 @@ class CI_DonatedObject {
 		$CI =& get_instance();
 		$CI->load->model('donated_object_model');
 		if(isset($this->id) && $this->id > 0)
-			$CI->donated_object_model->update($this->getData());
+			$CI->donated_object_model->update($this->getData($this));
 		else{
-			$this->id = $CI->donated_object_model->create($this->getData());
+			$this->id = $CI->donated_object_model->create($this->getData($this));
 			if($this->id === null)
 				$return = FALSE;
 			else
