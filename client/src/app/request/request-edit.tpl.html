@@ -27,6 +27,16 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="hidden-xs">Estado: </label><span class="label label-warning pull-right">{{request.processState.description}}</span>
+                        <select ng-model="request.processStateId" class="form-control input-md" required>
+                            <option value="">-- Elige una opción --</option>
+                            <option value="C">Cerrado</option>
+                            <option value="P">Pausado</option>
+                            <option value="V">Vigente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label class="hidden-xs">Categoria: </label><span class="label label-warning pull-right">{{request.category.description}}</span>
                         <select ng-model="request.categoryId" name="categoryId" class="form-control input-md" ng-change="getSubcategories(request.categoryId);" required>
                             <option value="">-- Elige una opción --</option>

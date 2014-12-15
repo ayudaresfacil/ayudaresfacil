@@ -167,7 +167,8 @@ class Request_model extends CI_Model
 			'description' => $request->description,
 			'expiration_date' => $request->expirationDate,
 			'category_id' => $category->id,
-			'subcategory_id' => $subcategory->id
+			'subcategory_id' => $subcategory->id,
+			'process_state_id' => $processState->id
 			);
 		$this->db->where('publication_id', $request->id);
 		$this->db->update('publication', $data);
