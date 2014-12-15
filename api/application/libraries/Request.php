@@ -113,7 +113,6 @@ class CI_Request extends CI_Publication {
 		$CI =& get_instance();
 		$CI->load->model('request_model');
 		$id = ' ';
-		ma($arrInfo);
 		if(isset($request->id) && $request->id > 0){
 			$id = $request->id;
 			$CI->request_model->update($arrInfo);

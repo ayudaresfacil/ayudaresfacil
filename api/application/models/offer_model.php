@@ -118,7 +118,8 @@ class Offer_model extends CI_Model
 							'description' => $offer->description,
 							'expiration_date' => $offer->expirationDate,
 							'category_id' => $category->id,
-							'subcategory_id' => $subcategory->id
+							'subcategory_id' => $subcategory->id,							
+							'process_state_id' => $processState->id
 						);
 		$this->db->where('publication_id', $offer->id);
 		$this->db->update('publication', $data);
