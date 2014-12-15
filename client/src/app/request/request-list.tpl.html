@@ -1,6 +1,6 @@
 <!-- Begin page heading -->
 <h1 class="page-heading">Pedidos
-	<small>Elegí una publicación y empezá a colaborar!</small>
+    <small>Elegí una publicación y empezá a colaborar!</small>
 </h1>
 
 <ol class="breadcrumb default square rsaquo sm">
@@ -18,12 +18,6 @@
                 <img data-ng-src="{{request.image[0].path}}" class="item-image img-responsive" alt="Image" ui-sref="web.requestDetail({id: request.id})">
 
                 <div class="the-box bg-default no-margin no-border item-des">
-                    <p style="float:right">
-                        <a href ng-click="toggleFavorite()" title="Favorito">
-                            <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': request.isFavorite == '1'}"></i>
-                        </a>
-                    </p>
-
                     <p class="text-muted">
                         {{request.object.description}}
                     </p>
@@ -35,9 +29,28 @@
 
                     <p>{{message}}</p>
 
-                    <a href="#/checkout/request/{{request.id}}" ng-if="request.isOwner == '0'" class="btn btn-danger ">
+                    <strong><p ng-if="request.category.id == '9'" class="text-left">Recaudado: $130.300</p></strong>
+                    <div ng-if="request.category.id == '9'" class="progress no-rounded progress-sm progress-striped">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">40% Complete (success)</span>
+                        </div>
+                    </div>
+
+                    <a href="#/checkout/request/{{request.id}}" ng-if="request.isOwner == '0'" class="btn btn-danger btn-block">
                         <span class="glyphicon glyphicon-ok"></span>Quiero ayudar!
                     </a>
+
+                    <div class="row extra-data">
+                        <div class="col-md-6 text-left">
+                            <a href ng-click="toggleFavorite()" title="Favorito">
+                                <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': request.isFavorite == '1'}"></i>
+                            </a>
+                            {{request.favorites[0].quan}}
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <i class="glyphicon glyphicon-eye-open text-muted"></i> {{request.views}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </li>

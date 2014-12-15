@@ -10,7 +10,7 @@
 
 <div class="container-masonry">
     <ol>
-        <li class="item-masonry" ng-repeat="offer in offers">
+        <li ng-if="offer.isOwner == '1'" class="item-masonry" ng-repeat="offer in offers">
             <div class="the-box no-border full store-item text-center mansory-inner">
 
                 <img src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="panel.offerDetailUser({id: offer.id})">
@@ -28,7 +28,7 @@
                     <p class="text-muted">
                         {{offer.object.description}}
                     </p>
-                    
+
                     <h3><a class="bolded" ui-sref="panel.offerDetailUser({id: offer.id})">{{offer.title}}</a>
                         </h3>
 
@@ -36,9 +36,21 @@
 
                     <p>{{message}}</p>
 
-                    <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processState.id == 'V' &&  offer.isOwner == '0'" class="btn btn-danger ">
+                    <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processState.id == 'V' &&  offer.isOwner == '0'" class="btn btn-danger btn-block">
                         <span class="glyphicon glyphicon-ok"></span>Lo necesito
                     </a>
+
+                    <div class="row extra-data">
+                        <div class="col-md-6 text-left">
+                            <a href ng-click="toggleFavorite()" title="Favorito">
+                                <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
+                            </a>
+                            {{offer.favorites[0].quan}}
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <i class="glyphicon glyphicon-eye-open text-muted"></i> {{offer.views}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </li>

@@ -48,19 +48,11 @@
             <div class="panel-group">
                 <div class="panel panel-default">
                     <div class="panel-body">
-
-
                         <h4>{{offer.object.description}}</h4>
                         <p>
                             {{offer.category.description}} > {{offer.subcategory.description}}
                         </p>
-                        <p ng-if="offer.quantity == '1'">
-                            Disponible: <strong>{{offer.quantity}}</strong>
-                        </p>
-                        <p ng-if="offer.quantity != '1'">
-                            Disponible: <strong><span id="currency-default">{{ offer.quantity | currency}}</span></strong>
-                            <br>
-                        </p>
+                        Disponible: <strong>{{offer.quantity}}</strong>
                         </p>
                         <p>Visto:
                             <strong>{{offer.views}}</strong> veces</p>
@@ -76,7 +68,7 @@
                     <button ng-if="offer.isOwner == '0'" class="btn btn-success btn-lg" ng-click="openConversation({publicationId:offer.id})">
                         <span class="fa fa-envelope"></span> Envíale un mensaje
                     </button>
-                    
+
                     <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processStateOffer.id == 'V' && offer.isOwner == '0'" class="btn btn-danger btn-lg">
                         <span class="glyphicon glyphicon-ok"></span> Lo necesito</a>
 

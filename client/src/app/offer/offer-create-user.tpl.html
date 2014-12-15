@@ -30,7 +30,7 @@
                         <label class="hidden-xs">Categoria</label>
                         <select ng-model="offer.categoryId" name="categoryId" class="form-control input-md" ng-change="getSubcategories(offer.categoryId);" required>
                             <option value="">-- Elige una opción --</option>
-                            <option ng-repeat="category in categories" value="{{category.id}}" ng-selected="offer.categoryId == category.id">{{category.description}}</option>
+                            <option ng-repeat="category in categories" value="{{category.id}}" ng-selected="offer.categoryId == category.id" data-ng-if="category.id != '9'">{{category.description}}</option>
                         </select>
                     </div>
 

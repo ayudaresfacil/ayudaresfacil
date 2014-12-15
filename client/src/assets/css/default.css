@@ -76,3 +76,9 @@
 li.item-masonry img:hover{
     cursor: pointer;
 }
+
+.extra-data{
+    padding: 10px 0 0 0; 
+    border-top: 1px solid #eaeaea; 
+    margin: 10px 0 0 0;
+}

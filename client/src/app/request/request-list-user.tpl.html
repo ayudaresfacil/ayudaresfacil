@@ -9,7 +9,7 @@
 
 <div class="container-masonry">
     <ol>
-        <li class="item-masonry" ng-repeat="request in requests">
+        <li ng-if="request.isOwner == '1'" class="item-masonry" ng-repeat="request in requests">
             <div class="the-box no-border full store-item text-center mansory-inner">
 
                 <img src="{{request.image[0].path}}" class="item-image img-responsive" alt="Image" ui-sref="panel.requestDetailUser({id: request.id})">
@@ -35,9 +35,17 @@
 
                     <p>{{message}}</p>
 
-                    <a href="#/checkout/request/{{request.id}}" ng-if="request.isOwner == '0'" class="btn btn-danger ">
-                        <span class="glyphicon glyphicon-ok"></span>Quiero ayudar!
-                    </a>
+                    <div class="row extra-data">
+                        <div class="col-md-6 text-left">
+                            <a href ng-click="toggleFavorite()" title="Favorito">
+                                <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': request.isFavorite == '1'}"></i>
+                            </a>
+                            {{request.favorites[0].quan}}
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <i class="glyphicon glyphicon-eye-open text-muted"></i> {{request.views}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </li>
