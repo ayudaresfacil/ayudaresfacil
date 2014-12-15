@@ -71,20 +71,13 @@ class Message extends REST_Controller{
 		$arrOptions['userTo'] = $this->post('userTo');
 		$arrOptions['publication'] = $this->post('publication');
 		$arrOptions['conversationId'] = $this->post('conversationId');
-		//$arrOptions['FAQ'] = $this->post('FAQ');
-		//$arrOptions['commonStateId'] = $this->post('commonStateId');
-        //$arrOptions['subject'] = $this->post('subject');
 		$arrOptions['text'] = $this->post('text');
-		//$arrOptions['updateDate'] = $currDate;
-		$message = new CI_Message();
-		//$message ->setUpdateDate($arrOptions['updateDate']);
+		
+        $message = new CI_Message();
 		$message ->setUserFrom($arrOptions['userFrom']);
 		$message ->setUserTo($arrOptions['userTo']);
 		$message ->setPublication($arrOptions['publication']);
         $message ->setConversationId($arrOptions['conversationId']);
-		//$message ->setFAQ($arrOptions['FAQ']);
-		//$message ->setCommonState(CI_CommonState::getById($arrOptions['commonStateId']));
-		//$message ->setSubject($arrOptions['subject']);
 		$message ->setText($arrOptions['text']);
 	
 		if($message->save()){

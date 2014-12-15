@@ -47,6 +47,7 @@ class Account extends REST_Controller{
 				$user->setEmail($arrOptions['email']);
 				$user->setPassword($arrOptions['password']);
 				$user->setName($arrOptions['name']);
+				$user->setGravatarEmail($arrOptions['email']);
 				
 				$return["result"] = "NOOK";
 				
