@@ -19,10 +19,10 @@ class CI_Donation {
 	public function getDonationDate(){return $this->donationDate;}
 	public function setDonationDate($donationDate){$this->donationDate = $donationDate;}// = CI_Publication::getById($publication);
 
-	public function getProcessState(){return $this->processState;}
+	public function getProcessState(){return CI_ProcessState::getData($this->processState);}
 	public function setProcessState($processState){$this->processState = $processState;}// = CI_Publication::getById($publication);	
 
-	public function getDonatedObjects(){return $this->donatedObjects;}
+	public function getDonatedObjects(){return CI_DonatedObject::getDataFromArray($this->donatedObjects);}
 	public function setDonatedObjects($donatedObjects){$this->donatedObjects = $donatedObjects;}
 	
 	/**
@@ -41,7 +41,6 @@ class CI_Donation {
 		$object->donatedObjects = $this->donatedObjects;
 		return $object;
 	}
-
 
 	protected static function getInstance($row){
 		if(!($row instanceof stdClass)){
