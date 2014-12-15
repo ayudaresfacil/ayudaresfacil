@@ -31,7 +31,8 @@ class User_model extends CI_Model
 							'user_id' => $id,
 							'name' => $options->name,
 							'last_name' => $options->lastName,
-							'description' => $options->description
+							'description' => $options->description,
+							'gravatar_email' => $options->gravatarEmail
 						);
 		$this->db->insert('user_data', $data);
 		$this->db->trans_complete();
