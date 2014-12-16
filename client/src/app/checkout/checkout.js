@@ -45,39 +45,6 @@ angular.module( 'AyudarEsFacilApp.checkout', [
     $scope.publicationType = $state.current.data.publicationType;
     $scope.publicationId = $stateParams.publicationId;
     $scope.offer = {};
-    
-    this.userService = new Users();
-    this.promiseUser = this.userService.$get({
-        userId: $scope.user.id
-    });
-
-    this.promiseUser.then(function(response) {
-        $scope.user = response.data[0];
-
-        angular.forEach($scope.user.addresses, function(value, key) {
-            $http({ method:'GET',
-                    url:'/ayudaresfacil/api/city',
-                    params:{id:$scope.user.addresses[key].cityId}}
-                ).success(function(response) {
-                    $scope.user.addresses[key]["city"] = response.data[0].description;
-                });
-
-            $http({ method:'GET',
-                    url:'/ayudaresfacil/api/department',
-                    params:{id:$scope.user.addresses[key].departmentId}}
-                ).success(function(response) {
-                    $scope.user.addresses[key]["department"] = response.data[0].description;
-                });
-
-            $http({ method:'GET',
-                    url:'/ayudaresfacil/api/province',
-                    params:{id:$scope.user.addresses[key].provinceId}}
-                ).success(function(response) {
-                    $scope.user.addresses[key]["province"] =  response.data[0].description;
-                });
-        });
-
-    });
 
     /**
      * FLOWS
@@ -109,48 +76,16 @@ angular.module( 'AyudarEsFacilApp.checkout', [
                 message += '. Comentarios: ' + $scope.comments;
             }
 
-            angular.forEach($scope.user.addresses, function(value, key) {
-                message += ' -- Domicilio: ';
-                message += 'Calle: ' + value.street + ' - ';
-                message += 'Nro.: ' + value.number;
-                if(value.apartment !== ""){
-                    message += ' - Depto.: ' +value.apartment;
-                }
-                if(value.floor !== ""){
-                    message += ' - Piso: ' +value.floor;
-                }
-                if(value.postalCode !== ""){
-                    message += ' - Cod. Postal: ' +value.postalCode;
-                }
-                if(value.province !== ""){
-                    message += ' - Provincia: ' +value.province;
-                }
-                if(value.department !== ""){
-                    message += ' - Ciudad: ' +value.department;
-                }
-                if(value.city !== ""){
-                    message += ' - Localidad: ' +value.city;
-                }
-                
-            });
-
-            angular.forEach($scope.user.phones, function(value, key) {
-                message += ' -- Teléfono: ';
-                if(value.areaCode !== ""){
-                    message += 'Cod. Area (' + value.areaCode + ') ';                    
-                }
-                message += 'Nro.: ' + value.number;
-            });
-
-            $http.post('/ayudaresfacil/api/message',{
-                userFrom: $scope.user.id,
-                userTo: $scope.offer.userId, 
-                publication: $scope.offer.id, 
-                //FAQ: "0", 
-                //commonStateId: "N", 
-                //subject: "Te han pedido lo que ofreciste", 
-                text: message, 
+            $http.post('/ayudaresfacil/api/checkout/end',{
+                userFromId: $scope.user.id,
+                userToId: $scope.offer.userId, 
+                publicationId: $scope.offer.id, 
+                publicationType: $scope.publicationType,
+                comments: message, 
+                objectId: $scope.offer.object.id,
+                quantity: 1,
                 token: $scope.user.token
+
             })
             .success(function(response) {
                 $scope.status = 'congrats';
@@ -187,47 +122,14 @@ angular.module( 'AyudarEsFacilApp.checkout', [
                 message += '. Comentarios: ' + $scope.comments;
             }
 
-            angular.forEach($scope.user.addresses, function(value, key) {
-                message += ' -- Domicilio: ';
-                message += 'Calle: ' + value.street + ' - ';
-                message += 'Nro.: ' + value.number;
-                if(value.apartment !== ""){
-                    message += ' - Depto.: ' +value.apartment;
-                }
-                if(value.floor !== ""){
-                    message += ' - Piso: ' +value.floor;
-                }
-                if(value.postalCode !== ""){
-                    message += ' - Cod. Postal: ' +value.postalCode;
-                }
-                if(value.province !== ""){
-                    message += ' - Provincia: ' +value.province;
-                }
-                if(value.department !== ""){
-                    message += ' - Ciudad: ' +value.department;
-                }
-                if(value.city !== ""){
-                    message += ' - Localidad: ' +value.city;
-                }
-                
-            });
-
-            angular.forEach($scope.user.phones, function(value, key) {
-                message += ' -- Teléfono: ';
-                if(value.areaCode !== ""){
-                    message += 'Cod. Area (' + value.areaCode + ') ';                    
-                }
-                message += 'Nro.: ' + value.number;
-            });
-
-            $http.post('/ayudaresfacil/api/message',{
-                userFrom: $scope.user.id,
-                userTo: $scope.request.userId, 
-                publication: $scope.request.id, 
-                //FAQ: "0", 
-                //commonStateId: "N", 
-                //subject: "Han dicho que pueden ayudarte", 
-                text: message,
+            $http.post('/ayudaresfacil/api/checkout/end',{
+                userFromId: $scope.user.id,
+                userToId: $scope.request.userId, 
+                publicationId: $scope.request.id, 
+                publicationType: $scope.publicationType,
+                comments: message,
+                objectId: $scope.request.object.id,
+                quantity: 1,
                 token: $scope.user.token
             })
             .success(function(response) {
