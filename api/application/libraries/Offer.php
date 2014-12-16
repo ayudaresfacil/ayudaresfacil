@@ -180,11 +180,11 @@ class CI_Offer extends CI_Publication {
 		return $return; 
 	}
 	
-	public function pause($offer){
-		$CI =& get_instance();
-		$CI->load->model('offer_model');
-		return $CI->offer_model->pause($offer->id);
-	}
+	// public function pause($offer){
+	// 	$CI =& get_instance();
+	// 	$CI->load->model('offer_model');
+	// 	return $CI->offer_model->pause($offer->id);
+	// }
 
 	public function checkExistingFavorite($data){
 		$CI =& get_instance();

@@ -202,7 +202,7 @@ class CI_Publication {
         }
 		return $publication;
 	}
-
+	
 	public static function getById($id){
 		$CI = & get_instance();
 		$CI->load->model('publication_model');
@@ -215,4 +215,11 @@ class CI_Publication {
 		}
 		return $return;
 	}
+
+	public static function pause($id){
+		$CI =& get_instance();
+		$CI->load->model('publication_model');
+		return $CI->publication_model->pause($id);
+	}
+
 }
