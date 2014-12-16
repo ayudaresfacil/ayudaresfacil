@@ -4,7 +4,7 @@ require APPPATH.'/libraries/REST_Controller.php';
 
 class Checkout extends REST_Controller{
 
-	public function end_get(){
+	public function end_post(){
 		//checkIsLoggedIn($this);
 		$status = 200;
 		$return["result"] = "OK";
@@ -13,13 +13,13 @@ class Checkout extends REST_Controller{
 		$datestring = "%Y/%m/%d %H:%i:%s";
 		$currentDate = mdate($datestring, now());
 
-		$arrOptions['userFromId'] = $this->get('userFromId');
-		$arrOptions['userToId'] = $this->get('userToId');
-		$arrOptions['publicationId'] = $this->get('publicationId');
-		$arrOptions['publicationType'] = $this->get('publicationType');
-		$arrOptions['objectId'] = $this->get('objectId');
-		$arrOptions['comments'] = $this->get('comments');
-		$arrOptions['quantity'] = $this->get('quantity');
+		$arrOptions['userFromId'] = $this->post('userFromId');
+		$arrOptions['userToId'] = $this->post('userToId');
+		$arrOptions['publicationId'] = $this->post('publicationId');
+		$arrOptions['publicationType'] = $this->post('publicationType');
+		$arrOptions['objectId'] = $this->post('objectId');
+		$arrOptions['comments'] = $this->post('comments');
+		$arrOptions['quantity'] = $this->post('quantity');
 		
 		$userFrom = CI_User::getById($arrOptions['userFromId']);
 		$userTo = CI_User::getById($arrOptions['userToId']);
