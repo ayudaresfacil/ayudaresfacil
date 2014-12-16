@@ -139,6 +139,10 @@ angular.module('AyudarEsFacilApp.request', [
                 userLog: Authentication.user.id
             }, function(response) {
                 $scope.requests = requests.data;
+                for (var i = $scope.requests.length - 1; i >= 0; i--) {
+                    var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
+                    $scope.requests[i].progressValue = parseInt(percentaje, 10);
+                }
             });
         }
     } else {
@@ -651,6 +655,10 @@ angular.module('AyudarEsFacilApp.request', [
             }
         }).success(function(response) {
             $scope.requests = response.data;
+            for (var i = $scope.requests.length - 1; i >= 0; i--) {
+                var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
+                $scope.requests[i].progressValue = parseInt(percentaje, 10);
+            }
         }).error(function(response) {
             $scope.error = response.message;
             $scope.status = 'ERROR';
