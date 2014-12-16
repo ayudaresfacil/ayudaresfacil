@@ -5,6 +5,8 @@ class CI_Request extends CI_Publication {
 	private $favorites;
 	private $sponsors;
 	private $isVote;
+	private $amountCollected;
+	private $quantityDonated;
 
 	public function getVotes(){return $this->votes;}
 	public function setVotes($votes){$this->votes = $votes;}
@@ -28,11 +30,18 @@ class CI_Request extends CI_Publication {
 	public function getIsVote(){return $this->isVote;}
 	public function setIsVote($isVote){$this->isVote = $isVote;}
 
+	//public function getAmountCollected(){return $this->amountCollected;}
+	//public function getQuantityDonated(){return $this->quantityDonated;}
+
 	public function getDataFromArray($options){
 		$request = parent::getDataFromArray($options);
 		$request->votes = CI_Request::getVote($options["publicationId"]);
 		$request->favorites = CI_Request::getFavorite($options["publicationId"]);
 		$request->sponsors = CI_Sponsor::getByPublicationId($options["publicationId"]);
+        if(isset($options["publicationId"])){
+            $request->amountCollected = CI_Request::getAmountCollected($options["publicationId"]);
+            $request->quantityDonated = CI_Request::getQuantityDonated($options["publicationId"]);
+        }
 		if (isset($options["isVote"])) {
 			$request->isVote = $options["isVote"];			
 		}
@@ -43,7 +52,9 @@ class CI_Request extends CI_Publication {
 		$request = parent::getData($options);
 		if(isset($options->id)){
 			$request->votes = CI_Request::getVote($options->id);			
-			$request->favorites = CI_Request::getFavorite($options->id);			
+			$request->favorites = CI_Request::getFavorite($options->id);
+            $request->amountCollected = CI_Request::getAmountCollected($options->id);
+            $request->quantityDonated = CI_Request::getQuantityDonated($options->id);
 		}else{
 			$request->votes = 0;			
 		}
@@ -61,6 +72,8 @@ class CI_Request extends CI_Publication {
 		$request = parent::getInstance($row);		
 		$request->votes = CI_Request::getVote($row->publication_id);
 		$request->favorites = CI_Request::getFavorite($row->publication_id);
+        $request->amountCollected = CI_Request::getAmountCollected($row->publication_id);
+        $request->quantityDonated = CI_Request::getQuantityDonated($row->publication_id);
 		$request->sponsors = CI_Sponsor::getByPublicationId($row->publication_id);
 		if (isset($row->isVote)) {
 			$request->isVote = $row->isVote;			
@@ -289,6 +302,20 @@ class CI_Request extends CI_Publication {
 		return $return;
 	}
 	
+	public static function getAmountCollected($publicationId){
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+		$return = $CI->request_model->getAmountCollected($publicationId);
+		return $return;
+	}
+
+	public static function getQuantityDonated($publicationId){
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+		$return = $CI->request_model->getQuantityDonated($publicationId);
+		return $return;
+	}
+
 	public function deleteVote($options){
 		$userId = $options['userId'];
 		$request = $options['request'];

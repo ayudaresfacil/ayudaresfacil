@@ -377,6 +377,25 @@ class Request_model extends CI_Model
 		return $query->result(); 
 	}
 
+    public function getAmountCollected($publicationId){
+        $this->db->select('IFNULL(SUM(quantity),0) AS quan');  
+        $this->db->from('donation');
+        $this->db->join('donated_object', "donation.donation_id = donated_object.donation_id");        
+        $this->db->where('publication_id', $publicationId);
+        $this->db->where('process_state_id', 'F');
+        $query = $this->db->get();
+        return $query->result(); 
+    }
+
+    public function getQuantityDonated($publicationId){
+        $this->db->select('count(*) AS quan');  
+        $this->db->from('donation');
+        $this->db->where('publication_id', $publicationId);
+        $this->db->where('process_state_id', 'F');
+        $query = $this->db->get();
+        return $query->result(); 
+    }
+
 	public function setSponsor($data){
 		$this->db->trans_start();
 		$this->db->insert('publication_sponsor', $data);

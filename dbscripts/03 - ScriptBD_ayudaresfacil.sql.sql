@@ -45,15 +45,16 @@ CREATE TABLE `common_state` (
 DROP TABLE IF EXISTS `donated_object`;
 
 CREATE TABLE `donated_object` (
+  `donated_obj_id` int(11) NOT NULL AUTO_INCREMENT,
   `donation_id` int(11) NOT NULL,
   `object_id` int(11) NOT NULL,
-  `quantity` decimal(3,0) NOT NULL,
-  PRIMARY KEY (`donation_id`,`object_id`),
+  `quantity` decimal(11,2) NOT NULL,
+  PRIMARY KEY (`donated_obj_id`,`donation_id`),
   KEY `donation_id` (`donation_id`),
   KEY `object_id` (`object_id`),
   CONSTRAINT `FK_Donated_Object_Donation` FOREIGN KEY (`donation_id`) REFERENCES `donation` (`donation_id`),
   CONSTRAINT `FK_Donated_Object_Object` FOREIGN KEY (`object_id`) REFERENCES `object` (`object_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 /*Data for the table `donated_object` */
 
