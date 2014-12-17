@@ -377,7 +377,7 @@ class Request_model extends CI_Model
 		return $query->result(); 
 	}
 
-    public function getAmountCollected($publicationId){
+    public function getAmountCollectedById($publicationId){
         $this->db->select('IFNULL(SUM(quantity),0) AS quan');  
         $this->db->from('donation');
         $this->db->join('donated_object', "donation.donation_id = donated_object.donation_id");        
@@ -387,7 +387,7 @@ class Request_model extends CI_Model
         return $query->result(); 
     }
 
-    public function getQuantityDonated($publicationId){
+    public function getQuantityDonatedById($publicationId){
         $this->db->select('count(*) AS quan');  
         $this->db->from('donation');
         $this->db->where('publication_id', $publicationId);
