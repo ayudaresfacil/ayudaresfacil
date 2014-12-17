@@ -175,7 +175,7 @@ angular.module( 'AyudarEsFacilApp.checkout', [
                 publicationType: $scope.publicationType,
                 comments: message,
                 objectId: $scope.request.object.id,
-                quantity: 1,
+                quantity: 100,
                 token: $scope.user.token
             })
             .success(function(response) {

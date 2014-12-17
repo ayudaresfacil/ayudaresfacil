@@ -20,20 +20,9 @@ class Checkout extends REST_Controller{
 		$arrOptions['objectId'] = $this->post('objectId');
 		$arrOptions['comments'] = $this->post('comments');
 		$arrOptions['quantity'] = $this->post('quantity');
+
+		$processState = ($arrOptions['publicationType'] == "money") ? "F" : "W"; 
 		
-		$userFrom = CI_User::getById($arrOptions['userFromId']);
-		$userTo = CI_User::getById($arrOptions['userToId']);
-		// $publication = CI_Publication::getById($arrOptions['publicationId']);
-
-		if($arrOptions['publicationType'] == "money"){
-			//TODO: fijarse si se cumplio el objetivo y auto cerrar la publicación
-			
-			$processState = "C";
-		}else{
-			$processState = "W";
-			CI_Publication::pause($arrOptions['publicationId']);
-		}
-
 		try {
 			$donation = new CI_Donation();
 			$donation->setUserId($arrOptions['userFromId']);
@@ -43,7 +32,8 @@ class Checkout extends REST_Controller{
 			
 			$donationId = $donation->save();
 			
-			if($donationId){					
+			if($donationId){	
+				
 				$donatedObject = new CI_DonatedObject();
 				$donatedObject->setDonationId($donationId);
 				$donatedObject->setObjectId($arrOptions['objectId']);
@@ -57,12 +47,31 @@ class Checkout extends REST_Controller{
 				$message ->setPublication($arrOptions['publicationId']);
 				$message ->setText($arrOptions['comments']);
 
-				$message->save();
+				$message->save();	
 			}
 		} 
 		catch(Exception $ex){
 			$status = 500;
 			$return["result"] = "NOOK";
+		}
+
+		if($status == 200){
+
+			if($arrOptions['publicationType'] == "money"){
+				$request = CI_Request::getById($arrOptions['publicationId'])[0];
+				
+				$amountCollected = $request->amountCollected[0]->quan;
+				$quantityGoal = $request->quantity;
+
+				if($amountCollected >= $quantityGoal){
+					CI_Publication::pause($arrOptions['publicationId']);
+				}
+				
+				$return["data"]['amountCollected'] = $amountCollected;				
+				$return["data"]['quantityGoal'] = $quantityGoal;
+			}else{
+				CI_Publication::pause($arrOptions['publicationId']);
+			}
 		}
 
         $this->response($return, $status);

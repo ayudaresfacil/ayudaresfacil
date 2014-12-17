@@ -21,7 +21,7 @@ insert  into `offer_type`(`offer_type_id`,`description`,`comments`) values (1,'A
 
 /*Data for the table `process_state` */
 
-insert  into `process_state`(`process_state_id`,`description`) values ('B','BORRADO'),('C','CERRADO'),('P','PAUSADO'),('V','VIGENTE'),('W','PENDIENTE');
+insert  into `process_state`(`process_state_id`,`description`) values ('B','BORRADO'),('C','CERRADO'),('P','PAUSADO'),('V','VIGENTE'),('W','PENDIENTE'),('F','FINALIZADO');
 
 /*Data for the table `type_phone` */
 
