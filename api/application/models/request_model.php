@@ -40,7 +40,7 @@ class Request_model extends CI_Model
 		$this->db->where('publication.process_state_id <>', 'C');
 		$query = $this->db->get();
 		return $query->result();
-	}	
+	}
 
 	public function getCurrentRequests(){	
 		$this->db->select('*');	
@@ -435,4 +435,17 @@ class Request_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+    public function getHelpsByUser($userId){ 
+        $this->db->select('distinct publication.*,publication_object.*'); 
+        $this->db->from('publication');
+        $this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
+        $this->db->join('donation', "publication.publication_id = donation.publication_id");
+        $this->db->where('donation.user_id', $userId);   
+        $this->db->where('publication.publication_type_id', 2);
+        $this->db->where('publication.process_state_id <>', 'B');
+        $this->db->where('publication.process_state_id <>', 'C');
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

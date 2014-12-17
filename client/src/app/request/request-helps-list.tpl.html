@@ -1,0 +1,73 @@
+<!-- BEGIN USER APPS INBOX -->
+<div class="mail-apps-wrap">
+    <div class="the-box bg-primary no-border no-margin heading">
+        <div class="row">
+            <h1><i class="fa fa-flag icon-lg icon-circle icon-bordered"></i> Mis Ayudas</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container-masonry">
+    <ol>
+        <li class="item-masonry" ng-repeat="request in requests">
+            <p>{{message}}</p>
+            <div class="the-box no-border full store-item text-center mansory-inner">
+                <img src="{{request.image[0].path}}" class="item-image img-responsive" alt="Image" ui-sref="web.requestDetail({id: request.id})">
+
+                <div class="the-box bg-default no-margin no-border item-des">
+                    <p class="text-muted">
+                        {{request.object.description}}
+                    </p>
+
+                    <h3><a class="bolded" ui-sref="web.requestDetail({id: request.id})">{{request.title}}</a>
+                    </h3>
+
+                    <p>{{request.description}}</p>
+
+                    <strong class="text-left" ng-if="request.category.id == '9'">Recaudado: <span id="currency-default">{{ request.amountCollected[0].quan | currency}}</span></strong>
+                    <div ng-if="request.category.id == '9'" class="progress no-rounded progress-sm progress-striped">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="request.amountCollected[0].quan" aria-valuemin="0" aria-valuemax="100" style="width: {{request.progressValue}}%">
+                        </div>
+                    </div>
+                    <div class="row extra-data">
+                        <div ng-if="request.category.id == '9'" >
+                            <p class="text-muted text-left">Haz ayudado con <strong>$ request.help.amount</strong> esta causa! :)</p>
+                        </div>
+                        <div ng-if="request.category.id != '9'">
+                            <p class="text-muted text-left"><small>Después de ponerte de acuerdo con la persona que necesita ayuda, cuéntanos... Pudiste concluir la ayuda solicitada?</small></p>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6">
+                                    <a href="#/checkout/request/{{request.id}}" ng-if="request.category.id != '9'" class="btn btn-sm btn-danger">
+                                        <span class="glyphicon glyphicon-ok"></span><span class="hidden-sm hidden-xs"> Sí!,Pude ayudar</span>
+                                    </a>
+                                </div>
+                               <div class="col-md-6 col-xs-6">
+                                    <a href="#/checkout/request/{{request.id}}" ng-if="request.category.id != '9'" class="btn btn-sm btn-info">
+                                        <span class="glyphicon glyphicon-remove"></span><span class="hidden-sm hidden-xs"> No esta vez</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                   <!-- <a href="#/checkout/request/{{request.id}}" ng-if="request.category.id != '9'" class="btn btn-danger btn-block">
+                        <span class="glyphicon glyphicon-ok"></span>Pude ayudar!
+                    </a>
+                    <a href="#/checkout/request/{{request.id}}" ng-if="request.category.id != '9'"class="btn btn-info btn-block">
+                        <span class="glyphicon glyphicon-ok"></span>No pudimos acordar...
+                    </a>-->
+
+                    <div class="row extra-data">
+                        <div class="col-md-6 col-xs-6 text-left">
+                            <a href ng-click="toggleFavorite()" title="Favorito">
+                                <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': request.isFavorite == '1'}"></i>
+                            </a>
+                            {{request.favorites[0].quan}}
+                        </div>
+                        <div class="col-md-6 col-xs-6 text-right">
+                            <i class="glyphicon glyphicon-eye-open text-muted"></i> {{request.views}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ol>
+</div>

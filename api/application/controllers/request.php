@@ -387,4 +387,26 @@ class Request extends REST_Controller{
 			$this->response($return, $status);
 		}	
 	}
+
+	public function helps_get(){
+		$status = 404;
+		$return["data"] = "";
+		$return["result"] = "NOOK";
+		$userId = $this->get('userId');
+        $requests = CI_Request::getHelpsByUser($userId);
+
+        if($requests){
+            $status = 200;
+            $return["result"] = "OK";
+            $return["data"] = "";
+
+            foreach ($requests as $key => $request) {
+                $myRequest = CI_Request::getData($request);
+                $return["data"][$key] = $myRequest;
+            } 
+        }
+
+        $this->response($return, $status);
+
+	}
 }

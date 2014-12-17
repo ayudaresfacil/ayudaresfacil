@@ -67,6 +67,14 @@ angular.module('AyudarEsFacilApp.request', [
             pageTitle: 'Editar Pedido'
         }
     });
+    $stateProvider.state('panel.requestHelps', {
+        url: '/mis-ayudas',
+        controller: 'RequestHelps',
+        templateUrl: 'request/request-helps-list.tpl.html',
+        data: {
+            pageTitle: 'Pedidos favoritos'
+        }
+    });
 
     //Set the httpProvider "not authorized" interceptor
     $httpProvider.interceptors.push(['$q', '$location', 'Authentication',
@@ -675,4 +683,31 @@ angular.module('AyudarEsFacilApp.request', [
     };
 
     $scope.requestFavoritesUser();
+})
+.controller('RequestHelps', function RequestHelps($scope, $http, Authentication, Request, $stateParams) {
+    $scope.message = " ";
+    $scope.user = Authentication.user;
+    if (!$scope.user) {
+        $location.path('/signin');
+        return;
+    }
+
+    $scope.requestHelpsUser = function() {
+        $scope.requests = null;
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/request/helps',
+            params: {
+                userId: Authentication.user.id
+            }
+        }).success(function(response) {
+            $scope.requests = response.data;
+        }).error(function(error) {
+            $scope.error = error.message;
+            $scope.status = 'ERROR';
+            $scope.message = "Aún no tienes favoritos";
+        });
+    };
+
+    $scope.requestHelpsUser();
 });
