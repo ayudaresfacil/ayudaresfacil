@@ -144,7 +144,48 @@ angular.module( 'AyudarEsFacilApp.checkout', [
 
 
     this.moneyFlow = function(){
+        this.steps = 2;
+        this.requestService = new Request();
         
+        $scope.flow.endStep = this.steps;
+        $scope.comments = '';
+
+        this.getData = function(){
+            this.promiseRequest = this.requestService.$get({
+                publicationId: $scope.publicationId
+            });
+
+            this.promiseRequest.then(function(response) {
+                $scope.request = response.data[0];
+            });
+        };
+
+        this.end = function(){   
+            $scope.status = 'loading';
+            var message = $scope.user.name + ' ha dicho que tiene lo que necesitas. Contacta con el para finalizar el proceso';
+
+            if($scope.comments.length > 0){
+                message += '. Comentarios: ' + $scope.comments;
+            }
+
+            $http.post('/ayudaresfacil/api/checkout/end',{
+                userFromId: $scope.user.id,
+                userToId: $scope.request.userId, 
+                publicationId: $scope.request.id, 
+                publicationType: $scope.publicationType,
+                comments: message,
+                objectId: $scope.request.object.id,
+                quantity: 1,
+                token: $scope.user.token
+            })
+            .success(function(response) {
+                $scope.status = 'congrats';
+            }).error(function(response) {
+                $scope.status = 'fail';
+            });
+        };
+
+        this.getData();
     };
 
     this.flowsByPublicationType = {
