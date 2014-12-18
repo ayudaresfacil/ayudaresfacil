@@ -82,3 +82,15 @@ li.item-masonry img:hover{
     border-top: 1px solid #eaeaea; 
     margin: 10px 0 0 0;
 }
+
+/**
+ * SIDEBAR
+ */
+
+.sidebar-left{
+    position: absolute;
+}
+
+ul.sidebar-menu{
+    padding: 0;
+}
