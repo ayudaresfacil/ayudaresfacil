@@ -73,6 +73,10 @@
 /**
  * List Items
  */
+.container-masonry{
+    padding-top: 20px;    
+}
+
 li.item-masonry img:hover{
     cursor: pointer;
 }
@@ -94,3 +98,4 @@ li.item-masonry img:hover{
 ul.sidebar-menu{
     padding: 0;
 }
+

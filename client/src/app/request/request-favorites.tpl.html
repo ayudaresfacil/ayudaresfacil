@@ -8,6 +8,9 @@
 </div>
 
 <div class="container-masonry">
+    <div class="alert alert-warning alert-bold-border fade in alert-dismissable" ng-show="activating">
+        <strong>Hey!</strong> Todavía no tienes favoritos..
+    </div>
     <ol>
         <li class="item-masonry" ng-repeat="request in requests">
             <div ng-if="request.isFavorite == '1'" class="the-box no-border full store-item text-center mansory-inner">

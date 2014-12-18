@@ -9,6 +9,9 @@
 </div>
 
 <div class="container-masonry">
+    <div class="alert alert-warning alert-bold-border fade in alert-dismissable" ng-show="activating">
+        <strong>Hey!</strong> Todavía no has creado ningún ofrecimiento..
+    </div>
     <ol>
         <li ng-if="offer.isOwner == '1'" class="item-masonry" ng-repeat="offer in offers">
             <div class="the-box no-border full store-item text-center mansory-inner">
