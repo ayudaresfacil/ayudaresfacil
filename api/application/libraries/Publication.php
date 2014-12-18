@@ -222,4 +222,16 @@ class CI_Publication {
 		return $CI->publication_model->pause($id);
 	}
 
+	public static function finish($id){
+		$CI =& get_instance();
+		$CI->load->model('publication_model');
+		return $CI->publication_model->finish($id);
+	}
+
+    public static function resume($id){
+        $CI =& get_instance();
+        $CI->load->model('publication_model');
+        return $CI->publication_model->resume($id);
+    }
+
 }

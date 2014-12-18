@@ -16,6 +16,8 @@ class Donation extends REST_Controller{
 
 		if($id){
 			$donations = CI_Donation::getById($id);	
+		}elseif ($userId && $publicationId) {
+			$donations = CI_Donation::getByUserAndPublication($userId,$publicationId);
 		}elseif ($userId) {
 			$donations = CI_Donation::getByUserId($userId);
 		}elseif ($publicationId) {
@@ -140,5 +142,49 @@ class Donation extends REST_Controller{
 		$this->response($return, $status);
 
 	}
+
+    public function confirmHelp_get(){
+        $status = 404;
+        $return['result'] = 'NOOK';
+        $return['data'] = '';
+
+        $id = $this->get('id'); 
+        $donation = CI_Donation::getById($id)[0];
+        
+        if($donation){
+            $donation->setProcessState("F");
+            if($donation->save()){
+               if( CI_Publication::finish($donation->getPublicationId())){
+                    $status = 200;
+                    $return['result'] = 'OK';
+                    $return['data'] = $donation;
+                }
+            }
+        }
+
+        $this->response($return, $status);
+    }
+
+    public function cancelHelp_get(){
+        $status = 404;
+        $return['result'] = 'NOOK';
+        $return['data'] = '';
+
+        $id = $this->get('id'); 
+        $donation = CI_Donation::getById($id)[0];
+        
+        if($donation){
+            $donation->setProcessState("C");
+            if($donation->save()){
+               if( CI_Publication::resume($donation->getPublicationId())){
+                    $status = 200;
+                    $return['result'] = 'OK';
+                    $return['data'] = $donation;
+                }
+            }
+        }
+
+        $this->response($return, $status);
+    }
 
 }

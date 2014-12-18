@@ -702,11 +702,75 @@ angular.module('AyudarEsFacilApp.request', [
             }
         }).success(function(response) {
             $scope.requests = response.data;
+
+            angular.forEach($scope.requests,function(request,idx){
+                $scope.donations = null;
+                $http({
+                method: 'GET',
+                url: '/ayudaresfacil/api/donation',
+                params: {
+                    userId: Authentication.user.id,publicationId:request.id
+                    }
+                }).success(function(response) {
+                    $scope.requests[idx].donations = response.data;
+                    var amountDonated = 0;
+                    angular.forEach($scope.requests[idx].donations,function(donation,idx){
+                        if(donation.processState.id=='F'){
+                            angular.forEach(donation.donatedObjects,function(donatedObject,idx){
+                                amountDonated += parseFloat(donatedObject.quantity);
+                            });
+                        }
+                    });
+                $scope.requests[idx].amountDonated = amountDonated;
+
+                }).error(function(error) {
+                    $scope.error = error.message;
+                    $scope.status = 'ERROR';
+                });
+            });
+
         }).error(function(error) {
             $scope.error = error.message;
             $scope.status = 'ERROR';
-            $scope.message = "Aún no tienes favoritos";
+            $scope.message = "No has ayudado a ninguna causa, aún. Puedes hacer de manera muy rápida y segura!. Alguien puede necesitarte mas de lo que imaginas!";
         });
+
+        $scope.confirmHelp = function(id){
+            $http({
+                method: 'GET',
+                url: '/ayudaresfacil/api/donation/confirmHelp',
+                params: {
+                    id: id
+                    }
+                }).success(function(response){
+                    angular.forEach($scope.requests,function(request,idx){
+                        angular.forEach(request.donations,function(donation,idx){
+                            if(donation.id==id){
+                                donation.processState.id="F";
+                            }
+                        });
+                    });
+                });
+        };
+
+        $scope.cancelHelp = function(id){
+            $http({
+                method: 'GET',
+                url: '/ayudaresfacil/api/donation/cancelHelp',
+                params: {
+                    id: id
+                    }
+                }).success(function(response){
+                    angular.forEach($scope.requests,function(request,idx){
+                        angular.forEach(request.donations,function(donation,idx){
+                            if(donation.id==id){
+                                donation.processState.id="C";
+                            }
+                        });
+                    });
+                });
+        };
+
     };
 
     $scope.requestHelpsUser();

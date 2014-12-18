@@ -130,4 +130,18 @@ class CI_Donation {
 		return $return;
 	}
 
+	   public static function getByUserAndPublication($userId,$publicationId)
+    {
+        $CI = & get_instance();
+        $CI->load->model('donation_model');
+        $results = $CI->donation_model->getByUserAndPublication($userId,$publicationId);
+        $return = array();
+        if(!empty($results)){
+            foreach($results as $result) {
+                $return[] = self::getInstance($result);
+            }
+        }
+        return $return;
+    }
+
 }

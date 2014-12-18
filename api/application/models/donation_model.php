@@ -56,7 +56,7 @@ class Donation_model extends CI_Model
 		$this->db->trans_start();
 		
 		$data = array 	(
-							'user_Id' => $options->UserId,
+							'user_Id' => $options->userId,
 							'publication_Id' => $options->publicationId,
 							'process_State_Id' => $options->processState
 						); 
@@ -86,4 +86,28 @@ class Donation_model extends CI_Model
 		return $id;
 	}
 
+	public function getByUserAndPublication($userId,$publicationId){
+		$this->db->select('*');	
+		$this->db->from('donation');
+		$this->db->where("user_id",$userId);
+		$this->db->where("publication_id",$publicationId);
+        $this->db->order_by("donation_id","DESC");
+		$query = $this->db->get();
+		return $query->result();
+	}
+/*
+        $this->db->select('user_id');   
+        $this->db->select('publication_id');
+        $this->db->select('object_id');
+        $this->db->select('SUM(quantity) amountDonated');
+        $this->db->select('COUNT(1) quantityDonated');
+        $this->db->select('process_state_id');
+        $this->db->from('donation');
+        $this->db->join('donated_object', 'donation.donation_id = donated_object.donation_id');
+        $this->db->where('user_id',$userId);
+        $this->db->where('publication_id',$publicationId);
+        $this->db->group_by('user_id,publication_id,object_id,process_state_id');
+        $query = $this->db->get();
+        return $query->result();
+*/
 }

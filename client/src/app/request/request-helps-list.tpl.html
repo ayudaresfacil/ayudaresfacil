@@ -22,7 +22,7 @@
                     <h3><a class="bolded" ui-sref="web.requestDetail({id: request.id})">{{request.title}}</a>
                     </h3>
 
-                    <p>{{request.description}}</p>
+                    <!--<p>{{request.description}}</p>-->
 
                     <strong class="text-left" ng-if="request.category.id == '9'">Recaudado: <span id="currency-default">{{ request.amountCollected[0].quan | currency}}</span></strong>
                     <div ng-if="request.category.id == '9'" class="progress no-rounded progress-sm progress-striped">
@@ -31,20 +31,36 @@
                     </div>
                     <div class="row extra-data">
                         <div ng-if="request.category.id == '9'" >
-                            <p class="text-muted text-left">Haz ayudado con <strong>$ request.help.amount</strong> esta causa! :)</p>
+                            <p class="text-muted text-left">Haz ayudado con <strong> {{request.amountDonated | currency}}</strong> esta causa! :)</p>
                         </div>
                         <div ng-if="request.category.id != '9'">
-                            <p class="text-muted text-left"><small>Después de ponerte de acuerdo con la persona que necesita ayuda, cuéntanos... Pudiste concluir la ayuda solicitada?</small></p>
-                            <div class="row">
+                            <span ng-if="request.donations[0].processState.id=='W'">
+                                <p class="text-muted text-left" >
+                                    <small>Después de ponerte de acuerdo con la persona que necesita ayuda, cuéntanos... Pudiste concluir la ayuda solicitada?</small>
+                                </p>
+                            </span>
+                            <span ng-if="request.donations[0].processState.id=='C'">
+                                <p><span class="badge badge-info">No pudo concretarse la ayuda</span></p>
+                                <p class="text-muted text-left" >
+                                    <small>Es una pena que no has podido concreatar la ayuda. Igualmente sigue ayudando en otros pedido. Hay mucha gente que te necesita mucho más de lo que te imaginás.</small>
+                                </p>
+                            </span>
+                            <span ng-if="request.donations[0].processState.id=='F'">
+                                <p><span class="badge badge-danger">Ayuda concretada!</span></p>
+                                <p class="text-muted text-left" >
+                                    <small>Has contribuido con esta causa. Sigue así. Hay mucha gente que te necesita mucho más de lo que te imaginás!</small>
+                                </p>
+                            </span>
+                            <div class="row" ng-if="request.donations[0].processState.id=='W'">
                                 <div class="col-md-6 col-xs-6">
-                                    <a href="#/checkout/request/{{request.id}}" ng-if="request.category.id != '9'" class="btn btn-sm btn-danger">
+                                    <button ng-click="confirmHelp(request.donations[0].id)" ng-if="request.category.id != '9'" class="btn btn-sm btn-danger">
                                         <span class="glyphicon glyphicon-ok"></span><span class="hidden-sm hidden-xs"> Sí!,Pude ayudar</span>
-                                    </a>
+                                    </button>
                                 </div>
                                <div class="col-md-6 col-xs-6">
-                                    <a href="#/checkout/request/{{request.id}}" ng-if="request.category.id != '9'" class="btn btn-sm btn-info">
+                                    <button ng-click="cancelHelp(request.donations[0].id)" ng-if="request.category.id != '9'" class="btn btn-sm btn-info">
                                         <span class="glyphicon glyphicon-remove"></span><span class="hidden-sm hidden-xs"> No esta vez</span>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
