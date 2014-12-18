@@ -63,7 +63,6 @@ class Message extends REST_Controller{
 		$return["result"] = "NOOK";
 		$return["data"] = "";
 
-		$this->load->helper('date');
 		$datestring = "%Y/%m/%d %H:%i:%s";
 		$currDate = mdate($datestring, now());
 

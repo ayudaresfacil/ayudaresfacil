@@ -88,7 +88,7 @@ $autoload['libraries'] = array(
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','general','email','authentication');
+$autoload['helper'] = array('url','general','email','authentication','date');
 
 
 /*

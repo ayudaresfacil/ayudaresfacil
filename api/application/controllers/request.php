@@ -56,7 +56,6 @@ class Request extends REST_Controller{
 	public function index_post(){
 		
 		//checkIsLoggedIn($this);
-
 		$status = 404;
 		$return["result"] = "NOOK";
 
@@ -65,8 +64,8 @@ class Request extends REST_Controller{
 		$arrOptions['type'] = '2';
 		$arrOptions['title'] = $this->post('title');
 		$arrOptions['description'] = $this->post('description');
-		$arrOptions['expirationDate'] = $this->post('expirationDate');
-		$arrOptions['creationDate'] = $this->post('creationDate');
+		$arrOptions['expirationDate'] = mdate("%Y/%m/%d %H:%i:%s", $this->post('expirationDate'));
+		$arrOptions['creationDate'] = mdate("%Y/%m/%d %H:%i:%s", $this->post('creationDate'));
 		$arrOptions['category'] = $this->post('categoryId');
 		$arrOptions['subcategory'] = $this->post('subcategoryId');
 		$arrOptions['views'] = $this->post('views');
