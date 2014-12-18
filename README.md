@@ -25,7 +25,7 @@ You need to install Node.js and then the development tools. Node.js comes with a
 Either clone this repository or fork it on GitHub and clone your fork. You must download it to the **htdocs** folder of apache:
 
 ```
-git clone https://github.com/seperez/ayudaresfacil.git
+git clone https://github.com/ayudaresfacil/ayudaresfacil.git
 cd ayudaresfacil
 ```
 
