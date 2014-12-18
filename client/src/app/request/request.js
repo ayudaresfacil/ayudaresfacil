@@ -386,7 +386,7 @@ angular.module('AyudarEsFacilApp.request', [
     if (!$scope.user) {
         $location.path('/signin');
     }
-    
+
     var date = new Date();
     var requests = new Request();
 
@@ -455,6 +455,10 @@ angular.module('AyudarEsFacilApp.request', [
         }, function(response) {
             $scope.requests = requests.data;
             $scope.msgSuccess = '1';
+            for (var i = $scope.requests.length - 1; i >= 0; i--) {
+                var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
+                $scope.requests[i].progressValue = parseInt(percentaje, 10);
+            }
         }, function(error) {
             $scope.activating = true;
         });
