@@ -13,7 +13,7 @@
         <li ng-if="offer.isOwner == '1'" class="item-masonry" ng-repeat="offer in offers">
             <div class="the-box no-border full store-item text-center mansory-inner">
 
-                <img src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="panel.offerDetailUser({id: offer.id})">
+                <img ng-src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="panel.offerDetailUser({id: offer.id})">
 
                 <div class="the-box bg-default no-margin no-border item-des">
                     <div class="pull-right">
