@@ -14,7 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/ayudaresfacil/api';
+//$config['base_url']	= 'http://localhost/ayudaresfacil/api';
+$config['base_url'] = 'http://192.168.0.102/ayudaresfacil/api';
 
 /*
 |--------------------------------------------------------------------------

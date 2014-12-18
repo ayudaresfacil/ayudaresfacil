@@ -32,7 +32,11 @@
                         </div>
                     </div>
 
-                    <a href="#/checkout/request/{{request.id}}" ng-if="request.isOwner == '0'" class="btn btn-danger btn-block">
+                    <a href="#/checkout/money/{{request.id}}" ng-if="request.isOwner == '0' && request.category.id == '9' && offer.processState.id == 'V'" class="btn btn-danger btn-block">
+                        <span class="glyphicon glyphicon-ok"></span>Quiero ayudar!
+                    </a>
+
+                    <a href="#/checkout/request/{{request.id}}" ng-if="request.isOwner == '0' && request.category.id != '9' && offer.processState.id == 'V'" class="btn btn-danger btn-block">
                         <span class="glyphicon glyphicon-ok"></span>Quiero ayudar!
                     </a>
 
