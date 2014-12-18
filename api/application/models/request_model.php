@@ -24,6 +24,7 @@ class Request_model extends CI_Model
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.process_state_id <>', 'C');
+		$this->db->where('publication.process_state_id <>', 'F');
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$this->db->where('publication.publication_id =', $id);
 		$query = $this->db->get();
@@ -38,6 +39,7 @@ class Request_model extends CI_Model
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.process_state_id <>', 'C');
+		$this->db->where('publication.process_state_id <>', 'F');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -49,6 +51,7 @@ class Request_model extends CI_Model
 		$this->db->order_by("publication.creation_date","desc");
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.process_state_id <>', 'C');
+		$this->db->where('publication.process_state_id <>', 'F');
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
@@ -63,6 +66,7 @@ class Request_model extends CI_Model
 		$this->db->order_by("publication.creation_date","desc");
 		$this->db->where('publication.process_state_id <> "B"');
 		$this->db->where('publication.process_state_id <>', 'C');
+		$this->db->where('publication.process_state_id <>', 'F');
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
@@ -78,6 +82,7 @@ class Request_model extends CI_Model
 		$this->db->order_by("publication.creation_date","desc");	
 		$this->db->where('publication.process_state_id <> "B"');
 		$this->db->where('publication.process_state_id <>', 'C');
+		$this->db->where('publication.process_state_id <>', 'F');
 		$this->db->where('publication.publication_type_id', 2);
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
@@ -252,6 +257,7 @@ class Request_model extends CI_Model
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.process_state_id <>', 'C');
+		$this->db->where('publication.process_state_id <>', 'F');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -319,6 +325,7 @@ class Request_model extends CI_Model
 		$this->db->where('publication_object.object_id', 0); 
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.process_state_id <>', 'C');
+		$this->db->where('publication.process_state_id <>', 'F');
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
 		return $query->result();
@@ -333,6 +340,7 @@ class Request_model extends CI_Model
 		$this->db->where('publication_object.object_id <>', 0); 
 		$this->db->where('publication.process_state_id <>', 'B');
 		$this->db->where('publication.process_state_id <>', 'C');
+		$this->db->where('publication.process_state_id <>', 'F');
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
 		return $query->result();

@@ -40,6 +40,14 @@
             </p>
 
             <p>
+                <span ng-if="request.processState.id == 'P'" class="badge badge-info">Publicación Pausada</span>
+            </p>
+
+            <p>
+                <span ng-if="request.processState.id == 'C'" class="badge badge-success">Objetivo Cumplido</span>
+            </p>
+
+            <p>
                 {{request.description}}
             </p>
 
@@ -92,19 +100,15 @@
 
             <div class="row">
                 <div class="col-sm-10 col-xs-6">
-                    <button ng-if="request.isOwner == '0'" class="btn btn-success btn-md" ng-click="openConversation({publicationId:request.id})">
-                        <span class="fa fa-envelope"></span> Envíale un mensaje
-                    </button>
-
-
                     <a href="#/checkout/money/{{request.id}}" ng-if="request.processState.id == 'V' && request.isOwner == '0' && request.category.id == '9'" class="btn btn-danger">
                         <span class="glyphicon glyphicon-ok"></span> Quiero Ayudar</a>
                     
                     <a href="#/checkout/request/{{request.id}}" ng-if="request.processState.id == 'V' && request.isOwner == '0' && request.category.id != '9'" class="btn btn-danger">
                         <span class="glyphicon glyphicon-ok"></span> Quiero Ayudar</a>
-
-
-                    <button ng-if="request.processState.id == 'C' " type="button" class="btn btn-danger btn-md disabled"><span class="glyphicon glyphicon-ban-circle"></span> Objetivo Cumplido </button>
+                    
+                    <button ng-if="request.isOwner == '0'" class="btn btn-success btn-md" ng-click="openConversation({publicationId:request.id})">
+                        <span class="fa fa-envelope"></span> Envíale un mensaje
+                    </button>
 
                     <button type="button" ng-if="request.isVote == '1' && request.isOwner == '0'" ng-click="unsetVote(request.id)" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down"></span>Ya no doy fe!</button>
 

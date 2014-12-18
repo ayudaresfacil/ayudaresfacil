@@ -117,7 +117,7 @@ angular.module('AyudarEsFacilApp.request', [
 
 .factory('Request', ['$resource',
     function($resource) {
-        return $resource('http://localhost/ayudaresfacil/api/request', {
+        return $resource('/ayudaresfacil/api/request', {
             publicationId: '@id'
         }, {}, {
             update: {

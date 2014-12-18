@@ -23,18 +23,26 @@
 
             <div class="col-md-8 col-sm-6">
                 <h2 class="medium-heading more-margin-bottom text-primary">
-                {{request.title}}            
-            </h2>
+                    {{request.title}}            
+                </h2>
 
                 <p style="margin-top: -10px;">
                     <small style="margin: -20px 20px 0 0;">
-                    <span class="glyphicon glyphicon-thumbs-up"></span> Votos de fé: {{request.votes[0].quan}} 
-                </small>
+                        <span class="glyphicon glyphicon-thumbs-up"></span> Votos de fé: {{request.votes[0].quan}} 
+                    </small>
                     <small>
-                    <span class="glyphicon glyphicon-heart"></span> Favoritos: {{request.favorites[0].quan}}
-                </small>
+                        <span class="glyphicon glyphicon-heart"></span> Favoritos: {{request.favorites[0].quan}}
+                    </small>
                 </p>
 
+                <p>
+                    <span ng-if="request.processState.id == 'P'" class="badge badge-info">Publicación Pausada</span>
+                </p>
+
+                <p>
+                    <span ng-if="request.processState.id == 'C'" class="badge badge-success">Objetivo Cumplido</span>
+                </p>
+                
                 <p>
                     {{request.description}}
                 </p>
@@ -51,7 +59,8 @@
                                 Se necesita: <strong>{{request.quantity}}</strong>
                             </p>
                             <p ng-if="request.quantity != '1'">
-                                Se necesita: <strong><span id="currency-default">{{ request.quantity | currency}}</span></strong><br>
+                                Se necesita: <strong><span id="currency-default">{{ request.quantity | currency}}</span></strong>
+                                <br>
                             </p>
                             </p>
                             <p>Visto:
@@ -84,21 +93,6 @@
                         Esta publicación aún no tiene padrinos..
                     </p>
                 </div>
-
-
-                <div class="row">
-                    <div class="col-sm-10 col-xs-6">
-                        <a href="#/checkout/request/{{request.id}}" ng-if="request.processState.id == 'V' && request.isOwner == '0'" class="btn btn-danger">
-                            <span class="glyphicon glyphicon-ok"></span> Quiero Ayudar</a>
-
-                        <button ng-if="request.processState.id == 'C' " type="button" class="btn btn-danger btn-md disabled"><span class="glyphicon glyphicon-ban-circle"></span> Objetivo Cumplido </button>
-
-                        <button type="button" ng-if="request.isVote == '1' && request.isOwner == '0'" ng-click="unsetVote(request.id)" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down"></span>Ya no doy fe!</button>
-
-                        <button type="button" ng-if="request.isVote == '0' && request.isOwner == '0'" ng-click="setVote(request.id)" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span>Doy fe!</button>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
