@@ -99,3 +99,10 @@ ul.sidebar-menu{
     padding: 0;
 }
 
+@media (max-width: 1024px) {
+    .img-responsive{
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+    }
+}
