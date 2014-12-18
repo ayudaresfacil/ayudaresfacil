@@ -57,7 +57,9 @@ class CI_Offer extends CI_Publication {
 		$offer->processStateOffer = CI_ProcessState::getData($options->processStateOffer);
 		$offer->type = CI_OfferType::getData($options->type);
 		$offer->quantityUsersToPaused = $options->quantityUsersToPaused;
-		$offer->favorites = CI_Offer::getFavorite($options->id);
+		if(isset($options->id)){
+			$offer->favorites = CI_Offer::getFavorite($options->id);
+		}
 		return $offer;
 	}
 
