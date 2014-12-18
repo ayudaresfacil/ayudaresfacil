@@ -64,7 +64,7 @@ class CI_Offer extends CI_Publication {
 	public static function getInstance($row){
 		if(!($row instanceof stdClass)){
 			show_error("El row debe ser una instancia de stdClass.");
-		}	
+		}
 		$offer = parent::getInstance($row);
 		$offer->processStateOffer = CI_ProcessState::getById($row->process_state_offer);
 		$offer->type = CI_OfferType::getById($row->offer_type_id);
@@ -275,4 +275,18 @@ class CI_Offer extends CI_Publication {
 		}
 		return $return;
 	}
+
+    public static function getNeedsByUser($userId){
+        $CI =& get_instance();
+        $CI->load->model('offer_model');
+        $results = $CI->offer_model->getNeedsByUser($userId);
+        $return = array();
+        if(!empty($results)){
+            foreach($results as $result){
+                $return[] = CI_Offer::getInstance($result);
+            }
+        }
+        return $return;
+    }
+
 }
