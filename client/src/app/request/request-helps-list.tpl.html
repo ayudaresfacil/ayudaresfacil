@@ -25,15 +25,9 @@
                     <h3><a class="bolded" ui-sref="web.requestDetail({id: request.id})">{{request.title}}</a>
                     </h3>
 
-                    <!--<p>{{request.description}}</p>-->
-
                     <strong class="text-left" ng-if="request.category.id == '9'">Recaudado hasta ahora: <span id="currency-default">{{ request.amountCollected[0].quan | currency}}</span></strong>
-                    <!--<div ng-if="request.category.id == '9'" class="progress no-rounded progress-sm progress-striped">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="request.amountCollected[0].quan" aria-valuemin="0" aria-valuemax="100" style="width: {{request.progressValue}}%">
-                        </div>
-                    </div>-->
                     <div class="row extra-data">
-                        <div ng-if="request.category.id == '9'" >
+                        <div ng-if="request.category.id == '9'">
                             <p class="text-muted text-left">Haz ayudado con <strong> {{request.amountDonated | currency}}</strong> esta causa! :)</p>
                         </div>
                         <div ng-if="request.category.id != '9'">
@@ -43,16 +37,18 @@
                                 </p>
                             </span>
                             <span ng-if="request.donations[0].processState.id=='C'">
-                                <p><span class="badge badge-info">No pudo concretarse la ayuda</span></p>
-                                <p class="text-muted text-left" >
-                                    <small>Es una pena que no has podido concreatar la ayuda. Igualmente sigue ayudando en otros pedido. Hay mucha gente que te necesita mucho más de lo que te imaginás.</small>
-                                </p>
+                                <p><span class="badge badge-info">No pudo concretarse la ayuda</span>
+                            </p>
+                            <p class="text-muted text-left">
+                                <small>Es una pena que no has podido concreatar la ayuda. Igualmente sigue ayudando en otros pedido. Hay mucha gente que te necesita mucho más de lo que te imaginás.</small>
+                            </p>
                             </span>
                             <span ng-if="request.donations[0].processState.id=='F'">
-                                <p><span class="badge badge-danger">Ayuda concretada!</span></p>
-                                <p class="text-muted text-left" >
-                                    <small>Has contribuido con esta causa. Sigue así. Hay mucha gente que te necesita mucho más de lo que te imaginás!</small>
-                                </p>
+                                <p><span class="badge badge-danger">Ayuda concretada!</span>
+                            </p>
+                            <p class="text-muted text-left">
+                                <small>Has contribuido con esta causa. Sigue así. Hay mucha gente que te necesita mucho más de lo que te imaginás!</small>
+                            </p>
                             </span>
                             <div class="row" ng-if="request.donations[0].processState.id=='W'">
                                 <div class="col-md-6 col-xs-6">
@@ -60,29 +56,12 @@
                                         <span class="glyphicon glyphicon-ok"></span><span class="hidden-sm hidden-xs"> Sí!,Pude ayudar</span>
                                     </button>
                                 </div>
-                               <div class="col-md-6 col-xs-6">
+                                <div class="col-md-6 col-xs-6">
                                     <button ng-click="cancelHelp(request.donations[0].id)" ng-if="request.category.id != '9'" class="btn btn-sm btn-info">
                                         <span class="glyphicon glyphicon-remove"></span><span class="hidden-sm hidden-xs"> No esta vez</span>
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                   <!-- <a href="#/checkout/request/{{request.id}}" ng-if="request.category.id != '9'" class="btn btn-danger btn-block">
-                        <span class="glyphicon glyphicon-ok"></span>Pude ayudar!
-                    </a>
-                    <a href="#/checkout/request/{{request.id}}" ng-if="request.category.id != '9'"class="btn btn-info btn-block">
-                        <span class="glyphicon glyphicon-ok"></span>No pudimos acordar...
-                    </a>-->
-
-                    <div class="row extra-data">
-                        <div class="col-md-6 col-xs-6 text-left">
-                            <a href ng-click="toggleFavorite()" title="Favorito">
-                                <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': request.isFavorite == '1'}"></i>
-                            </a>
-                            {{request.favorites[0].quan}}
-                        </div>
-                        <div class="col-md-6 col-xs-6 text-right">
-                            <i class="glyphicon glyphicon-eye-open text-muted"></i> {{request.views}}
                         </div>
                     </div>
                 </div>
