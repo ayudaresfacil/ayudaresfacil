@@ -319,4 +319,19 @@ class Offer_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+    public function getNeedsByUser($userId){ 
+        $this->db->select('distinct publication.*,publication_offer.*,publication_object.*'); 
+        $this->db->from('publication');
+        $this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
+        $this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
+        $this->db->join('donation', "publication.publication_id = donation.publication_id");
+        $this->db->where('donation.user_id', $userId);   
+        $this->db->where('publication.publication_type_id', 1);
+        $this->db->where('publication.process_state_id <>', 'B');
+        $this->db->where('publication.process_state_id <>', 'C');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }

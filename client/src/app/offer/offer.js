@@ -68,15 +68,6 @@ angular.module('AyudarEsFacilApp.offer', [
         }
     });
 
-    $stateProvider.state('panel.offerRequest', {
-        url: '/pedidos-de-ofrecimientos',
-        controller: 'OfferRequestCtrl',
-        templateUrl: 'offer/offer-request-list.tpl.html',
-        data: {
-            pageTitle: 'Pedidos de usuarios sobre mis Ofrecimientos'
-        }
-    });
-
     $stateProvider.state('panel.offerNeeds', {
         url: '/mis-necesidades',
         controller: 'OfferNeedsCtrl',
@@ -85,6 +76,15 @@ angular.module('AyudarEsFacilApp.offer', [
             pageTitle: 'Mis Necesidades'
         }
     });
+
+/*    $stateProvider.state('panel.offerRequest', {
+        url: '/pedidos-de-ofrecimientos',
+        controller: 'OfferRequestCtrl',
+        templateUrl: 'offer/offer-request-list.tpl.html',
+        data: {
+            pageTitle: 'Pedidos de usuarios sobre mis Ofrecimientos'
+        }
+    });*/
 
     //Set the httpProvider "not authorized" interceptor
     $httpProvider.interceptors.push(['$q', '$location', 'Authentication',
@@ -612,11 +612,54 @@ angular.module('AyudarEsFacilApp.offer', [
 
     $scope.offerFavoritesUser();
 })
-
-.controller('OfferRequestCtrl', function OfferRequestCtrl($scope, $http, Offers, Authentication, $stateParams) {
-    alert('OfferRequestCtrl');
-})
-
 .controller('OfferNeedsCtrl', function OfferRequestCtrl($scope, $http, Offers, Authentication, $stateParams) {
-    alert('OfferNeedsCtrl');
-});
+        $scope.offers = null;
+    
+    $scope.offerNeedsUser = function() {    
+        $http({
+            method: 'GET',
+            url: '/ayudaresfacil/api/offer/needs',
+            params: {
+                userId: Authentication.user.id
+            }
+        }).success(function(response) {
+            //alert(JSON.stringify(response.data));
+            $scope.offers = response.data;
+
+            /*angular.forEach($scope.offers,function(offer,idx){
+                $scope.donations = null;
+                $http({
+                method: 'GET',
+                url: '/ayudaresfacil/api/offer',
+                params: {
+                    userId: Authentication.user.id,publicationId:request.id
+                    }
+                }).success(function(response) {
+                    $scope.requests[idx].donations = response.data;
+                    var amountDonated = 0;
+                    angular.forEach($scope.requests[idx].donations,function(donation,idx){
+                        if(donation.processState.id=='F'){
+                            angular.forEach(donation.donatedObjects,function(donatedObject,idx){
+                                amountDonated += parseFloat(donatedObject.quantity);
+                            });
+                        }
+                    });
+                $scope.requests[idx].amountDonated = amountDonated;
+
+                }).error(function(error) {
+                    $scope.error = error.message;
+                    $scope.status = 'ERROR';
+                });
+            });*/
+
+        }).error(function(error) {
+            $scope.error = error.message;
+            $scope.status = 'ERROR';
+            $scope.message = "No has ayudado a ninguna causa, aún. Puedes hacer de manera muy rápida y segura!. Alguien puede necesitarte mas de lo que imaginas!";
+        });
+    };
+
+    $scope.offerNeedsUser();
+})
+/*.controller('OfferRequestCtrl', function OfferRequestCtrl($scope, $http, Offers, Authentication, $stateParams) {
+})*/;
