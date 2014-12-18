@@ -115,7 +115,6 @@ angular.module('AyudarEsFacilApp.user', [
 
     $scope.sendButton = 'REGISTRARME';
 
-
     this.signout = function() {
         Authentication.user = null;
         $scope.user = null;

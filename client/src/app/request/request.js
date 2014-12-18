@@ -134,6 +134,7 @@ angular.module('AyudarEsFacilApp.request', [
     $scope.likedLabels = [];
     $scope.sponsorDel = [];
     $scope.message = " ";
+    $scope.activating = false;
 
     var requests = new Request();
 
@@ -151,6 +152,8 @@ angular.module('AyudarEsFacilApp.request', [
                     var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
                     $scope.requests[i].progressValue = parseInt(percentaje, 10);
                 }
+            }, function(error) {
+                $scope.activating = true;
             });
         }
     } else {
@@ -373,17 +376,17 @@ angular.module('AyudarEsFacilApp.request', [
 .controller('CreateRequestCtrl', function CreateRequestCtrl($scope, $http, $location, $stateParams, $state, Request, Authentication) {
 
     $scope.user = Authentication.user;
+    $scope.btnText = 'Publicar';
+    $scope.msgSuccess = '0';
+    $scope.msgSponsor = '';
+    $scope.likedLabels = [];
+    $scope.activating = false;
 
     // If user is not signed in then redirect back home
     if (!$scope.user) {
         $location.path('/signin');
     }
-
-    $scope.btnText = 'Publicar';
-    $scope.msgSuccess = '0';
-    $scope.msgSponsor = '';
-    $scope.likedLabels = [];
-
+    
     var date = new Date();
     var requests = new Request();
 
@@ -452,6 +455,8 @@ angular.module('AyudarEsFacilApp.request', [
         }, function(response) {
             $scope.requests = requests.data;
             $scope.msgSuccess = '1';
+        }, function(error) {
+            $scope.activating = true;
         });
     };
 
@@ -605,6 +610,7 @@ angular.module('AyudarEsFacilApp.request', [
 .controller('RequestFavorites', function RequestFavorites($scope, $http, Authentication, Request, $stateParams) {
     $scope.user = Authentication.user;
     $scope.message = " ";
+    $scope.activating = false;
 
     var requests = new Request();
 
@@ -670,7 +676,7 @@ angular.module('AyudarEsFacilApp.request', [
         }).error(function(response) {
             $scope.error = response.message;
             $scope.status = 'ERROR';
-            $scope.message = "Aún no tienes favoritos";
+            $scope.activating = true;
         });
     };
 
@@ -684,9 +690,12 @@ angular.module('AyudarEsFacilApp.request', [
 
     $scope.requestFavoritesUser();
 })
+
 .controller('RequestHelps', function RequestHelps($scope, $http, Authentication, Request, $stateParams) {
     $scope.message = " ";
     $scope.user = Authentication.user;
+    $scope.activating = false;
+
     if (!$scope.user) {
         $location.path('/signin');
         return;
@@ -703,25 +712,26 @@ angular.module('AyudarEsFacilApp.request', [
         }).success(function(response) {
             $scope.requests = response.data;
 
-            angular.forEach($scope.requests,function(request,idx){
+            angular.forEach($scope.requests, function(request, idx) {
                 $scope.donations = null;
                 $http({
-                method: 'GET',
-                url: '/ayudaresfacil/api/donation',
-                params: {
-                    userId: Authentication.user.id,publicationId:request.id
+                    method: 'GET',
+                    url: '/ayudaresfacil/api/donation',
+                    params: {
+                        userId: Authentication.user.id,
+                        publicationId: request.id
                     }
                 }).success(function(response) {
                     $scope.requests[idx].donations = response.data;
                     var amountDonated = 0;
-                    angular.forEach($scope.requests[idx].donations,function(donation,idx){
-                        if(donation.processState.id=='F'){
-                            angular.forEach(donation.donatedObjects,function(donatedObject,idx){
+                    angular.forEach($scope.requests[idx].donations, function(donation, idx) {
+                        if (donation.processState.id == 'F') {
+                            angular.forEach(donation.donatedObjects, function(donatedObject, idx) {
                                 amountDonated += parseFloat(donatedObject.quantity);
                             });
                         }
                     });
-                $scope.requests[idx].amountDonated = amountDonated;
+                    $scope.requests[idx].amountDonated = amountDonated;
 
                 }).error(function(error) {
                     $scope.error = error.message;
@@ -732,43 +742,43 @@ angular.module('AyudarEsFacilApp.request', [
         }).error(function(error) {
             $scope.error = error.message;
             $scope.status = 'ERROR';
-            $scope.message = "No has ayudado a ninguna causa, aún. Puedes hacer de manera muy rápida y segura!. Alguien puede necesitarte mas de lo que imaginas!";
+            $scope.activating = true;
         });
 
-        $scope.confirmHelp = function(id){
+        $scope.confirmHelp = function(id) {
             $http({
                 method: 'GET',
                 url: '/ayudaresfacil/api/donation/confirmHelp',
                 params: {
                     id: id
-                    }
-                }).success(function(response){
-                    angular.forEach($scope.requests,function(request,idx){
-                        angular.forEach(request.donations,function(donation,idx){
-                            if(donation.id==id){
-                                donation.processState.id="F";
-                            }
-                        });
+                }
+            }).success(function(response) {
+                angular.forEach($scope.requests, function(request, idx) {
+                    angular.forEach(request.donations, function(donation, idx) {
+                        if (donation.id == id) {
+                            donation.processState.id = "F";
+                        }
                     });
                 });
+            });
         };
 
-        $scope.cancelHelp = function(id){
+        $scope.cancelHelp = function(id) {
             $http({
                 method: 'GET',
                 url: '/ayudaresfacil/api/donation/cancelHelp',
                 params: {
                     id: id
-                    }
-                }).success(function(response){
-                    angular.forEach($scope.requests,function(request,idx){
-                        angular.forEach(request.donations,function(donation,idx){
-                            if(donation.id==id){
-                                donation.processState.id="C";
-                            }
-                        });
+                }
+            }).success(function(response) {
+                angular.forEach($scope.requests, function(request, idx) {
+                    angular.forEach(request.donations, function(donation, idx) {
+                        if (donation.id == id) {
+                            donation.processState.id = "C";
+                        }
                     });
                 });
+            });
         };
 
     };

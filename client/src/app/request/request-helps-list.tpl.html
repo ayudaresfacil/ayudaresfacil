@@ -8,6 +8,9 @@
 </div>
 
 <div class="container-masonry">
+    <div class="alert alert-warning alert-bold-border fade in alert-dismissable" ng-show="activating">
+        <strong>Hey!</strong> No has ayudado a ninguna causa, aún. Puedes hacerlo de manera muy rápida y segura!. Alguien puede necesitarte mas de lo que imaginas!
+    </div>
     <ol>
         <li class="item-masonry" ng-repeat="request in requests">
             <p>{{message}}</p>
