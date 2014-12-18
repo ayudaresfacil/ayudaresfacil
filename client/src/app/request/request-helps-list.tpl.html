@@ -24,11 +24,11 @@
 
                     <!--<p>{{request.description}}</p>-->
 
-                    <strong class="text-left" ng-if="request.category.id == '9'">Recaudado: <span id="currency-default">{{ request.amountCollected[0].quan | currency}}</span></strong>
-                    <div ng-if="request.category.id == '9'" class="progress no-rounded progress-sm progress-striped">
+                    <strong class="text-left" ng-if="request.category.id == '9'">Recaudado hasta ahora: <span id="currency-default">{{ request.amountCollected[0].quan | currency}}</span></strong>
+                    <!--<div ng-if="request.category.id == '9'" class="progress no-rounded progress-sm progress-striped">
                         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="request.amountCollected[0].quan" aria-valuemin="0" aria-valuemax="100" style="width: {{request.progressValue}}%">
                         </div>
-                    </div>
+                    </div>-->
                     <div class="row extra-data">
                         <div ng-if="request.category.id == '9'" >
                             <p class="text-muted text-left">Haz ayudado con <strong> {{request.amountDonated | currency}}</strong> esta causa! :)</p>
