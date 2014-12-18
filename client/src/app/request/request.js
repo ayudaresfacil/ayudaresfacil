@@ -142,6 +142,10 @@ angular.module('AyudarEsFacilApp.request', [
         if (Authentication.user === null) {
             requests.$get(function(response) {
                 $scope.requests = requests.data;
+                for (var i = $scope.requests.length - 1; i >= 0; i--) {
+                    var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
+                    $scope.requests[i].progressValue = parseInt(percentaje, 10);
+                }
             });
         } else {
             requests.$get({
@@ -269,6 +273,10 @@ angular.module('AyudarEsFacilApp.request', [
                     publicationId: $stateParams.id
                 }, function(response) {
                     $scope.requests = requests.data;
+                    for (var i = $scope.requests.length - 1; i >= 0; i--) {
+                        var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
+                        $scope.requests[i].progressValue = parseInt(percentaje, 10);
+                    }
                 });
             })
             .error(function(response) {
@@ -292,6 +300,10 @@ angular.module('AyudarEsFacilApp.request', [
                     publicationId: $stateParams.id
                 }, function(response) {
                     $scope.requests = requests.data;
+                    for (var i = $scope.requests.length - 1; i >= 0; i--) {
+                        var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
+                        $scope.requests[i].progressValue = parseInt(percentaje, 10);
+                    }
                 });
             })
             .error(function(response) {
@@ -560,6 +572,10 @@ angular.module('AyudarEsFacilApp.request', [
                     publicationId: $stateParams.id
                 }, function(response) {
                     $scope.requests = requests.data;
+                    for (var i = $scope.requests.length - 1; i >= 0; i--) {
+                        var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
+                        $scope.requests[i].progressValue = parseInt(percentaje, 10);
+                    }
                 });
             })
             .error(function(response) {
@@ -583,6 +599,10 @@ angular.module('AyudarEsFacilApp.request', [
                     publicationId: $stateParams.id
                 }, function(response) {
                     $scope.requests = requests.data;
+                    for (var i = $scope.requests.length - 1; i >= 0; i--) {
+                        var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
+                        $scope.requests[i].progressValue = parseInt(percentaje, 10);
+                    }
                 });
             })
             .error(function(response) {
@@ -632,6 +652,10 @@ angular.module('AyudarEsFacilApp.request', [
                     publicationId: $stateParams.id
                 }, function(response) {
                     $scope.requests = requests.data;
+                    for (var i = $scope.requests.length - 1; i >= 0; i--) {
+                        var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
+                        $scope.requests[i].progressValue = parseInt(percentaje, 10);
+                    }
                 });
             })
             .error(function(response) {
@@ -655,6 +679,10 @@ angular.module('AyudarEsFacilApp.request', [
                     publicationId: $stateParams.id
                 }, function(response) {
                     $scope.requests = requests.data;
+                    for (var i = $scope.requests.length - 1; i >= 0; i--) {
+                        var percentaje = $scope.requests[i].amountCollected[0].quan * 100 / $scope.requests[i].quantity;
+                        $scope.requests[i].progressValue = parseInt(percentaje, 10);
+                    }
                 });
             })
             .error(function(response) {
