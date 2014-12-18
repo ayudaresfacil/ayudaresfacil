@@ -68,6 +68,24 @@ angular.module('AyudarEsFacilApp.offer', [
         }
     });
 
+    $stateProvider.state('panel.offerRequest', {
+        url: '/pedidos-de-ofrecimientos',
+        controller: 'OfferRequestCtrl',
+        templateUrl: 'offer/offer-request-list.tpl.html',
+        data: {
+            pageTitle: 'Pedidos de usuarios sobre mis Ofrecimientos'
+        }
+    });
+
+    $stateProvider.state('panel.offerNeeds', {
+        url: '/mis-necesidades',
+        controller: 'OfferNeedsCtrl',
+        templateUrl: 'offer/offer-needs-list.tpl.html',
+        data: {
+            pageTitle: 'Mis Necesidades'
+        }
+    });
+
     //Set the httpProvider "not authorized" interceptor
     $httpProvider.interceptors.push(['$q', '$location', 'Authentication',
         function($q, $location, Authentication) {
@@ -589,4 +607,12 @@ angular.module('AyudarEsFacilApp.offer', [
     };
 
     $scope.offerFavoritesUser();
+})
+
+
+.controller('OfferRequestCtrl', function OfferRequestCtrl($scope, $http, Offers, Authentication, $stateParams) {
+    alert('OfferRequestCtrl');
+})
+.controller('OfferNeedsCtrl', function OfferRequestCtrl($scope, $http, Offers, Authentication, $stateParams) {
+    alert('OfferNeedsCtrl');
 });
