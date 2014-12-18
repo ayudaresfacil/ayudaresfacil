@@ -9,11 +9,14 @@
 </div>
 
 <div class="container-masonry">
+    <div class="alert alert-warning alert-bold-border fade in alert-dismissable" ng-show="activating">
+        <strong>Hey!</strong> Todavía no has creado ningún ofrecimiento..
+    </div>
     <ol>
         <li ng-if="offer.isOwner == '1'" class="item-masonry" ng-repeat="offer in offers">
             <div class="the-box no-border full store-item text-center mansory-inner">
 
-                <img src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="panel.offerDetailUser({id: offer.id})">
+                <img ng-src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="panel.offerDetailUser({id: offer.id})">
 
                 <div class="the-box bg-default no-margin no-border item-des">
                     <div class="pull-right">
@@ -25,7 +28,7 @@
                         </a>
                     </div>
 
-                    <p class="text-muted">
+                    <p class="text-muted text-left">
                         {{offer.object.description}}
                     </p>
 

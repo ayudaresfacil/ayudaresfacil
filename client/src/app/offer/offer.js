@@ -127,7 +127,7 @@ angular.module('AyudarEsFacilApp.offer', [
 
 .factory('Offers', ['$resource',
     function($resource) {
-        return $resource('http://localhost/ayudaresfacil/api/offer', {
+        return $resource('/ayudaresfacil/api/offer', {
             publicationId: '@id'
         }, {}, {
             update: {
@@ -399,12 +399,15 @@ angular.module('AyudarEsFacilApp.offer', [
 
     $scope.offersUser = function(message) {
         offers.$get({
-            userLog: Authentication.user.id,
-            userId: Authentication.user.id
-        }, function(response) {
-            $scope.offers = offers.data;
-            $scope.msgSuccess = '1';
-        });
+                userLog: Authentication.user.id,
+                userId: Authentication.user.id
+            }, function(response) {
+                $scope.offers = offers.data;
+                $scope.msgSuccess = '1';
+            },
+            function(error) {
+                $scope.activating = true;
+            });
     };
 
     $scope.setFavorite = function(id) {
@@ -533,6 +536,7 @@ angular.module('AyudarEsFacilApp.offer', [
 .controller('OfferFavorites', function OfferFavorites($scope, $http, Offers, Authentication, $stateParams) {
     $scope.user = Authentication.user;
     $scope.message = " ";
+    $scope.activating = false;
 
     var offers = new Offers();
 
@@ -602,13 +606,12 @@ angular.module('AyudarEsFacilApp.offer', [
         }).error(function(response) {
             $scope.error = response.message;
             $scope.status = 'ERROR';
-            $scope.message = "Aún no tienes favoritos";
+            $scope.activating = true;
         });
     };
 
     $scope.offerFavoritesUser();
 })
-
 .controller('OfferNeedsCtrl', function OfferRequestCtrl($scope, $http, Offers, Authentication, $stateParams) {
         $scope.offers = null;
     

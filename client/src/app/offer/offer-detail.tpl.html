@@ -29,8 +29,12 @@
                     <i class="glyphicon glyphicon-heart text-muted"  ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
                 </a>
             </h2>
+            hola
+            <p>
+                <span ng-if="offer.processState.id == 'P'" class="badge badge-info">Publicación Pausada</span>
+            </p>
 
-            <p style="margin-top: -10px;">
+            <p>
                 <small>
                     <span class="glyphicon glyphicon-heart"></span> Favoritos: {{offer.favorites[0].quan}}
                 </small>
@@ -71,10 +75,6 @@
 
                     <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processStateOffer.id == 'V' && offer.isOwner == '0'" class="btn btn-danger btn-lg">
                         <span class="glyphicon glyphicon-ok"></span> Lo necesito</a>
-
-                    <button ng-if="offer.processStateOffer.id == 'P' " class="btn btn-danger btn-lg disabled">
-                        <span class="glyphicon glyphicon-ban-circle"></span> Publicación Pausada
-                    </button>
                 </div>
             </div>
 
