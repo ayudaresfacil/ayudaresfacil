@@ -229,6 +229,9 @@ angular.module('AyudarEsFacilApp.request', [
             request.userId = Authentication.user.id;
             request.sponsorsn = $scope.likedLabels;
 
+            var expiredDate = new Date(request.expirationDate);
+            request.expirationDate = expiredDate.getTime() / 1000;
+
             $scope.btnText = ' Guardando....';
             request.$save(request,
                 function(response) {
@@ -409,6 +412,9 @@ angular.module('AyudarEsFacilApp.request', [
             request.creationDate = date;
             request.votes = 0;
             request.sponsors = $scope.likedLabels;
+
+            var expiredDate = new Date(request.expirationDate);
+            request.expirationDate = expiredDate.getTime() / 1000;
 
             $scope.btnText = ' Guardando....';
             request.$save(request,
