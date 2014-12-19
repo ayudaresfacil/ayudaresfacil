@@ -62,10 +62,10 @@ class Offer extends REST_Controller {
 
 		$arrOptions['user'] = $this->post('userId');
 		$arrOptions['type'] = '1';
-		$arrOptions['creationDate'] = $this->post('creationDate');
 		$arrOptions['title'] = $this->post('title');
 		$arrOptions['description'] = $this->post('description');
-		$arrOptions['expirationDate'] = $this->post('expirationDate');
+		$arrOptions['creationDate'] = mdate("%Y/%m/%d %H:%i:%s", $this->post('creationDate'));
+		$arrOptions['expirationDate'] = mdate("%Y/%m/%d %H:%i:%s", $this->post('expirationDate'));
 		$arrOptions['category'] = $this->post('categoryId');
 		$arrOptions['subcategory'] = $this->post('subcategoryId');
 		$arrOptions['views'] = $this->post('views');

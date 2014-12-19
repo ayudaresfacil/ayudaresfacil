@@ -9,7 +9,6 @@ class Checkout extends REST_Controller{
 		$status = 200;
 		$return["result"] = "OK";
 
-		$this->load->helper('date');
 		$datestring = "%Y/%m/%d %H:%i:%s";
 		$currentDate = mdate($datestring, now());
 

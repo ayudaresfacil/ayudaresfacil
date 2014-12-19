@@ -1,4 +1,11 @@
 /**
+ * HOME AND INSTITUTIONAL
+ */
+.the-box.full-width {
+    overflow-x: hidden;
+}
+
+/**
  * WIZARD
  */
 
@@ -99,3 +106,10 @@ ul.sidebar-menu{
     padding: 0;
 }
 
+@media (max-width: 1024px) {
+    .img-responsive{
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+    }
+}

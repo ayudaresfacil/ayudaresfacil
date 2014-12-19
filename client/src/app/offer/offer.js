@@ -11,18 +11,10 @@ angular.module('AyudarEsFacilApp.offer', [
             pageTitle: 'Ofrecimientos'
         }
     });
-    $stateProvider.state('web.offerCreate', {
+    $stateProvider.state('panel.offerCreate', {
         url: '/ofrecer-ayuda',
         controller: 'CreateOfferCtrl',
         templateUrl: 'offer/offer-create.tpl.html',
-        data: {
-            pageTitle: 'Crear Ofrecimiento'
-        }
-    });
-    $stateProvider.state('panel.createOfferUser', {
-        url: '/crear-ofrecimiento',
-        controller: 'CreateOfferCtrl',
-        templateUrl: 'offer/offer-create-user.tpl.html',
         data: {
             pageTitle: 'Crear Ofrecimiento'
         }
@@ -228,6 +220,9 @@ angular.module('AyudarEsFacilApp.offer', [
             offer.publicationId = $stateParams.id;
             offer.userId = Authentication.user.id;
 
+            var expiredDate = new Date(offer.expirationDate);
+            offer.expirationDate = expiredDate.getTime() / 1000;
+
             $scope.btnText = ' Guardando....';
             offer.$save(offer,
                 function(response) {
@@ -355,6 +350,9 @@ angular.module('AyudarEsFacilApp.offer', [
             offer.userId = Authentication.user.id;
             offer.creationDate = date;
             offer.votes = 0;
+
+            var expiredDate = new Date(offer.expirationDate);
+            offer.expirationDate = expiredDate.getTime() / 1000;
 
             $scope.btnText = ' Guardando....';
             offer.$save(offer,

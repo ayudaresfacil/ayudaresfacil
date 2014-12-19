@@ -15,7 +15,7 @@
         <li class="item-masonry" ng-repeat="request in requests">
             <p>{{message}}</p>
             <div class="the-box no-border full store-item text-center mansory-inner">
-                <img ng-src="{{request.image[0].path}}" class="item-image img-responsive" alt="Image" ui-sref="web.requestDetail({id: request.id})">
+                <img data-ng-src="{{request.image[0].path}}" class="item-image img-responsive" alt="Image" ui-sref="web.requestDetail({id: request.id})">
 
                 <div class="the-box bg-default no-margin no-border item-des">
                     <p class="text-muted">
