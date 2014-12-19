@@ -74,7 +74,7 @@ angular.module('AyudarEsFacilApp.mail', [
         return $resource('/ayudaresfacil/api/publication', {});
     }])
 
-.controller('InBoxCtrl', function InBoxCtrl($scope, $filter, ConversationService, Conversations, Authentication) {
+.controller('InBoxCtrl', function InBoxCtrl($rootScope, $scope, $filter, ConversationService, Conversations, Authentication) {
     var today = new Date();
     $scope.conversations = null;
     $scope.noConversations = true;
@@ -181,11 +181,26 @@ angular.module('AyudarEsFacilApp.mail', [
         });
     };
 
+    $scope.markAsViewed = function(viewedConversationId) {
+        if ($scope.conversations) {
+            angular.forEach($scope.conversations, function(value, key) {
+                if (value.conversationId == viewedConversationId) {
+                    $scope.conversations[key].commonState = 'L';
+                }
+            });
+        }
+    };
+
+    $rootScope.$on('conversation.viewed', function() {
+        $scope.markAsViewed($rootScope.viewedConversationId);
+    });
+
     $scope.getAllConversationsFromAllPublications();
 
 })
 
-.controller( 'ConversationCtrl', function ConversationCtrl( $scope, $http, $stateParams, $filter, ConversationService, Conversations, Authentication, Messages, conversationOptions, Publications, screen ) {
+.controller('ConversationCtrl', function ConversationCtrl($rootScope, $scope, $http, $stateParams, $filter, ConversationService, Conversations, Authentication, Messages, conversationOptions, Publications, screen) {
+
     var today = new Date();
     $scope.user = Authentication.user;
     $scope.getPublication = function() {
@@ -196,22 +211,24 @@ angular.module('AyudarEsFacilApp.mail', [
         });
     };
 
-    $scope.getConversation=function(){
+    $scope.getConversation = function() {
         var p_data = {};
-        if (conversationOptions.conversationId===undefined){
+        if (conversationOptions.conversationId === undefined) {
             p_data["userId"] = Authentication.user.id;
             p_data["publicationId"] = conversationOptions.publicationId;
 
-            $http({method:'GET',
-                   url:'/ayudaresfacil/api/message/getConversationByUserPublication',
-                   params: p_data
-            }).success(function(response) {
+            $http({
+                    method: 'GET',
+                    url: '/ayudaresfacil/api/message/getConversationByUserPublication',
+                    params: p_data
+                }).success(function(response) {
                     $scope.conversationId = response.data.conversationId;
                     $scope.getMessagesFromConversation();
-            }).error(function(error){
-                console.log(error);
-            });
-        }else{
+                })
+                .error(function(error) {
+
+                });
+        } else {
             $scope.conversationId = conversationOptions.conversationId;
             $scope.getMessagesFromConversation();
         }
@@ -227,7 +244,10 @@ angular.module('AyudarEsFacilApp.mail', [
             } else {
                 $scope.noMessages = false;
                 $scope.messages = response.data;
+                $rootScope.viewedConversationId = $scope.conversationId;
+                $rootScope.$emit('conversation.viewed');
             }
+
             angular.forEach($scope.messages, function(value, key) {
                 var date = new Date(value.createDate.replace(/-/g, '/'));
                 if ($filter('date')(date, 'dd/MM/yyyy') == $filter('date')(today, 'dd/MM/yyyy')) {
@@ -236,9 +256,9 @@ angular.module('AyudarEsFacilApp.mail', [
                     $scope.messages[key].createDate = $filter('date')(date, 'dd/MM/yyyy HH:mm:ss');
                 }
             });
-            setTimeout(function(){
-                screen.moveToButtom("#container-messages");                
-            },200);
+            setTimeout(function() {
+                screen.moveToButtom("#container-messages");
+            }, 200);
         });
     };
 
@@ -261,16 +281,14 @@ angular.module('AyudarEsFacilApp.mail', [
             "publication": conversationOptions.publicationId,
             "conversationId": $scope.conversationId
         };
-        
+
         var messages = new Messages(message);
         messages.$save(message,
-            function(responseData){
+            function(responseData) {
                 $scope.getConversation();
                 $('#inputText').val("");
-            }, 
-            function(error){
-                console.log("fail");
-            });
+            },
+            function(error) {});
 
     };
     $scope.getPublication();

@@ -103,7 +103,7 @@ class CI_Message {
 		$message->publication = (isset($row->publication_id)) ? $row->publication_id : '';
 		$message->conversationId = (isset($row->conversation_id)) ? $row->conversation_id : '';
 		$message->FAQ = (isset($row->FAQ)) ? $row->FAQ : '';
-		$message->commonState = (isset($row->common_state_id)) ? CI_CommonState::getById ($row->common_state_id):'';
+		$message->commonState = (isset($row->common_state_id)) ? $row->common_state_id : '';
 		$message->subject = (isset($row->subject)) ? $row->subject : '';		
 		$message->text = (isset($row->text)) ? $row->text : '';
 		$message->createDate = (isset($row->create_date)) ? $row->create_date : '';
@@ -222,7 +222,19 @@ class CI_Message {
                 $return[] = self::getInstance($result);
             }
         }
-        return $return;
+        return $return; 
     }
+
+	public function setMessagesRead($conversationId){
+		$CI =& get_instance();
+		$CI->load->model('message_model');
+		return $CI->message_model->setMessagesRead($conversationId);
+	}
+
+	public function getQuantityUnreadMessages($userId){
+		$CI =& get_instance();
+		$CI->load->model('message_model');
+		return $CI->message_model->getQuantityUnreadMessages($userId);
+	}
 
 }

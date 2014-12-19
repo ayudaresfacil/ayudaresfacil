@@ -14,9 +14,6 @@
         <ol>
             <li class="item-masonry" ng-repeat="offer in offers">
                 <div class="the-box no-border full store-item text-center mansory-inner">
-                    
-                    <pre>{{offer.image}}</pre>
-                    
                     <img data-ng-src="{{offer.image[0].path}}" class="item-image" alt="Image" ui-sref="web.offerDetail({id: offer.id})">
 
                     <div class="the-box bg-default no-margin no-border item-des">
@@ -31,7 +28,7 @@
 
                         <p>{{message}}</p>
 
-                        <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processState.id == 'V' &&  offer.isOwner == '0'" class="btn btn-danger btn-block">
+                        <a href="#/checkout/offer/{{offer.id}}" ng-if="offer.processState.id == 'V' && offer.isOwner == '0'" class="btn btn-danger btn-block">
                             <span class="glyphicon glyphicon-ok"></span>Lo necesito
                         </a>
 
