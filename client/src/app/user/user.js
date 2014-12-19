@@ -371,7 +371,10 @@ angular.module('AyudarEsFacilApp.user', [
     $scope.saveUser = function() {
         var user = new Users($scope.user);
         $scope.btnText = ' Guardando....';
-        
+
+        var birthdayDate = new Date(user.birthdayDate);
+            user.birthdayDate = birthdayDate.getTime() / 1000;
+            
         user.$save(user,
             function(responseData) {
                 $scope.status = 'SUCCESS';

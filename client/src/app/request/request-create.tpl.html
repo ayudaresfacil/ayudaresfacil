@@ -82,12 +82,9 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="row">
-                            <label>Imagenes</label>
-                            <input type="text" class="form-control input-md" name="path" ng-model="request.image" ng-required="true">
-                        </div>
+                        <label>Imagenes</label>
+                        <input type="file" name="file[]" id="inputFile" multiple/>
                     </div>
-                    <!--<input type="file" ng-model="request.fname" ng-file-select="onFileSelect($files)" >-->
                 </div>
             </div>
 

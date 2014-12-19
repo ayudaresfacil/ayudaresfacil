@@ -28,8 +28,7 @@ class Address_model extends CI_Model
 							'apartment' => $options->apartment,
 							'city_id' => $options->cityId,
 							'province_id' => $options->provinceId,
-							'department_id' => $options->departmentId,
-							'principal' => $options->principal
+							'department_id' => $options->departmentId
 						);
 		$this->db->insert('user_address', $data);
 		return $this->db->insert_id();
@@ -44,8 +43,7 @@ class Address_model extends CI_Model
 							'apartment' => $options->apartment,
 							'city_id' => $options->cityId,
 							'province_id' => $options->provinceId,
-							'department_id' => $options->departmentId,
-							'principal' => $options->principal
+							'department_id' => $options->departmentId
 						); 
 		$this->db->where('address_id', $post->id);
 		return $this->db->update('user_address', $data);

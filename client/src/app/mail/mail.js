@@ -195,30 +195,28 @@ angular.module('AyudarEsFacilApp.mail', [
             $scope.publication = response.data[0];
         });
     };
-    $scope.getConversation = function() {
+
+    $scope.getConversation=function(){
         var p_data = {};
-        if (conversationOptions.conversationId === undefined) {
+        if (conversationOptions.conversationId===undefined){
             p_data["userId"] = Authentication.user.id;
             p_data["publicationId"] = conversationOptions.publicationId;
 
-            $http({
-                    method: 'GET',
-                    url: '/ayudaresfacil/api/message/getConversationByUserPublication',
-                    params: p_data
-                })
-                .success(function(response) {
+            $http({method:'GET',
+                   url:'/ayudaresfacil/api/message/getConversationByUserPublication',
+                   params: p_data
+            }).success(function(response) {
                     $scope.conversationId = response.data.conversationId;
                     $scope.getMessagesFromConversation();
-                })
-                .error(function(error) {
-                    alert(JSON.stringify(error));
-                });
-        } else {
+            }).error(function(error){
+                console.log(error);
+            });
+        }else{
             $scope.conversationId = conversationOptions.conversationId;
             $scope.getMessagesFromConversation();
         }
-
     };
+
     $scope.getMessagesFromConversation = function() {
         var messages = Messages.get({
             conversationId: $scope.conversationId
@@ -263,15 +261,17 @@ angular.module('AyudarEsFacilApp.mail', [
             "publication": conversationOptions.publicationId,
             "conversationId": $scope.conversationId
         };
+        
         var messages = new Messages(message);
         messages.$save(message,
-            function(responseData) {
+            function(responseData){
                 $scope.getConversation();
                 $('#inputText').val("");
-            },
-            function(error) {
-                alert("fail");
+            }, 
+            function(error){
+                console.log("fail");
             });
+
     };
     $scope.getPublication();
     $scope.getConversation();

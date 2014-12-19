@@ -388,4 +388,13 @@ class CI_Request extends CI_Publication {
         return $return;
     }
 
+    public static function saveImage($publicationId, $image){
+		$CI =& get_instance();
+		$CI->load->model('request_model');
+		if(isset($publicationId) && $publicationId > 0){
+			$CI->request_model->saveImage($publicationId, $image);
+		}
+		return true;
+	}
+
 }

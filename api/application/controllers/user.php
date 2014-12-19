@@ -37,7 +37,7 @@ class User extends REST_Controller{
 		$arrOptions['email'] = $this->post('email');
 		$arrOptions['name'] = $this->post('name');
 		$arrOptions['lastName'] = $this->post('lastName');
-		$arrOptions['birthdayDate'] = $this->post('birthdayDate');
+		$arrOptions['birthdayDate'] = mdate("%Y/%m/%d %H:%i:%s", $this->post('birthdayDate'));
 		$arrOptions['description'] = $this->post('description');
 		$arrOptions['phones'] = $this->post('phones');
 		$arrOptions['addresses'] = $this->post('addresses');

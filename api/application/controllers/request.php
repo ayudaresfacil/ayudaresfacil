@@ -64,8 +64,8 @@ class Request extends REST_Controller{
 		$arrOptions['type'] = '2';
 		$arrOptions['title'] = $this->post('title');
 		$arrOptions['description'] = $this->post('description');
+		$arrOptions['creationDate'] = "";
 		$arrOptions['expirationDate'] = mdate("%Y/%m/%d %H:%i:%s", $this->post('expirationDate'));
-		$arrOptions['creationDate'] = '';
 		$arrOptions['category'] = $this->post('categoryId');
 		$arrOptions['subcategory'] = $this->post('subcategoryId');
 		$arrOptions['views'] = $this->post('views');
@@ -415,4 +415,44 @@ class Request extends REST_Controller{
         $this->response($return, $status);
 
 	}
+
+	public function image_post(){
+        $uploadFail = false;
+        $status = 500;
+        $return["data"] = "";
+        $return["result"] = "NOOK";
+
+        $publicationId = $this->post('publicationId');
+
+        foreach ($_FILES as $key => $file) {
+
+        	$uploadDir = DIR_UPLOADS . 'publication-images/'. $publicationId . '/';
+
+        	if (!file_exists($uploadDir)) {
+			    mkdir($uploadDir, 0777, true);
+			}
+
+        	$uploadFile = $uploadDir . basename($file['name']);
+
+			if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
+
+			    $imageUrl = '/ayudaresfacil/api/uploads/publication-images/' . $publicationId . '/'.  basename($file['name']);
+			    
+			    CI_Request::saveImage($publicationId, $imageUrl);
+
+
+			} else {
+				$uploadFail = true;	
+			}
+        }
+	
+		if(!$uploadFail){
+        	$status = 200;
+            $return["result"] = "OK";
+            $return["data"] = "";
+		}
+
+        $this->response($return, $status);
+
+    }
 }

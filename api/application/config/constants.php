@@ -43,13 +43,10 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 */
 define('TOKEN_TTL', 1000);
 define('SECRET', 'ayudaresfacil-unlam');
+define('DIR_UPLOADS', FCPATH . 'uploads/');
 
 if(ENVIRONMENT=='production'){
 	define('FRONT_URL', 'http://ayudaresfacil.webege.com/ayudaresfacil/client/build/#/');
 }else{
 	define('FRONT_URL', 'http://localhost/ayudaresfacil/client/build/#/');
 }
-
-/* End of file constants.php */
-/* Location: ./application/config/constants.php */
-
