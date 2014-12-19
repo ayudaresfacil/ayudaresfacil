@@ -13,7 +13,8 @@ angular.module( 'AyudarEsFacilApp', [
     'directives.session',
     'directives.notifications',
     'ngResource',
-    'services.screen'
+    'services.screen',
+    'services.facebook'
 ])
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
