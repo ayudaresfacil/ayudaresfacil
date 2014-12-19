@@ -720,11 +720,11 @@ angular.module('AyudarEsFacilApp.request', [
     $scope.requestFavoritesUser();
 })
 
-.controller('RequestHelps', function RequestHelps($scope, $http, Authentication, Request, $stateParams) {
+.controller('RequestHelps', function RequestHelps($scope, $http, Authentication, Request, $stateParams, facebook) {
     $scope.message = " ";
     $scope.user = Authentication.user;
     $scope.activating = false;
-
+    facebook.init();
     if (!$scope.user) {
         $location.path('/signin');
         return;

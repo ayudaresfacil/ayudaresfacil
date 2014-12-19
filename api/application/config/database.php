@@ -47,11 +47,17 @@
 
 $active_group = 'default';
 $active_record = TRUE;
+	$db['default']['hostname'] = 'localhost';
+if(ENVIRONMENT=='production'){
+	$db['default']['username'] = 'a5909741_root';
+	$db['default']['password'] = 'proyecto13!';
+	$db['default']['database'] = 'a5909741_aef';
+}else{
+	$db['default']['username'] = 'root';
+	$db['default']['password'] = '';
+	$db['default']['database'] = 'ayudaresfacil';
+}
 
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
-$db['default']['database'] = 'ayudaresfacil';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
