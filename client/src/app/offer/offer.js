@@ -355,12 +355,16 @@ angular.module('AyudarEsFacilApp.offer', [
             offer.expirationDate = expiredDate.getTime() / 1000;
 
             $scope.btnText = ' Guardando....';
+
             offer.$save(offer,
                 function(response) {
-                    $scope.status = 'SUCCESS';
-                    $scope.btnText = 'Publicar';
-                    $scope.offer = null;
-                    $state.go('panel.offerListUser');
+                    var pSave = $scope.saveImages(response.publicationId);
+                    pSave.then(function(response){
+                        $scope.status = 'SUCCESS';
+                        $scope.btnText = 'Publicar';
+                        $scope.offer = null;
+                        $state.go('panel.offerListUser');
+                    });
                 },
                 function(error) {
                     $scope.status = 'ERROR';
@@ -504,27 +508,21 @@ angular.module('AyudarEsFacilApp.offer', [
         });
     };
 
-    // $scope.onFileSelect = function($files) {
-    //     var file = $files[0];
-    //     $scope.offer.path = $scope.file;
+    $scope.saveImages = function(publicationId) {
+        var files = document.getElementById('inputFile').files,
+            fd = new FormData();
 
-    //     if (file.type.indexOf('image') == -1) {
-    //         $scope.error = 'image extension not allowed, please choose a JPEG or PNG file.';
-    //     }
-    //     if (file.size > 2097152) {
-    //         $scope.error = 'File size cannot exceed 2 MB';
-    //     }
-    //     $scope.upload = $upload.upload({
-    //         url: upload.php,
-    //         data: {
-    //             fname: filename
-    //         },
-    //         file: file
-    //     }).success(function(data, status, headers, config) {
-    //         // file is uploaded successfully
-    //         console.log(data);
-    //     });
-    // };
+        angular.forEach(files, function(file, key) {
+            fd.append("file_" + key, file);
+        });
+
+        fd.append("publicationId", publicationId);
+
+        return $http.post('/ayudaresfacil/api/offer/image', fd, {
+            headers: {'Content-Type': undefined },
+            transformRequest: angular.identity
+        });
+    };
 
     $scope.offersUser();
     $scope.getCategories();
@@ -621,7 +619,7 @@ angular.module('AyudarEsFacilApp.offer', [
                 userId: Authentication.user.id
             }
         }).success(function(response) {
-            //alert(JSON.stringify(response.data));
+            
             $scope.offers = response.data;
 
             /*angular.forEach($scope.offers,function(offer,idx){

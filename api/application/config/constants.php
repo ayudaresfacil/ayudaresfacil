@@ -45,7 +45,7 @@ define('TOKEN_TTL', 1000);
 define('SECRET', 'ayudaresfacil-unlam');
 
 define('FRONT_URL', 'http://localhost/ayudaresfacil/client/build/#/');
-
+define('DIR_UPLOADS', FCPATH . 'uploads/');
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
 

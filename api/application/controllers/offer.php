@@ -64,7 +64,7 @@ class Offer extends REST_Controller {
 		$arrOptions['type'] = '1';
 		$arrOptions['title'] = $this->post('title');
 		$arrOptions['description'] = $this->post('description');
-		$arrOptions['creationDate'] = mdate("%Y/%m/%d %H:%i:%s", $this->post('creationDate'));
+		$arrOptions['creationDate'] = "";
 		$arrOptions['expirationDate'] = mdate("%Y/%m/%d %H:%i:%s", $this->post('expirationDate'));
 		$arrOptions['category'] = $this->post('categoryId');
 		$arrOptions['subcategory'] = $this->post('subcategoryId');
@@ -72,7 +72,6 @@ class Offer extends REST_Controller {
 		$arrOptions['processState'] = $this->post('processStateId');
 		$arrOptions['object'] = $this->post('objectId');
 		$arrOptions['quantity'] = $this->post('quantity');
-		$arrOptions['image'] = $this->post('image');
 		$arrOptions['processStateIdOffer'] = $this->post('processStateIdOffer');
 		$arrOptions['offerTypeId'] = '3';
 		$arrOptions['quantityUsersToPaused'] = '1';
@@ -82,7 +81,6 @@ class Offer extends REST_Controller {
 		if ($offer <> NULL) {
 			$arrInfo['user'] = $arrOptions['user'];
 			$arrInfo['type'] = $arrOptions['type'];
-			$arrInfo['image'] = $arrOptions['image'];
 			$arrInfo['offer'] = $offer;
 			
 			$id = CI_Offer::save($arrInfo);
@@ -355,7 +353,7 @@ class Offer extends REST_Controller {
         $return["result"] = "NOOK";
         $userId = $this->get('userId');
         $offers = CI_Offer::getNeedsByUser($userId);
-        //ma($offers);
+       	
         if($offers){
             $status = 200;
             $return["result"] = "OK";
@@ -366,6 +364,44 @@ class Offer extends REST_Controller {
                 $return["data"][$key] = $myOffer;
             } 
         }
+
+        $this->response($return, $status);
+
+    }
+
+    public function image_post(){
+        $uploadFail = false;
+        $status = 500;
+        $return["data"] = "";
+        $return["result"] = "NOOK";
+
+        $publicationId = $this->post('publicationId');
+
+        foreach ($_FILES as $key => $file) {
+
+        	$uploadDir = DIR_UPLOADS . 'publication-images/'. $publicationId . '/';
+
+        	if (!file_exists($uploadDir)) {
+			    mkdir($uploadDir, 0777, true);
+			}
+
+        	$uploadFile = $uploadDir . basename($file['name']);
+
+			if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
+
+			    $imageUrl = '/ayudaresfacil/api/uploads/publication-images/' . $publicationId . '/'.  basename($file['name']);
+			    CI_Offer::saveImage($publicationId, $imageUrl);
+
+			} else {
+				$uploadFail = true;	
+			}
+        }
+	
+		if(!$uploadFail){
+        	$status = 200;
+            $return["result"] = "OK";
+            $return["data"] = "";
+		}
 
         $this->response($return, $status);
 

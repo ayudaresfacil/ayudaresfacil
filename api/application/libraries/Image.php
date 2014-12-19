@@ -78,6 +78,7 @@ class CI_Image {
 			}
 		}
 		return $return;
+
 	}
 }
 

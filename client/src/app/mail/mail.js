@@ -189,12 +189,12 @@ angular.module( 'AyudarEsFacilApp.mail', [
                 $http({method:'GET',
                        url:'/ayudaresfacil/api/message/getConversationByUserPublication',
                        params: p_data
-                   })
-                .success(function(response) {
+                }).success(function(response) {
                         $scope.conversationId = response.data.conversationId;
                         $scope.getMessagesFromConversation();
-                    })
-                .error(function(error){alert(JSON.stringify(error));});
+                }).error(function(error){
+                    console.log(error);
+                });
             }else{
                     $scope.conversationId = conversationOptions.conversationId;
                     $scope.getMessagesFromConversation();
@@ -245,7 +245,7 @@ angular.module( 'AyudarEsFacilApp.mail', [
                     $('#inputText').val("");
                 }, 
                 function(error){
-                    alert("fail");
+                    console.log("fail");
                 });
     };
     $scope.getPublication();
