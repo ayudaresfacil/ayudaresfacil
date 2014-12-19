@@ -28,6 +28,9 @@ class Message extends REST_Controller{
             $messages = CI_Message::getConversationFromAllPublications($userInConversations);
         }elseif ($conversationId) {
             $messages = CI_Message::getConversation($conversationId);
+            if($messages){
+            	$reads = CI_Message::setMessagesRead($conversationId);
+            }
         }
 
 		if($messages){
@@ -128,6 +131,21 @@ class Message extends REST_Controller{
         if(isset($conversationId["conversationId"])){
             $status = 200;
             $return["data"] = $conversationId;
+            $return["result"] = "OK";
+        }
+        $this->response($return, $status);
+    }
+
+    public function quantity_get(){
+        $status = 404;
+        $return["data"] = "";
+        $return["result"] = "NOOK";
+		$userId = $this->get("userId");
+        $quantity = CI_Message::getQuantityUnreadMessages($userId);
+
+        if(isset($quantity)) {
+            $status = 200;
+            $return["data"] = $quantity;
             $return["result"] = "OK";
         }
         $this->response($return, $status);

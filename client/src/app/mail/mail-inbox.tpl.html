@@ -23,7 +23,7 @@
                 Todavia no tenés mensajes... Escribe en alguna publicación o haz una nueva publicación, alguién puede necesitarte <strong>más de lo que te imaginas!</strong> :)
                 </div>
                 <div ng-if="conversations" class="list-group success square no-side-border" ng-repeat="conversation in conversations">
-                    <a ng-click="alert(JSON.stringify(conversation));openConversation({publicationId:conversation.publication.id,conversationId:conversation.conversationId})" class="list-group-item mail-list">
+                    <a ng-click="alert(JSON.stringify(conversation));openConversation({publicationId:conversation.publication.id,conversationId:conversation.conversationId})" class="list-group-item mail-list" ng-class="(conversation.commonState == 'L') ? 'list-group-item mail-list read' : ''">
                         <!--<span class="favorite fa fa-star"></span>-->
                         <img data-ng-src="{{conversation.userFrom.profileImage}}" class="avatar img-circle" alt="Avatar">
                         <span class="name">{{conversation.userFrom.name}}</span>

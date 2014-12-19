@@ -157,8 +157,9 @@ class Message_model extends CI_Model
                 }
             }
         }
-        return $conversationId;
+        return $conversationId; 
     }
+
     public function getConversation($conversationId){
         $this->db->select('*');
         $this->db->from('message');
@@ -169,4 +170,21 @@ class Message_model extends CI_Model
         return $query;
     }
 
+    public function setMessagesRead($conversationId){
+        $data = array   (
+            'common_state_id' => 'L'
+        );
+        $this->db->where('conversation_id', $conversationId); 
+        $this->db->update('message', $data);   
+    }
+    
+    public function getQuantityUnreadMessages($userId){
+        $sql   = " SELECT COUNT(*) AS quantity";
+        $sql  .= " FROM message m ";
+        $sql  .= " WHERE (user_id_from = $userId OR user_id_to = $userId) ";
+        $sql  .= " AND common_state_id = 'N'";
+        $sql  .= " GROUP BY conversation_id";
+        $query = $this->db->query($sql);
+        return $query->num_rows();
+    }
 }
