@@ -11,6 +11,7 @@ angular.module( 'AyudarEsFacilApp', [
     'AyudarEsFacilApp.checkout',
     'ui.router',
     'directives.session',
+    'directives.notifications',
     'ngResource',
     'services.screen'
 ])
