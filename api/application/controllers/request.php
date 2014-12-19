@@ -65,7 +65,7 @@ class Request extends REST_Controller{
 		$arrOptions['title'] = $this->post('title');
 		$arrOptions['description'] = $this->post('description');
 		$arrOptions['expirationDate'] = mdate("%Y/%m/%d %H:%i:%s", $this->post('expirationDate'));
-		$arrOptions['creationDate'] = mdate("%Y/%m/%d %H:%i:%s", $this->post('creationDate'));
+		$arrOptions['creationDate'] = '';
 		$arrOptions['category'] = $this->post('categoryId');
 		$arrOptions['subcategory'] = $this->post('subcategoryId');
 		$arrOptions['views'] = $this->post('views');
@@ -97,8 +97,8 @@ class Request extends REST_Controller{
 				$myRequest = CI_Request::getData($request);	
 				$return["data"] = $myRequest;
                 
-                if(isset($arrOptions['sponsors'])){
-                    foreach ($arrOptions['sponsors'] as $key => $sponsor) {
+                if(isset($arrOptions['sponsorsn'])){
+                    foreach ($arrOptions['sponsorsn'] as $key => $sponsor) {
                         $myMsj = "$sponsor[label] Han pedido que seas el padrino de http://localhost/ayudaresfacil/client/build/#/detalle-mi-pedido/$id Ingresa para saber mas :)";
                         sendTweet($myMsj);
                     } 
