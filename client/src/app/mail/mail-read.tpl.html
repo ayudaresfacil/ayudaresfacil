@@ -1,5 +1,5 @@
 <!-- BEGIN MAIL APPS READ MAIL -->
-<div class="mail-apps-wrap">
+<div class="mail-apps-wrap" id="modal-messages-container">
     <div class="the-box bg-success no-border no-margin heading">
         <div class="row">
             <div class="col-sm-8">
@@ -18,22 +18,24 @@
                     Todavia no tenés mensajes... Escribe en alguna publicación o haz una nueva publicación, alguién puede necesitarte <strong>más de lo que te imaginas!</strong> :)
                     </div>
                     <h4 class="medium-heading more-margin-bottom">Conversación de "{{publication.title}}"</h4>
-                    <div class="chat-wrap scroll-chat-widget">
-                        <ul class="media-list media-xs media-dotted media-chat" ng-repeat="message in messages">
-                            <li class="media">
-                                <a ng-class="(message.userFrom.id==user.id) ? 'pull-left' : 'pull-right'">
-                                    <img class="media-object img-circle" data-ng-src="{{message.userFrom.profileImage}}" alt="Avatar">
-                                </a>
-                                <div class="media-body" ng-class="(message.userFrom.id==user.id) ? 'me' : ''">
-                                    <p class="name" >
-                                        <small>{{message.userFrom.name}}</small>
-                                    </p>
-                                    <p class="small">{{message.text}}</p>
-                                    <p class="small">
-                                        <small>{{message.createDate}}</small>
-                                    </p>
-                                </div>
-                            </li>
+                    <div class="chat-wrap scroll-chat-widget" id="container-messages">
+                        <ul class="media-list media-xs media-dotted media-chat" >
+                            <div ng-repeat="message in messages" >
+                                <li class="media">
+                                    <a ng-class="(message.userFrom.id==user.id) ? 'pull-left' : 'pull-right'">
+                                        <img class="media-object img-circle" data-ng-src="{{message.userFrom.profileImage}}" alt="Avatar">
+                                    </a>
+                                    <div class="media-body" ng-class="(message.userFrom.id==user.id) ? 'me' : ''">
+                                        <p class="name" >
+                                            <small>{{message.userFrom.name}}</small>
+                                        </p>
+                                        <p class="small">{{message.text}}</p>
+                                        <p class="small">
+                                            <small>{{message.createDate}}</small>
+                                        </p>
+                                    </div>
+                                </li>
+                            </div>
                         </ul>
                     </div>
                     <!-- /.chat-wrap -->

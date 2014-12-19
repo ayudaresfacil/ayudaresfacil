@@ -238,7 +238,7 @@ angular.module('AyudarEsFacilApp.user', [
 
 })
 
-.controller('UserCtrl', function UserCtrl($scope, $http, $location, Users, Authentication) {
+.controller('UserCtrl', function UserCtrl($scope, $http, $location, Users, Authentication, screen) {
     //Set Change User Password - Begin
     $scope.btnText = 'Guardar Mis Datos';
 
@@ -371,10 +371,12 @@ angular.module('AyudarEsFacilApp.user', [
     $scope.saveUser = function() {
         var user = new Users($scope.user);
         $scope.btnText = ' Guardando....';
+        
         user.$save(user,
             function(responseData) {
                 $scope.status = 'SUCCESS';
                 $scope.btnText = 'Guardar Mis Datos';
+                screen.moveToTop();
             },
             function(error) {
                 $scope.status = 'ERROR';

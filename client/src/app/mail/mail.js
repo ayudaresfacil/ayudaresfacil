@@ -172,7 +172,7 @@ angular.module( 'AyudarEsFacilApp.mail', [
 
 })
 
-.controller( 'ConversationCtrl', function ConversationCtrl( $scope, $http, $stateParams, $filter, ConversationService, Conversations, Authentication, Messages, conversationOptions, Publications ) {
+.controller( 'ConversationCtrl', function ConversationCtrl( $scope, $http, $stateParams, $filter, ConversationService, Conversations, Authentication, Messages, conversationOptions, Publications, screen ) {
     var today = new Date();
     $scope.user = Authentication.user;
     $scope.getPublication=function(){
@@ -218,6 +218,9 @@ angular.module( 'AyudarEsFacilApp.mail', [
                     $scope.messages[key].createDate = $filter('date')(date, 'dd/MM/yyyy HH:mm:ss');
                 }
             });
+            setTimeout(function(){
+                screen.moveToButtom("#container-messages");                
+            },200);
         });
     };
 
