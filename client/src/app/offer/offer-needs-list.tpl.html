@@ -9,6 +9,9 @@
 </div>
 
 <div class="container-masonry">
+<div class="alert alert-warning alert-bold-border fade in alert-dismissable" ng-show="activating">
+        <strong>Hey!</strong> No has pedido nada todavía.Podés ver si algún ofrecimiento, en el listado de publicaciones puede ser útil!
+    </div>
     <ol>
         <li class="item-masonry" ng-repeat="offer in offers">
             <div class="the-box no-border full store-item text-center mansory-inner">
@@ -24,7 +27,7 @@
                         <p><span class="badge badge-success">Ayuda concretada!</span></p>
                     </div>
                     <div ng-if="offer.processState.id=='P'" >
-                        <p><span class="badge badge-info">Esperando que la ayuda se concrete.</span></p>
+                        <p><span class="badge badge-info">Esperando que la ayuda se concrete</span></p>
                     </div>
                     <div ng-if="offer.processState.id=='V'" >
                         <p><span class="badge badge-danger">Ayuda no concretada</span></p>
@@ -35,24 +38,13 @@
 
                     <div class="row extra-data">
                         <div ng-if="offer.processState.id=='F'" >
-                            <p class="text-muted text-left">Que bueno que hayas conseguido lo que necesitabas!. Esperamos que puedas seguir colaborando a diferentes causas.</p>
+                            <p class="text-muted text-left">Que bueno que hayas conseguido lo que necesitabas!. Esperamos que puedas seguir colaborando a diferentes causas. Hasta la próxima.</p>
                         </div>
                         <div ng-if="offer.processState.id=='P'" >
                             <p class="text-muted text-left">Podrás ver que sucedió con tu pedido en este lugar. Recuerda enviar mensajes a la persona que tiene lo que necesitas!.</p>
                         </div>
                         <div ng-if="offer.processState.id=='V'" >
-                            <p class="text-muted text-left">Lamentablemente, el usuario ha decidido seguir con el ofrecimiento... Igualmente no desesperes! Busca en los otros ofrecimientos, quie te dice y aparece algo mejor.</p>
-                        </div>
-                    </div>
-                    <div class="row extra-data">
-                        <div class="col-md-6 col-xs-6 text-left">
-                            <a title="Favorito">
-                                <i class="glyphicon glyphicon-heart text-muted" ng-class="{'text-warning': offer.isFavorite == '1'}"></i>
-                            </a>
-                            {{offer.favorites[0].quan}}
-                        </div>
-                        <div class="col-md-6 col-xs-6 text-right">
-                            <i class="glyphicon glyphicon-eye-open text-muted"></i> {{offer.views}}
+                            <p class="text-muted text-left">Lamentablemente, el usuario ha decidido seguir con el ofrecimiento... Igualmente no desesperes! Buscá en los otros ofrecimientos, quién te dice y aparece algo mucho mejor.</p>
                         </div>
                     </div>
                 </div>

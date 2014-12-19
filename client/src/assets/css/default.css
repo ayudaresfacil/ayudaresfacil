@@ -115,3 +115,7 @@ ul.sidebar-menu{
         display: inline-block;
     }
 }
+/**
+ * GENERAL
+ */
+a{cursor: pointer;}

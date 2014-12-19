@@ -77,7 +77,7 @@ $autoload['libraries'] = array(
 								'Donation',
 								'DonatedObject',
 								'Image',
-								'Sponsor',
+								'Sponsor'
 								);
 /*
 | -------------------------------------------------------------------

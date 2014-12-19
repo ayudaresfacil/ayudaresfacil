@@ -610,7 +610,7 @@ angular.module('AyudarEsFacilApp.offer', [
 })
 .controller('OfferNeedsCtrl', function OfferRequestCtrl($scope, $http, Offers, Authentication, $stateParams) {
         $scope.offers = null;
-    
+        $scope.activating = false;
     $scope.offerNeedsUser = function() {    
         $http({
             method: 'GET',
@@ -619,39 +619,11 @@ angular.module('AyudarEsFacilApp.offer', [
                 userId: Authentication.user.id
             }
         }).success(function(response) {
-            
             $scope.offers = response.data;
-
-            /*angular.forEach($scope.offers,function(offer,idx){
-                $scope.donations = null;
-                $http({
-                method: 'GET',
-                url: '/ayudaresfacil/api/offer',
-                params: {
-                    userId: Authentication.user.id,publicationId:request.id
-                    }
-                }).success(function(response) {
-                    $scope.requests[idx].donations = response.data;
-                    var amountDonated = 0;
-                    angular.forEach($scope.requests[idx].donations,function(donation,idx){
-                        if(donation.processState.id=='F'){
-                            angular.forEach(donation.donatedObjects,function(donatedObject,idx){
-                                amountDonated += parseFloat(donatedObject.quantity);
-                            });
-                        }
-                    });
-                $scope.requests[idx].amountDonated = amountDonated;
-
-                }).error(function(error) {
-                    $scope.error = error.message;
-                    $scope.status = 'ERROR';
-                });
-            });*/
-
         }).error(function(error) {
             $scope.error = error.message;
             $scope.status = 'ERROR';
-            $scope.message = "No has ayudado a ninguna causa, aún. Puedes hacer de manera muy rápida y segura!. Alguien puede necesitarte mas de lo que imaginas!";
+            $scope.activating = true;
         });
     };
 

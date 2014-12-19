@@ -1,4 +1,6 @@
 <?php
+require APPPATH.'/libraries/OAuth.php';
+require APPPATH.'/libraries/TwitterOAuth.php';
 
 function ma($array, $die = 0){
 	//IMPRIME EN PANTALLA UN ARRAY FORMATEADO
@@ -39,4 +41,18 @@ function convertDecimalToDataBaseFormat($decimal){
 
 function convertDecimalToUserFormat($decimal){
 	return str_replace('.', ',', $decimal);	
+}
+
+function sendTweet($msg){
+    $consumerKey    = 'QgE2NWrvsrTrGjg0bVCo6VIwU';
+	$consumerSecret = 'MpNr7EdGlJQClAMuCsmrGqSblEzoCXDbagYlwVvJs6eVFggrp0';
+	$oAuthToken     = '2912192883-nI7A2LMfh8z2M7IwvwSAfpZAHeG5eLOsdu2ZDNn';
+	$oAuthSecret    = 'sDFejAvhmRYYJGbR1JMwLCfZmRlfy7wc1SC9GuzS4hZZ0';
+
+	if(isset($msg)){
+		$tweet = new TwitterOAuth($consumerKey, $consumerSecret, $oAuthToken, $oAuthSecret);
+		$tweet->post('statuses/update',array('status' => $msg));
+	}
+
+	return true;
 }
