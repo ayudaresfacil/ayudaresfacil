@@ -58,8 +58,9 @@ angular.module('AyudarEsFacilApp.user', [
         .state('panel.user.payments', {
             url: '/user/payments',
             controller: 'PaymentsCtrl',
+            templateUrl: 'user/user-payments.tpl.html',
             data: {
-                pageTitle: 'Métodos de pago'
+                pageTitle: 'Método de cobros'
             }
         });
 
@@ -403,5 +404,8 @@ angular.module('AyudarEsFacilApp.user', [
     this.getUser();
 
 })
-
+.controller('PaymentsCtrl', function UserCtrl($scope, $http, $location, Users, Authentication, screen) {
+    $scope.appId = 3622387872526969;
+    $scope.redirectUrl = "https://github.com/ayudaresfacil/ayudaresfacil";
+})
 ;
