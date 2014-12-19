@@ -54,6 +54,13 @@ angular.module('AyudarEsFacilApp.user', [
             data: {
                 action: 'confirm'
             }
+        })
+        .state('panel.user.payments', {
+            url: '/user/payments',
+            controller: 'PaymentsCtrl',
+            data: {
+                pageTitle: 'Métodos de pago'
+            }
         });
 
     //Set the httpProvider "not authorized" interceptor
