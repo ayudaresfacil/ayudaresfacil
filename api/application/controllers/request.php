@@ -96,6 +96,13 @@ class Request extends REST_Controller{
 				$return["publicationId"] = $id;
 				$myRequest = CI_Request::getData($request);	
 				$return["data"] = $myRequest;
+                
+                if(isset($arrOptions['sponsors'])){
+                    foreach ($arrOptions['sponsors'] as $key => $sponsor) {
+                        $myMsj = "$sponsor[label] Han pedido que seas el padrino de http://localhost/ayudaresfacil/client/build/#/detalle-mi-pedido/$id Ingresa para saber mas :)";
+                        sendTweet($myMsj);
+                    } 
+                }
 			}
 		}
 		$this->response($return, $status);

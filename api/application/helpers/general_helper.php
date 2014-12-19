@@ -1,4 +1,6 @@
 <?php
+require APPPATH.'/libraries/OAuth.php';
+require APPPATH.'/libraries/TwitterOAuth.php';
 
 function ma($array, $die = 0){
 	//IMPRIME EN PANTALLA UN ARRAY FORMATEADO
@@ -42,9 +44,6 @@ function convertDecimalToUserFormat($decimal){
 }
 
 function sendTweet($msg){
-require APPPATH.'/libraries/OAuth.php';
-require APPPATH.'/libraries/TwitterOAuth.php';
-
     $consumerKey    = 'QgE2NWrvsrTrGjg0bVCo6VIwU';
 	$consumerSecret = 'MpNr7EdGlJQClAMuCsmrGqSblEzoCXDbagYlwVvJs6eVFggrp0';
 	$oAuthToken     = '2912192883-nI7A2LMfh8z2M7IwvwSAfpZAHeG5eLOsdu2ZDNn';
