@@ -291,4 +291,13 @@ class CI_Offer extends CI_Publication {
         return $return;
     }
 
+    public static function saveImage($publicationId, $image){
+		$CI =& get_instance();
+		$CI->load->model('offer_model');
+		if(isset($publicationId) && $publicationId > 0){
+			$CI->offer_model->saveImage($publicationId, $image);
+		}
+		return true;
+	}
+
 }

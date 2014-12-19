@@ -183,7 +183,7 @@ angular.module('AyudarEsFacilApp.mail', [
 
     $scope.markAsViewed = function(viewedConversationId) {
         if ($scope.conversations) {
-            angular.forEach($scope.conversations, function(value, key) {                
+            angular.forEach($scope.conversations, function(value, key) {
                 if (value.conversationId == viewedConversationId) {
                     $scope.conversations[key].commonState = 'L';
                 }
@@ -199,7 +199,8 @@ angular.module('AyudarEsFacilApp.mail', [
 
 })
 
-.controller('ConversationCtrl', function ConversationCtrl($rootScope, $scope, $http, $stateParams, $filter, ConversationService, Conversations, Authentication, Messages, conversationOptions, Publications) {
+.controller('ConversationCtrl', function ConversationCtrl($rootScope, $scope, $http, $stateParams, $filter, ConversationService, Conversations, Authentication, Messages, conversationOptions, Publications, screen) {
+
     var today = new Date();
     $scope.user = Authentication.user;
     $scope.getPublication = function() {
@@ -209,6 +210,7 @@ angular.module('AyudarEsFacilApp.mail', [
             $scope.publication = response.data[0];
         });
     };
+
     $scope.getConversation = function() {
         var p_data = {};
         if (conversationOptions.conversationId === undefined) {
@@ -219,8 +221,7 @@ angular.module('AyudarEsFacilApp.mail', [
                     method: 'GET',
                     url: '/ayudaresfacil/api/message/getConversationByUserPublication',
                     params: p_data
-                })
-                .success(function(response) {
+                }).success(function(response) {
                     $scope.conversationId = response.data.conversationId;
                     $scope.getMessagesFromConversation();
                 })
@@ -231,8 +232,8 @@ angular.module('AyudarEsFacilApp.mail', [
             $scope.conversationId = conversationOptions.conversationId;
             $scope.getMessagesFromConversation();
         }
-
     };
+
     $scope.getMessagesFromConversation = function() {
         var messages = Messages.get({
             conversationId: $scope.conversationId
@@ -255,6 +256,9 @@ angular.module('AyudarEsFacilApp.mail', [
                     $scope.messages[key].createDate = $filter('date')(date, 'dd/MM/yyyy HH:mm:ss');
                 }
             });
+            setTimeout(function() {
+                screen.moveToButtom("#container-messages");
+            }, 200);
         });
     };
 
@@ -277,15 +281,15 @@ angular.module('AyudarEsFacilApp.mail', [
             "publication": conversationOptions.publicationId,
             "conversationId": $scope.conversationId
         };
+
         var messages = new Messages(message);
         messages.$save(message,
             function(responseData) {
                 $scope.getConversation();
                 $('#inputText').val("");
             },
-            function(error) {
+            function(error) {});
 
-            });
     };
     $scope.getPublication();
     $scope.getConversation();

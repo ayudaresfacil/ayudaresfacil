@@ -7,7 +7,7 @@ class Offer_model extends CI_Model
 		$this->db->from('publication');
 		$this->db->join('publication_offer', "publication.publication_id = publication_offer.publication_id");
 		$this->db->join('publication_object', "publication.publication_id = publication_object.publication_id");
-		// $this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');
+		$this->db->join('publication_image', "publication.publication_id = publication_image.publication_id", 'left');
 		$this->db->group_by('publication.publication_id');
 		$this->db->where('publication.publication_id', $id);	
 		$query = $this->db->get();
@@ -50,7 +50,6 @@ class Offer_model extends CI_Model
 		$object = $offer->object;
 		$processStateOffer = $offer->processStateOffer;
 		$type = $offer->type;
-		// $images = $arrInfo["image"];
 
 		$this->db->trans_start();
 		$data = array 	(
@@ -89,13 +88,7 @@ class Offer_model extends CI_Model
 							'quantity_users_to_paused' => 1,
 						);
 		$this->db->insert('publication_offer', $data);
-		// foreach ($images as $image){
-			$data = array 	(
-				'publication_id' => $id,
-				'path' => $arrInfo["image"],
-				);
-			$this->db->insert('publication_image', $data);	
-		// };			
+		
 		$this->db->trans_complete();
 
 		if ($this->db->trans_status() === FALSE){
@@ -112,7 +105,6 @@ class Offer_model extends CI_Model
 		$processState = $offer->processState;
 		$object = $offer->object;
 		$processStateOffer = $offer->processStateOffer;
-		$images = $arrInfo["image"];
 
 		$this->db->trans_start();
 		$data = array 	(
@@ -138,14 +130,7 @@ class Offer_model extends CI_Model
 		}
 		$this->db->where('publication_id', $offer->id);
 		$this->db->update('publication_object', $data);
-		foreach ($images as $image){
-			$data = array 	(
-				'publication_id' => $offer->id,
-				'path' => $image["path"],
-				);
-			$this->db->where('image_id', $image["id"]);	
-			$this->db->update('publication_image', $data);	
-		};					
+		
 		$this->db->trans_complete();
 
 		if ($this->db->trans_status() === FALSE){
@@ -221,7 +206,6 @@ class Offer_model extends CI_Model
 		$this->db->where('publication.process_state_id <>', 'F');
 		$this->db->where('publication.expiration_date > current_timestamp');
 		$query = $this->db->get();
-		//ma($this->db->queries);
 		return $query->result();
 	}
 
@@ -334,4 +318,11 @@ class Offer_model extends CI_Model
         return $query->result();
     }
 
+    public function saveImage($publicationId, $image){
+		$data = array(
+			'publication_id' => $publicationId,
+			'path' => $image,
+			);
+		$this->db->insert('publication_image', $data);
+    }
 }

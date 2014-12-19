@@ -101,7 +101,6 @@ class Request_model extends CI_Model
 		$data = array 	(
 			'user_id' => $arrInfo['user'],
 			'publication_type_id' => $arrInfo['type'],
-			'creation_date' => $request->creationDate,
 			'title' => $request->title,
 			'description' => $request->description,
 			'expiration_date' => $request->expirationDate,
@@ -126,11 +125,7 @@ class Request_model extends CI_Model
 			);			
 		}
 		$this->db->insert('publication_object', $data);	
-			$data = array 	(
-				'publication_id' => $id,
-				'path' => $arrInfo["image"],
-				);
-		$this->db->insert('publication_image', $data);	
+				
 		foreach ($sponsors as $sponsor){
 			$data = array 	(
 				'publication_id' => $id,
@@ -195,14 +190,7 @@ class Request_model extends CI_Model
 		}
 		$this->db->where('publication_id', $request->id);
 		$this->db->update('publication_object', $data);		
-		foreach ($images as $image){
-			$data = array 	(
-				'publication_id' => $request->id,
-				'path' => $image["path"],
-				);
-			$this->db->where('image_id', $image["id"]);	
-			$this->db->update('publication_image', $data);	
-		};				
+		
 		foreach ($sponsors as $sponsor){
 			if (empty($sponsor['userTw'])) {
 				$this->db->where('sponsor_id', $sponsor["id"]);
@@ -455,5 +443,13 @@ class Request_model extends CI_Model
         $this->db->where('publication.process_state_id <>', 'C');
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function saveImage($publicationId, $image){
+		$data = array(
+			'publication_id' => $publicationId,
+			'path' => $image,
+			);
+		$this->db->insert('publication_image', $data);
     }
 }

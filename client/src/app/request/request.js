@@ -411,10 +411,15 @@ angular.module('AyudarEsFacilApp.request', [
             $scope.btnText = ' Guardando....';
             request.$save(request,
                 function(response) {
-                    $scope.status = 'SUCCESS';
-                    $scope.btnText = 'Publicar';
-                    $scope.request = null;
-                    $state.go('panel.requestListUser');
+
+                    var pSave = $scope.saveImages(response.publicationId);
+                    pSave.then(function(response){
+                        $scope.status = 'SUCCESS';
+                        $scope.btnText = 'Publicar';
+                        $scope.request = null;
+                        $state.go('panel.requestListUser');
+                    });
+                    
                 },
                 function(error) {
                     $scope.status = 'ERROR';
@@ -489,25 +494,19 @@ angular.module('AyudarEsFacilApp.request', [
         });
     };
 
-    $scope.onFileSelect = function($files) {
-        var file = $files[0];
-        $scope.request.path = $scope.file;
+    $scope.saveImages = function(publicationId) {
+        var files = document.getElementById('inputFile').files,
+            fd = new FormData();
 
-        if (file.type.indexOf('image') == -1) {
-            $scope.error = 'image extension not allowed, please choose a JPEG or PNG file.';
-        }
-        if (file.size > 2097152) {
-            $scope.error = 'File size cannot exceed 2 MB';
-        }
-        $scope.upload = $upload.upload({
-            url: upload.php,
-            data: {
-                fname: filename
-            },
-            file: file
-        }).success(function(data, status, headers, config) {
-            // file is uploaded successfully
-            console.log(data);
+        angular.forEach(files, function(file, key) {
+            fd.append("file_" + key, file);
+        });
+
+        fd.append("publicationId", publicationId);
+
+        return $http.post('/ayudaresfacil/api/request/image', fd, {
+            headers: {'Content-Type': undefined },
+            transformRequest: angular.identity
         });
     };
 
@@ -721,11 +720,11 @@ angular.module('AyudarEsFacilApp.request', [
     $scope.requestFavoritesUser();
 })
 
-.controller('RequestHelps', function RequestHelps($scope, $http, Authentication, Request, $stateParams) {
+.controller('RequestHelps', function RequestHelps($scope, $http, Authentication, Request, $stateParams, facebook) {
     $scope.message = " ";
     $scope.user = Authentication.user;
     $scope.activating = false;
-
+    facebook.init();
     if (!$scope.user) {
         $location.path('/signin');
         return;

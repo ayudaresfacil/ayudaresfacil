@@ -60,8 +60,6 @@ class Donation extends REST_Controller{
 		$objs = array();
 		$donatedObjects = $arrOptions['donatedObjects'];
 
-		//ma($donatedObjects);
-
 		//$donatedObjectsList = CI_DonatedObject::setFromArray($objs);
 
 		if($arrOptions['id'] > 0){

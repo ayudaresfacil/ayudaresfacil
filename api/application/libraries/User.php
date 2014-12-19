@@ -73,7 +73,7 @@ class CI_User {
 							$myUserAddress->setProvinceId($address['provinceId']);
 							$myUserAddress->setDepartmentId($address['departmentId']);
 							$myUserAddress->setCityId($address['cityId']);
-							$myUserAddress->setPrincipal($address['principal']);
+							$myUserAddress->setPrincipal('S');
 							$this->addresses[$key] = $myUserAddress;
 						}
 				}

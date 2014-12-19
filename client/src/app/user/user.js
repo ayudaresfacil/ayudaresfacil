@@ -54,6 +54,13 @@ angular.module('AyudarEsFacilApp.user', [
             data: {
                 action: 'confirm'
             }
+        })
+        .state('panel.user.payments', {
+            url: '/user/payments',
+            controller: 'PaymentsCtrl',
+            data: {
+                pageTitle: 'Métodos de pago'
+            }
         });
 
     //Set the httpProvider "not authorized" interceptor
@@ -238,7 +245,7 @@ angular.module('AyudarEsFacilApp.user', [
 
 })
 
-.controller('UserCtrl', function UserCtrl($scope, $http, $location, Users, Authentication) {
+.controller('UserCtrl', function UserCtrl($scope, $http, $location, Users, Authentication, screen) {
     //Set Change User Password - Begin
     $scope.btnText = 'Guardar Mis Datos';
 
@@ -371,10 +378,15 @@ angular.module('AyudarEsFacilApp.user', [
     $scope.saveUser = function() {
         var user = new Users($scope.user);
         $scope.btnText = ' Guardando....';
+
+        var birthdayDate = new Date(user.birthdayDate);
+            user.birthdayDate = birthdayDate.getTime() / 1000;
+            
         user.$save(user,
             function(responseData) {
                 $scope.status = 'SUCCESS';
                 $scope.btnText = 'Guardar Mis Datos';
+                screen.moveToTop();
             },
             function(error) {
                 $scope.status = 'ERROR';

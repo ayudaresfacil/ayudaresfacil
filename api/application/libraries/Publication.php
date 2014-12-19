@@ -148,6 +148,7 @@ class CI_Publication {
 
 	protected function getData($options){
 		$publication = new stdClass();
+		
 		if(isset($options->id)){
 			$publication->id = $options->id;
 			$publication->image = CI_Image::getData($options->image);

@@ -103,7 +103,9 @@ li.item-masonry img:hover{
 }
 
 ul.sidebar-menu{
-    padding: 0;
+    margin: 0;
+    padding: 0 0 40px 0;
+    background: #313940;
 }
 
 @media (max-width: 1024px) {
@@ -113,3 +115,7 @@ ul.sidebar-menu{
         display: inline-block;
     }
 }
+/**
+ * GENERAL
+ */
+a{cursor: pointer;}
