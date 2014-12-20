@@ -373,6 +373,7 @@ CREATE TABLE `user` (
   `last_login` date DEFAULT NULL,
   `enabled` tinyint(1) DEFAULT '0',
   `deleted` tinyint(1) DEFAULT '0',
+  `mp_auth_code` char(100) NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `UQ_User_email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
