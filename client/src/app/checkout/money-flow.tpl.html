@@ -70,7 +70,7 @@
                             <a class="btn btn-warning PrevStep" data-ng-click="flow.toPrevStep()"><i class="fa fa-angle-left"></i> Volver</a>
                         </div>
                         <div class="col-sm-6 col-xs-7 text-left">
-                            <a href="https://sandbox.mercadopago.com/mla/checkout/pay?pref_id=171261795-1b527b9a-063d-4feb-835f-5fda630435e5" name="MP-Checkout" onreturn="callbackMPModal" class="orange-S-Sq-Ar" mp-mode="modal">Donar</a>
+                            <a href="https://sandbox.mercadopago.com/mla/checkout/pay?pref_id=171261795-01c5a5c5-d508-433e-8aa7-09e7d9abca3a" name="MP-Checkout" onreturn="callbackMPModal" class="btn btn-warning" mp-mode="modal">Donar</a>
                         </div>
                     </div>
                 </div>
@@ -89,6 +89,10 @@
                                 <h1>Felicitaciones!</h1>
                                 <p>Haz finalizado el pedido.</p>
                                 <p>En breve le enviaremos un mensaje al dueño de la publicación, poniendolos en contacto para concretar la operación.</p>
+
+                                <p>
+                                    <strong>Estado:</strong> <span class="text-info">{{paymentStatusMessage}}</span>
+                                </p>
                                 <p><a ui-sref="web.home" class="btn btn-primary btn-lg" role="button">Ir al home</a>
                                 </p>
                             </div>

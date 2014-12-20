@@ -15,7 +15,7 @@ class Test extends CI_Controller{
         $options['clientId'] = '3622387872526969';
         $options['clientSecret'] = 'nM7RptdRoXtrD8DTAXkqQAVw6JlDDJmL';
         $options['redirectUri'] = 'https://github.com/ayudaresfacil/ayudaresfacil';
-        $options['code'] = "TG-549507b5e4b07c737ec15df4-171261795";
+        $options['code'] = "TG-549513b5e4b0a8540f891937-171261795";
         $auth = CI_MercadoPago::auth($options);
         
         echo "auth"; 

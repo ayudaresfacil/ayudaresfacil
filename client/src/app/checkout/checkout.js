@@ -159,11 +159,19 @@ angular.module( 'AyudarEsFacilApp.checkout', [
             });
         };
 
-        this.pay = function(){
-            
-        };
-
-        this.end = function(){   
+        this.end = function(){  
+            if ($scope.paymentStatus == 'approved') {
+                $scope.paymentStatusMessage = 'El pago ha sido acreditado';
+            } else if ($scope.paymentStatus == 'pending') {
+                $scope.paymentStatusMessage = 'El usuario no completó el pago';
+            } else if ($scope.paymentStatus == 'in_process') {
+                $scope.paymentStatusMessage = 'El pago está siendo revisado';
+            } else if ($scope.paymentStatus == 'rejected') {
+                $scope.paymentStatusMessage = 'El pago fué rechazado, el usuario puede intentar nuevamente el pago';
+            } else if ($scope.paymentStatus == null) {
+                $scope.paymentStatusMessage = 'El usuario no completó el proceso de pago, no se ha generado ningún pago';
+            }
+             
             $scope.status = 'loading';
             var message = $scope.user.name + ' ha dicho que tiene lo que necesitas. Contacta con el para finalizar el proceso';
 
@@ -186,6 +194,8 @@ angular.module( 'AyudarEsFacilApp.checkout', [
             }).error(function(response) {
                 $scope.status = 'fail';
             });
+
+            $scope.$apply();
         };
 
         this.getData();

@@ -63,21 +63,9 @@
 
             <script>
                 function callbackMPModal(json) {
-
-                    angular.element($(".ng-scope")).scope().flow.goal.end();
-
-                    // alert("LLAMANDO CALLCBACK");
-                    // if (json.collection_status == 'approved') {
-                    //     alert('Pago acreditado');
-                    // } else if (json.collection_status == 'pending') {
-                    //     alert('El usuario no completó el pago');
-                    // } else if (json.collection_status == 'in_process') {
-                    //     alert('El pago está siendo revisado');
-                    // } else if (json.collection_status == 'rejected') {
-                    //     alert('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
-                    // } else if (json.collection_status == null) {
-                    //     alert('El usuario no completó el proceso de pago, no se ha generado ningún pago');
-                    // }
+                    var flowScope = angular.element($(".panel.wizard")).scope();
+                    flowScope.paymentStatus = json.collection_status;
+                    flowScope.flow.toNextStep();
                 };
             </script>
 </body>
