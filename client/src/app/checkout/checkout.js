@@ -142,7 +142,6 @@ angular.module( 'AyudarEsFacilApp.checkout', [
         this.getData();
     };
 
-
     this.moneyFlow = function(){
         this.steps = 2;
         this.requestService = new Request();
@@ -158,6 +157,38 @@ angular.module( 'AyudarEsFacilApp.checkout', [
             this.promiseRequest.then(function(response) {
                 $scope.request = response.data[0];
             });
+        };
+
+        this.pay = function(){
+            (function() {
+                function $MPBR_load() {
+                    window.$MPBR_loaded !== true && (function() {
+                        var s = document.createElement("script");
+                        s.type = "text/javascript";
+                        s.async = true;
+                        s.src = ("https:" == document.location.protocol ? "https://www.mercadopago.com/org-img/jsapi/mptools/buttons/" : "http://mp-tools.mlstatic.com/buttons/") + "render.js";
+                        var x = document.getElementsByTagName('script')[0];
+                        x.parentNode.insertBefore(s, x);
+                        window.$MPBR_loaded = true;
+                    })();
+                }
+                window.$MPBR_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPBR_load) : window.addEventListener('load', $MPBR_load, false)) : null;
+            })();
+
+            function callbackMPModal(json) {
+                alert("LLAMANDO CALLCBACK");
+                if (json.collection_status == 'approved') {
+                    alert('Pago acreditado');
+                } else if (json.collection_status == 'pending') {
+                    alert('El usuario no completó el pago');
+                } else if (json.collection_status == 'in_process') {
+                    alert('El pago está siendo revisado');
+                } else if (json.collection_status == 'rejected') {
+                    alert('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
+                } else if (json.collection_status == null) {
+                    alert('El usuario no completó el proceso de pago, no se ha generado ningún pago');
+                }
+            };
         };
 
         this.end = function(){   
