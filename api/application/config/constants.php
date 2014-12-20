@@ -50,3 +50,7 @@ if(ENVIRONMENT=='production'){
 }else{
 	define('FRONT_URL', 'http://localhost/ayudaresfacil/client/build/#/');
 }
+
+define('MP_CLIENT_ID','3622387872526969');
+define('MP_CLIENT_SECRET','nM7RptdRoXtrD8DTAXkqQAVw6JlDDJmL');
+

@@ -75,4 +75,32 @@ class Checkout extends REST_Controller{
 
         $this->response($return, $status);
 	}
+
+	public function createMpConection($code){
+		$options['clientId'] = MP_CLIENT_ID;
+        $options['clientSecret'] = MP_CLIENT_SECRET;
+        $options['redirectUri'] = 'https://github.com/ayudaresfacil/ayudaresfacil';
+        $options['code'] = $code;
+
+        $auth = CI_MercadoPago::auth($options);
+        $auth = json_decode($auth);
+
+        $options['refreshToken'] = $auth->{refresh_token};
+        $token = CI_MercadoPago::token($options);
+        $token = json_decode($token);
+
+        $options['accessToken'] = $auth->{access_token};
+        $options['fee'] = 0;
+        $item['title'] = "Donacion";
+        $item['description'] = "Donacion";
+        $item['quantity'] = 1;
+        $item['unit_price'] = 1;
+        $item['currency_id'] = "$";
+        $item['picture_url'] = "";
+        $options['items'][0] = $item;
+        $checkout = CI_MercadoPago::integrateCheckout($options);
+        $checkout = json_decode($checkout);
+
+        return $checkout->{sandbox_init_point};
+	}
 }
