@@ -23,7 +23,7 @@
                     <p class="text-muted text-left">
                        {{offer.object.description}}
                     </p>
-                    <div ng-if="offer.processState.id=='F'" >
+                    <div ng-if="offer.processState.id=='C'" >
                         <p><span class="badge badge-success">Ayuda concretada!</span></p>
                     </div>
                     <div ng-if="offer.processState.id=='P'" >
@@ -37,7 +37,7 @@
                     </h3>
 
                     <div class="row extra-data">
-                        <div ng-if="offer.processState.id=='F'" >
+                        <div ng-if="offer.processState.id=='C'" >
                             <p class="text-muted text-left">Que bueno que hayas conseguido lo que necesitabas!. Esperamos que puedas seguir colaborando a diferentes causas. Hasta la próxima.</p>
                         </div>
                         <div ng-if="offer.processState.id=='P'" >
