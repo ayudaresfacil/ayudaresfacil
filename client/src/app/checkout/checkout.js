@@ -156,6 +156,16 @@ angular.module( 'AyudarEsFacilApp.checkout', [
 
             this.promiseRequest.then(function(response) {
                 $scope.request = response.data[0];
+
+                // $http.post('/ayudaresfacil/api/checkout/auth',{
+                //     userId: $scope.request.user.id,
+                //     token: $scope.user.token
+                // })
+                // .success(function(response) {
+                //     $scope.status = 'congrats';
+                // }).error(function(response) {
+                //     $scope.status = 'fail';
+                // });
             });
         };
 
@@ -186,7 +196,7 @@ angular.module( 'AyudarEsFacilApp.checkout', [
                 publicationType: $scope.publicationType,
                 comments: message,
                 objectId: $scope.request.object.id,
-                quantity: 100,
+                quantity: $scope.price,
                 token: $scope.user.token
             })
             .success(function(response) {

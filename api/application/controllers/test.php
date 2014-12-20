@@ -20,14 +20,6 @@ class Test extends CI_Controller{
         
         echo "auth"; 
         ma($auth);
-        // {
-        // access_token: "APP_USR-3622387872526969-122000-a62860ff17a4b48ca737e048e253b100__I_N__-171261795",
-        // token_type: "bearer",
-        // expires_in: 21600,
-        // scope: "offline_access read write",
-        // user_id: 171261795,
-        // refresh_token: "TG-54950247e4b0620cd7a097a0-171261795"
-        // }
         $auth = json_decode($auth);
 
         $options['refreshToken'] = $auth->{refresh_token};
@@ -37,7 +29,7 @@ class Test extends CI_Controller{
 
         $token = json_decode($token);
 
-        $options['accessToken'] = $auth->{access_token};
+        $options['accessToken'] = $token->{access_token};
         $options['fee'] = 0;
 
         $item['title'] = "Donacion";

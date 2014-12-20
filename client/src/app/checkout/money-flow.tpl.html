@@ -51,16 +51,22 @@
                     <div class="row">
 
                         <div class="col-sm-8 col-sm-offset-2">
-                            <h4 class="small-heading more-margin-bottom">Quieres agregar algo?</h4>
-                            <p>Si quieres, puedes hacer una observación al dueño de la publicación sobre el ofrecimiento que haz iniciado</p>
+                            <h4 class="small-heading more-margin-bottom">Algunos datos sobre la donación...</h4>
                             <form role="form">
+
+                                <div class="form-group form-inline">
+                                    <label>Cuanto puedes donar?</label>
+                                    <input type="number" class="form-control" data-ng-model="price" placeholder="$ARS" required min="0" max="1000" step="1">
+                                    <span class="help-block" style="display:inline-block">Si quieres donar $50 ingresa el valor 50.</span>
+                                </div>
+
+                                <p>Si quieres, puedes hacer una observación al dueño de la publicación sobre el ofrecimiento que haz iniciado</p>
+                            
                                 <div class="form-group">
                                     <label>Comentarios</label>
                                     <textarea class="form-control" data-ng-model="comments" style="height: 100px;"></textarea>
                                 </div>
                             </form>
-
-                            <!-- <a href="[init_point]" name="MP-Checkout" class="lightblue-M-Ov-ArOn" mp-mode="modal">Donar</a> -->
                         </div>
                     </div>
                 </div>

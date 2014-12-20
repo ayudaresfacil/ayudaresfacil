@@ -89,7 +89,7 @@ class Checkout extends REST_Controller{
         $token = CI_MercadoPago::token($options);
         $token = json_decode($token);
 
-        $options['accessToken'] = $auth->{access_token};
+        $options['accessToken'] = $token->{access_token};
         $options['fee'] = 0;
         $item['title'] = "Donacion";
         $item['description'] = "Donacion";
