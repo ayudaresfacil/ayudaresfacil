@@ -202,4 +202,13 @@ class CI_User {
 		$CI->load->model('user_model');
 		return $CI->user_model->delete($this->id);
 	}
+
+	public static function addPaymentCode($options){
+		$CI =& get_instance();
+		$CI->load->model('user_model');
+		if($options['userId'] > 0 && !empty($options['code'])){
+			$CI->user_model->addPaymentCode($options);
+		}
+		return true;
+	}
 }

@@ -55,10 +55,17 @@ angular.module('AyudarEsFacilApp.user', [
                 action: 'confirm'
             }
         })
-        .state('panel.user.payments', {
-            url: '/user/payments',
-            controller: 'PaymentsCtrl',
-            templateUrl: 'user/user-payments.tpl.html',
+        .state('panel.user.payment', {
+            url: '/user/payment',
+            controller: 'PaymentCtrl',
+            templateUrl: 'user/user-payment.tpl.html',
+            data: {
+                pageTitle: 'Método de cobros'
+            }
+        })
+        .state('panel.user.paymentConfirm', {
+            url: '/user/payment/confirm',
+            controller: 'PaymentCtrl',
             data: {
                 pageTitle: 'Método de cobros'
             }
@@ -404,8 +411,29 @@ angular.module('AyudarEsFacilApp.user', [
     this.getUser();
 
 })
-.controller('PaymentsCtrl', function UserCtrl($scope, $http, $location, Users, Authentication, screen) {
+.controller('PaymentCtrl', function UserCtrl($scope, $http, $location, $stateParams, Authentication) {
+    $scope.user = Authentication.user;
+    if (!$scope.user) {
+        $location.path('/');
+    }
+
     $scope.appId = 3622387872526969;
     $scope.redirectUrl = "https://github.com/ayudaresfacil/ayudaresfacil";
+    
+    $stateParams.code = "TG-5494b320e4b07c737eb962a0-71052395";
+
+    if($stateParams.code){
+        $http.post('/ayudaresfacil/api/user/payment', {
+            code: $stateParams.code,
+            userId: $scope.user.id,
+            token: $scope.user.token
+        })
+        .success(function(response) {
+            $scope.status = "success";
+            $location.path('/user/payment');
+        }).error(function(response) {
+            $scope.status = "success";
+        });
+    }
 })
 ;

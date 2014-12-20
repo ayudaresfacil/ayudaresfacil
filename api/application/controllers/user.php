@@ -89,4 +89,23 @@ class User extends REST_Controller{
 		
 		$this->response($return, $status);
 	}
+
+	public function payment_post(){
+		
+		//checkIsLoggedIn($this);
+		
+		$arrOptions['userId'] = $this->post('userId');
+		$arrOptions['code'] = $this->post('code');
+		
+		$isSaved = CI_User::addPaymentCode($arrOptions);
+		
+		$status = 500;
+		$return["result"] = "NOOK";
+		
+		if($isSaved){
+			$status = 200;
+			$return["result"] = "OK";
+		} 
+		$this->response($return, $status);
+	}
 }

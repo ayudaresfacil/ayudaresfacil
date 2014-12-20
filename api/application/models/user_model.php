@@ -123,4 +123,12 @@ class User_model extends CI_Model
 		
 		return $id;
 	}
+
+	public function addPaymentCode($options){
+		$data = array(
+			'mp_auth_code' => $options['code'],
+			);
+		$this->db->where('user_id', $options['userId']);
+		$this->db->update('user', $data);
+    }
 }
