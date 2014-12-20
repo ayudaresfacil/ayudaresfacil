@@ -18,7 +18,8 @@
 if(ENVIRONMENT=='production')
 	$config['base_url'] = 'http://ayudaresfacil.webege.com/ayudaresfacil/api';
 else
-	$config['base_url'] = 'http://localhost/ayudaresfacil/api';
+	$config['base_url'] = 'http://192.168.0.102/ayudaresfacil/api';
+    //$config['base_url'] = 'http://localhost/ayudaresfacil/api';
 
 /*
 |--------------------------------------------------------------------------

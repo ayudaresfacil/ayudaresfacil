@@ -3,7 +3,7 @@
 class User_model extends CI_Model
 {
 	public function getUsers(){
-		$this->db->select('user.user_id user_id,email,enabled,deleted,name,last_name,birthday_date,description,gravatar_email');	
+		$this->db->select('user.user_id user_id,email,enabled,deleted,name,last_name,birthday_date,description,gravatar_email, mp_auth_code');	
 		$this->db->from('user');
 		$this->db->join('user_data', 'user.user_id = user_data.user_id', 'left outer');	
 		$query = $this->db->get();
@@ -11,7 +11,7 @@ class User_model extends CI_Model
 	}
 	
 	public function getById($id){
-		$this->db->select('user.user_id user_id,email,enabled,deleted,name,last_name,birthday_date,description,gravatar_email');	
+		$this->db->select('user.user_id user_id,email,enabled,deleted,name,last_name,birthday_date,description,gravatar_email, mp_auth_code');	
 		$this->db->from('user');
 		$this->db->join('user_data', 'user.user_id = user_data.user_id', 'left outer');
 		$this->db->where('user.user_id',$id);
@@ -123,4 +123,12 @@ class User_model extends CI_Model
 		
 		return $id;
 	}
+
+	public function addPaymentCode($options){
+		$data = array(
+			'mp_auth_code' => $options['code'],
+			);
+		$this->db->where('user_id', $options['userId']);
+		$this->db->update('user', $data);
+    }
 }

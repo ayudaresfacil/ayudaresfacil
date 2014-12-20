@@ -13,6 +13,7 @@ class CI_User {
 	private $gravatarEmail;
 	private $enabled;
 	private $deleted;
+	private $mpAuthCode;
 
 	public function getId() {return $this->id;}
 	
@@ -88,6 +89,8 @@ class CI_User {
 	public function getGravatarEmail(){return $this->gravatarEmail;}
 	public function setGravatarEmail($gravatarEmail){$this->gravatarEmail = $gravatarEmail;}
 
+	public function getMPAuthCode(){return $this->mpAuthCode;}
+	public function setMPAuthCode($mpAuthCode){$this->mpAuthCode = $mpAuthCode;}
 	/**
 	 * Devuelve la informacion cargada del objeto 
 	 * Uso interno
@@ -127,6 +130,7 @@ class CI_User {
 		$user->phones = CI_Phone::getPhonesByUserId ($user->id);
 		$user->addresses = CI_Address::getAddressesByUserId($user->id);
 		$user->gravatarEmail = (isset($row->gravatar_email)) ? $row->gravatar_email : '';
+		$user->mpAuthCode = (isset($row->mp_auth_code)) ? $row->mp_auth_code : '';
 		return $user;
 	}
 	
@@ -201,5 +205,14 @@ class CI_User {
 		$CI =& get_instance();
 		$CI->load->model('user_model');
 		return $CI->user_model->delete($this->id);
+	}
+
+	public static function addPaymentCode($options){
+		$CI =& get_instance();
+		$CI->load->model('user_model');
+		if($options['userId'] > 0 && !empty($options['code'])){
+			$CI->user_model->addPaymentCode($options);
+		}
+		return true;
 	}
 }
