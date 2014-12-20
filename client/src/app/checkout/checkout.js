@@ -142,7 +142,6 @@ angular.module( 'AyudarEsFacilApp.checkout', [
         this.getData();
     };
 
-
     this.moneyFlow = function(){
         this.steps = 2;
         this.requestService = new Request();
@@ -158,6 +157,10 @@ angular.module( 'AyudarEsFacilApp.checkout', [
             this.promiseRequest.then(function(response) {
                 $scope.request = response.data[0];
             });
+        };
+
+        this.pay = function(){
+            
         };
 
         this.end = function(){   
